@@ -1,58 +1,49 @@
-// ページ読み込み時のアニメーション
+// アクセスカウンター機能
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎉 ぷろきぃのポートフォリオへようこそ！');
+    // LocalStorageからアクセス数を取得
+    let accessCount = localStorage.getItem('accessCount');
+    if (accessCount === null) {
+        accessCount = 0;
+    } else {
+        accessCount = parseInt(accessCount) + 1;
+    }
     
-    // スムーズスクロール
-    const links = document.querySelectorAll('.nav-links a');
-    links.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            
-            if (targetSection) {
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
+    // LocalStorageに保存
+    localStorage.setItem('accessCount', accessCount);
     
-    // スクロールアニメーション
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
+    // カウンターを表示
+    document.getElementById('counter').textContent = accessCount;
     
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
+    // キリ番チェック
+    checkKiribang(accessCount);
     
-    document.querySelectorAll('.section').forEach(section => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(20px)';
-        section.style.transition = 'all 0.6s ease-out';
-        observer.observe(section);
-    });
+    console.log('🎉 アクセス数: ' + accessCount);
 });
 
-// マウス追跡効果（背景グロー）
-document.addEventListener('mousemove', function(e) {
-    const x = e.clientX;
-    const y = e.clientY;
+// キリ番判定関数
+function checkKiribang(count) {
+    const kiribangElement = document.getElementById('kiribang');
     
-    // グロー効果を追加したい場合はここに記述
-});
+    // ぞろ目チェック (100, 1000, 10000, etc.)
+    if (isKiribang(count)) {
+        kiribangElement.classList.add('active');
+        kiribangElement.textContent = '🎉 キリ番GET!! 🎉';
+    }
+}
 
-// ボタンやカードのクリック効果
-document.querySelectorAll('.skill-card, .profile-card').forEach(card => {
-    card.addEventListener('click', function() {
-        this.style.animation = 'pulse 0.6s ease-out';
-    });
-});
+// ぞろ目判定
+function isKiribang(num) {
+    const str = String(num);
+    
+    // 全て同じ数字か確認
+    if (/^(\d)\1+$/.test(str)) return true;
+    
+    // 末尾が0が複数ある (100, 1000, 10000など)
+    if (/0{2,}$/.test(str)) return true;
+    
+    // その他の特別な数字
+    const specialNumbers = [111, 222, 333, 444, 555, 666, 777, 888, 999, 1111, 2222, 3333];
+    if (specialNumbers.includes(num)) return true;
+    
+    return false;
+}
