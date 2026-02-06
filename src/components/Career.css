@@ -1,8 +1,11 @@
 .card__subtitle {
   font-size: 1.05rem;
   font-weight: 600;
-  color: var(--c-accent);
   margin: 30px 0 16px;
+  background: linear-gradient(135deg, var(--c-accent3), var(--c-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Timeline */
@@ -29,9 +32,9 @@
   transition: all 0.4s;
 }
 .timeline__item--active::before {
-  border-color: var(--c-accent);
-  background: var(--c-accent);
-  box-shadow: 0 0 14px var(--c-glow);
+  border-color: var(--c-green);
+  background: var(--c-green);
+  box-shadow: 0 0 14px var(--c-glow-green);
 }
 .timeline__date {
   font-family: var(--font-mono);

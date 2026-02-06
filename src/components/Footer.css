@@ -11,9 +11,10 @@
   top: 0;
   left: 10%;
   right: 10%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--c-accent), var(--c-accent2), var(--c-accent3), transparent);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--c-accent), var(--c-accent2), var(--c-accent3), var(--c-pink), var(--c-green), var(--c-gold), transparent);
   animation: footer-line 4s ease-in-out infinite alternate;
+  border-radius: 1px;
 }
 @keyframes footer-line {
   0% { opacity: 0.3; left: 10%; right: 10%; }

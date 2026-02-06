@@ -52,8 +52,10 @@
 }
 .link-btn--x {
   background: rgba(79, 172, 254, 0.08);
-  color: var(--c-accent);
   border: 1px solid rgba(79, 172, 254, 0.18);
+}
+.link-btn--x svg {
+  color: var(--c-accent);
 }
 .link-btn--x:hover {
   border-color: var(--c-accent);

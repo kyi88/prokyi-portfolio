@@ -18,7 +18,7 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          &copy; 2026 ぷろきぃ (prokyi) &mdash; 技術と創造の交差点
+          &copy; 2026 ぷろきぃ (prokyi) &mdash; <span className="gradient-text">技術と創造の交差点</span>
         </motion.p>
         <motion.p
           className="footer__update"

@@ -18,7 +18,7 @@ export default function Section({ id, num, title, children }) {
       style={{ transformPerspective: 1200 }}
     >
       <motion.h2
-        className="card__title"
+        className="card__title gradient-text"
         initial={{ opacity: 0, x: -30 }}
         animate={inView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}

@@ -19,7 +19,9 @@
   background:
     radial-gradient(ellipse 50% 40% at 45% 40%, rgba(79, 172, 254, 0.1), transparent),
     radial-gradient(ellipse 35% 25% at 65% 55%, rgba(0, 242, 254, 0.07), transparent),
-    radial-gradient(ellipse 30% 20% at 30% 70%, rgba(167, 139, 250, 0.06), transparent);
+    radial-gradient(ellipse 30% 20% at 30% 70%, rgba(167, 139, 250, 0.06), transparent),
+    radial-gradient(ellipse 25% 15% at 75% 25%, rgba(255, 45, 135, 0.04), transparent),
+    radial-gradient(ellipse 20% 15% at 20% 40%, rgba(251, 191, 36, 0.03), transparent);
   pointer-events: none;
   animation: ambient-drift 12s ease-in-out infinite alternate;
 }
@@ -74,6 +76,30 @@
 @keyframes orb-float-3 {
   0% { transform: translate(0, 0); }
   100% { transform: translate(40px, -50px); }
+}
+.hero__orb--4 {
+  width: 150px;
+  height: 150px;
+  background: rgba(255, 45, 135, 0.06);
+  top: 20%;
+  right: 5%;
+  animation: orb-float-4 9s ease-in-out infinite alternate;
+}
+.hero__orb--5 {
+  width: 120px;
+  height: 120px;
+  background: rgba(251, 191, 36, 0.05);
+  bottom: 30%;
+  right: 25%;
+  animation: orb-float-5 11s ease-in-out infinite alternate;
+}
+@keyframes orb-float-4 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-40px, 30px) scale(1.2); }
+}
+@keyframes orb-float-5 {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(30px, -40px); }
 }
 
 .hero__inner {
@@ -183,9 +209,21 @@
 .hero__name {
   font-size: clamp(2rem, 5vw, 3.4rem);
   font-weight: 700;
-  color: var(--c-heading);
   line-height: 1.2;
   margin-bottom: 8px;
+}
+.hero__name-jp {
+  background: linear-gradient(135deg, var(--c-accent), var(--c-accent2), var(--c-accent3), var(--c-pink));
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-flow 6s ease-in-out infinite;
+}
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 .hero__name-en {
   display: inline-block;

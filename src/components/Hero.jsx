@@ -63,6 +63,8 @@ export default function Hero() {
         <div className="hero__orb hero__orb--1" />
         <div className="hero__orb hero__orb--2" />
         <div className="hero__orb hero__orb--3" />
+        <div className="hero__orb hero__orb--4" />
+        <div className="hero__orb hero__orb--5" />
       </div>
 
       <motion.div
@@ -111,13 +113,13 @@ export default function Hero() {
           </motion.p>
 
           <motion.h1
-            className="hero__name glitch"
-            data-text="ぷろきぃ"
+            className="hero__name"
             initial={{ opacity: 0, y: 30, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1.0, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            ぷろきぃ<span className="hero__name-en">prokyi</span>
+            <span className="hero__name-jp glitch" data-text="ぷろきぃ">ぷろきぃ</span>
+            <span className="hero__name-en">prokyi</span>
           </motion.h1>
 
           <motion.p

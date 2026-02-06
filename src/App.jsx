@@ -6,6 +6,7 @@ import Section from './components/Section';
 import Profile from './components/Profile';
 import Career from './components/Career';
 import Goals from './components/Goals';
+import Gadgets from './components/Gadgets';
 import Links from './components/Links';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
@@ -39,7 +40,10 @@ export default function App() {
               <Section id="goals" num="03" title="今後の目標・技術的関心">
                 <Goals />
               </Section>
-              <Section id="links" num="04" title="リンク / SNS">
+              <Section id="gadgets" num="04" title="ガジェット">
+                <Gadgets />
+              </Section>
+              <Section id="links" num="05" title="リンク / SNS">
                 <Links />
               </Section>
             </div>

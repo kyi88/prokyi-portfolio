@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import './Header.css';
 
 const navItems = [
   { href: '#profile', label: 'Profile' },
   { href: '#career', label: 'Career' },
   { href: '#goals', label: 'Goals' },
+  { href: '#gadgets', label: 'Gadgets' },
   { href: '#links', label: 'Links' },
 ];
 
@@ -13,6 +14,8 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState('');
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
     const onScroll = () => {
@@ -73,6 +76,13 @@ export default function Header() {
           <span /><span /><span />
         </button>
       </div>
+
+      {/* Scroll progress bar */}
+      <motion.div
+        className="header__progress"
+        style={{ scaleX, transformOrigin: '0%' }}
+        aria-hidden="true"
+      />
     </motion.header>
   );
 }

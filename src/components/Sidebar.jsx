@@ -38,6 +38,7 @@ export default function Sidebar() {
         <h3 className="side-card__title">更新情報</h3>
         <ul className="news-list">
           {[
+            ['2026/02/07', 'ガジェットセクション追加'],
             ['2026/02/07', 'React版にリニューアル'],
             ['2026/02/06', 'ポートフォリオ開設'],
             ['2025/04/09', 'ZEN大学 入学'],

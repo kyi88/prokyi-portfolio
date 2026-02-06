@@ -13,6 +13,22 @@
   background: rgba(5, 7, 14, 0.88);
   box-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
 }
+
+/* Scroll progress bar */
+.header__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-accent2), var(--c-accent3), var(--c-pink), var(--c-accent));
+  background-size: 200% 100%;
+  animation: progress-gradient 4s linear infinite;
+}
+@keyframes progress-gradient {
+  0% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
 .header__inner {
   max-width: 1280px;
   margin: 0 auto;

@@ -6,6 +6,9 @@ const COLORS = [
   [0, 242, 254],    // cyan
   [167, 139, 250],  // purple
   [255, 100, 200],  // pink
+  [255, 107, 53],   // orange
+  [34, 211, 167],   // green
+  [251, 191, 36],   // gold
 ];
 
 export default function ParticleCanvas() {
