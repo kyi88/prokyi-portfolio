@@ -5,30 +5,29 @@
 }
 
 :root {
-    --primary: #2563eb;
-    --secondary: #7c3aed;
-    --accent: #ec4899;
-    --dark: #0f172a;
+    --primary: #ff6b35;
+    --secondary: #f7931e;
+    --accent: #fb5607;
+    --dark: #1a1a1a;
     --light: #f8fafc;
-    --nicopink: #ff6b9d;
+    --nicopink: #f24236;
     --nicoyellow: #ffd700;
-    --nicogreen: #00d4ff;
+    --nicogreen: #06d6a0;
 }
 
 body {
     font-family: 'Segoe UI', 'Hiragino Sans', 'Yu Gothic', sans-serif;
-    background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     color: #e2e8f0;
     line-height: 1.6;
     overflow-x: hidden;
 }
 
-/* ナビゲーションバー */
 .navbar {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(15, 23, 42, 0.95);
+    background: rgba(26, 26, 26, 0.95);
     backdrop-filter: blur(10px);
     padding: 1rem 2rem;
     z-index: 1000;
@@ -264,17 +263,9 @@ body {
     font-size: 1.1rem;
 }
 
-/* プロフィール セクション */
-.profile-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
 .profile-card {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(247, 147, 30, 0.1));
+    border: 1px solid rgba(255, 107, 53, 0.3);
     padding: 2rem;
     border-radius: 10px;
     transition: all 0.3s ease;
@@ -333,7 +324,7 @@ body {
 
 .timeline-content {
     width: 45%;
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(247, 147, 30, 0.1));
     padding: 1.5rem;
     border-radius: 8px;
     border-left: 3px solid var(--primary);
@@ -365,23 +356,8 @@ body {
     box-shadow: 0 10px 30px rgba(236, 72, 153, 0.3);
 }
 
-/* スキル セクション */
-.subsection-title {
-    font-size: 1.5rem;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: var(--nicopink);
-}
-
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
 .skill-card {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(124, 58, 237, 0.15));
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), rgba(247, 147, 30, 0.15));
     border: 2px solid transparent;
     padding: 2rem;
     border-radius: 12px;
@@ -450,7 +426,7 @@ body {
 .footer {
     text-align: center;
     padding: 2rem;
-    background: rgba(15, 23, 42, 0.8);
+    background: rgba(26, 26, 26, 0.8);
     border-top: 2px solid var(--primary);
     margin-top: 4rem;
     color: #94a3b8;
