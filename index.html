@@ -3,15 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Site</title>
+    <title>ぷろきぃ (prokyi) | ポートフォリオ</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <h1>こんにちは</h1>
+    <!-- ナビゲーション -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">ぷろきぃ's Portfolio</div>
+            <ul class="nav-links">
+                <li><a href="#profile">プロフィール</a></li>
+                <li><a href="#skills">スキル</a></li>
+                <li><a href="#interests">関心事</a></li>
+                <li><a href="#contact">連絡先</a></li>
+            </ul>
         </div>
-    </div>
+    </nav>
+
+    <!-- ヒーロー セクション -->
+    <section class="hero">
+        <div class="stars"></div>
+        <div class="hero-content">
+            <div class="avatar">🧑‍💻</div>
+            <h1 class="hero-title">ぷろきぃ <span class="highlight">(prokyi)</span></h1>
+            <p class="hero-subtitle">AI/データサイエンス分野への学習意欲を持つ、フットワークの軽いエンジニア志望</p>
+            <div class="floating-badges">
+                <span class="badge">技術好き</span>
+                <span class="badge">学習中</span>
+                <span class="badge">チャレンジャー</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- プロフィール -->
+    <section id="profile" class="section profile-section">
+        <h2 class="section-title">👤 基本情報</h2>
+        <div class="profile-grid">
+            <div class="profile-card">
+                <h3>📍 所在地</h3>
+                <p>千葉県</p>
+            </div>
+            <div class="profile-card">
+                <h3>🎮 趣味</h3>
+                <p>インターネット（技術動向の調査）</p>
+            </div>
+            <div class="profile-card">
+                <h3>🏆 資格</h3>
+                <p>実用英語技能検定 (英検) 2級</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 学歴・職歴 -->
+    <section class="section education-section">
+        <h2 class="section-title">💼 学歴・職歴</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">2025年3月</div>
+                <div class="timeline-content">
+                    <h3>千葉敬愛高等学校 理系特進コース 卒業</h3>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">現在</div>
+                <div class="timeline-content">
+                    <h3>🎓 ZEN大学 在学中</h3>
+                    <p>オンライン講義を通じた実践的なスキル習得</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="subsection-title">アルバイト経験</h3>
+        <div class="experience-grid">
+            <div class="experience-card">🍣 寿司屋のキッチン</div>
+            <div class="experience-card">🏪 コンビニエンスストア</div>
+        </div>
+    </section>
+
+    <!-- スキル・関心事項 -->
+    <section id="skills" class="section skills-section">
+        <h2 class="section-title">🚀 今後の目標・技術的関心</h2>
+        <p class="section-intro">IT分野でのスキルを最大限に伸ばし、新しい技術を自ら形にすることを目指しています。</p>
+        
+        <div class="skills-grid">
+            <div class="skill-card" data-aos="fade-up">
+                <div class="skill-icon">🤖</div>
+                <h3>LLM (大規模言語モデル)</h3>
+                <p>開発環境の構築と、特定用途へのファインチューニング</p>
+            </div>
+            <div class="skill-card" data-aos="fade-up">
+                <div class="skill-icon">🖥️</div>
+                <h3>自宅サーバー</h3>
+                <p>セキュリティを考慮したサーバー構築と運用、Webサービス公開</p>
+            </div>
+            <div class="skill-card" data-aos="fade-up">
+                <div class="skill-icon">🎬</div>
+                <h3>動画編集</h3>
+                <p>クリエイティブなコンテンツ制作</p>
+            </div>
+            <div class="skill-card" data-aos="fade-up">
+                <div class="skill-icon">🎨</div>
+                <h3>3Dモデリング</h3>
+                <p>ビジュアルコンテンツの創造</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <p>© 2026 ぷろきぃ (prokyi) | 技術と創造の交差点</p>
+        <div class="social-links">
+            <a href="https://github.com/kyi88" target="_blank">GitHub</a>
+            <a href="https://twitter.com" target="_blank">Twitter</a>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
