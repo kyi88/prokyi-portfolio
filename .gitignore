@@ -4,3 +4,6 @@ dist/
 .env
 .env.local
 *.log
+*.old.html
+*.old.css
+*.old.js

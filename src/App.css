@@ -1,0 +1,45 @@
+/* ===================================================================
+   App Layout
+   =================================================================== */
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.page--loaded {
+  opacity: 1;
+}
+
+.main {
+  padding: 80px 24px 40px;
+}
+
+.layout {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 36px;
+}
+
+.layout__content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding: 40px 16px 24px;
+  }
+}
