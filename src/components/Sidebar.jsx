@@ -10,9 +10,10 @@ export default function Sidebar() {
     <aside className="layout__side" ref={ref} aria-label="サイド情報">
       <motion.div
         className="side-card"
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.1 }}
+        initial={{ opacity: 0, x: 60, scale: 0.9 }}
+        animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
+        transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
       >
         <h3 className="side-card__title">ステータス</h3>
         <ul className="status-list">
@@ -29,9 +30,10 @@ export default function Sidebar() {
 
       <motion.div
         className="side-card"
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.25 }}
+        initial={{ opacity: 0, x: 60, scale: 0.9 }}
+        animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
+        transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
       >
         <h3 className="side-card__title">更新情報</h3>
         <ul className="news-list">

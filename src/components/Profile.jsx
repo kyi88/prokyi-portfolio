@@ -12,12 +12,18 @@ const items = [
 
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
+  show: { transition: { staggerChildren: 0.12 } },
 };
-const item = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-};
+const itemVariant = (i) => ({
+  hidden: { opacity: 0, x: i % 2 === 0 ? -40 : 40, scale: 0.9, filter: 'blur(6px)' },
+  show: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+});
 
 export default function Profile() {
   const ref = useRef(null);
@@ -31,8 +37,13 @@ export default function Profile() {
       initial="hidden"
       animate={inView ? 'show' : 'hidden'}
     >
-      {items.map((d) => (
-        <motion.div key={d.label} className="profile-grid__item" variants={item}>
+      {items.map((d, i) => (
+        <motion.div
+          key={d.label}
+          className="profile-grid__item"
+          variants={itemVariant(i)}
+          whileHover={{ scale: 1.03, x: 6, transition: { duration: 0.2 } }}
+        >
           <dt>{d.label}</dt>
           <dd>{d.value}</dd>
         </motion.div>

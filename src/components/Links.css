@@ -24,7 +24,22 @@
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent);
   transition: opacity 0.3s;
 }
+.link-btn::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--c-accent), var(--c-accent2), var(--c-accent3));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s;
+  filter: blur(8px);
+}
 .link-btn:hover::before { opacity: 1; }
+.link-btn:hover::after { opacity: 0.5; }
 
 .link-btn--gh {
   background: rgba(255, 255, 255, 0.06);

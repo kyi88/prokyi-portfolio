@@ -5,14 +5,30 @@ export default function Footer() {
   return (
     <motion.footer
       className="footer"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="footer__inner">
-        <p className="footer__copy">&copy; 2026 ぷろきぃ (prokyi) &mdash; 技術と創造の交差点</p>
-        <p className="footer__update">Last updated: 2026/02/07</p>
+        <motion.p
+          className="footer__copy"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          &copy; 2026 ぷろきぃ (prokyi) &mdash; 技術と創造の交差点
+        </motion.p>
+        <motion.p
+          className="footer__update"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.5 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        >
+          Last updated: 2026/02/07
+        </motion.p>
       </div>
     </motion.footer>
   );

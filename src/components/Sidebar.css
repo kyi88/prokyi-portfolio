@@ -8,10 +8,26 @@
   border: 1px solid var(--c-border);
   border-radius: var(--radius);
   padding: 24px;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.side-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(79,172,254,0.15), transparent 40%, rgba(167,139,250,0.1));
+  opacity: 0;
+  transition: opacity 0.4s;
+  z-index: -1;
 }
 .side-card:hover {
   border-color: var(--c-border-hover);
+  box-shadow: 0 0 40px var(--c-glow2);
+}
+.side-card:hover::before {
+  opacity: 1;
 }
 .side-card__title {
   font-size: 0.88rem;

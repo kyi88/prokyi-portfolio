@@ -23,9 +23,10 @@ export default function Career() {
           <motion.div
             key={e.date}
             className={`timeline__item ${e.active ? 'timeline__item--active' : ''}`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, x: -50, scale: 0.9, filter: 'blur(5px)' }}
+            animate={inView ? { opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' } : {}}
+            transition={{ duration: 0.8, delay: i * 0.2, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ x: 8, transition: { duration: 0.2 } }}
           >
             <span className="timeline__date">{e.date}</span>
             <h3 className="timeline__heading">{e.title}</h3>
@@ -34,19 +35,32 @@ export default function Career() {
         ))}
       </div>
 
-      <h3 className="card__subtitle">アルバイト経験</h3>
+      <motion.h3
+        className="card__subtitle"
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.4 }}
+      >
+        アルバイト経験
+      </motion.h3>
 
       <div className="job-row">
         {jobs.map((j, i) => (
           <motion.div
             key={j.title}
             className="job-chip"
-            initial={{ opacity: 0, y: 16 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
-            whileHover={{ y: -3, transition: { duration: 0.2 } }}
+            initial={{ opacity: 0, y: 30, rotate: -5, scale: 0.85 }}
+            animate={inView ? { opacity: 1, y: 0, rotate: 0, scale: 1 } : {}}
+            transition={{ duration: 0.7, delay: 0.5 + i * 0.15, type: 'spring', stiffness: 120 }}
+            whileHover={{ y: -6, scale: 1.05, rotate: 1, boxShadow: '0 12px 30px rgba(79, 172, 254, 0.15)', transition: { duration: 0.25 } }}
           >
-            <span className="job-chip__icon">{j.icon}</span>
+            <motion.span
+              className="job-chip__icon"
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+            >
+              {j.icon}
+            </motion.span>
             <div>
               <strong>{j.title}</strong>
               <small>{j.desc}</small>

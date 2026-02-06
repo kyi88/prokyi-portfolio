@@ -15,22 +15,40 @@ export default function Goals() {
 
   return (
     <div ref={ref}>
-      <p className="goals__lead">
+      <motion.p
+        className="goals__lead"
+        initial={{ opacity: 0, x: -30, filter: 'blur(5px)' }}
+        animate={inView ? { opacity: 1, x: 0, filter: 'blur(0px)' } : {}}
+        transition={{ duration: 0.8 }}
+      >
         IT分野でのスキルを最大限に伸ばし、新しい技術を自ら形にすることを目指しています。
-      </p>
+      </motion.p>
       <div className="goals-grid">
         {goals.map((g, i) => (
           <motion.article
             key={g.name}
             className="goal"
-            initial={{ opacity: 0, y: 24, scale: 0.96 }}
-            animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-            transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ y: -4, transition: { duration: 0.25 } }}
+            initial={{ opacity: 0, y: 40, scale: 0.8, rotateY: 20 }}
+            animate={inView ? { opacity: 1, y: 0, scale: 1, rotateY: 0 } : {}}
+            transition={{ duration: 0.8, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{
+              y: -8,
+              scale: 1.04,
+              boxShadow: '0 20px 50px rgba(79, 172, 254, 0.15)',
+              transition: { duration: 0.3 },
+            }}
+            style={{ transformPerspective: 800 }}
           >
-            <div className="goal__icon-wrap">
+            <motion.div
+              className="goal__icon-wrap"
+              animate={{
+                rotate: [0, 5, -5, 0],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 + i }}
+            >
               <span>{g.icon}</span>
-            </div>
+            </motion.div>
             <h3 className="goal__name">{g.name}</h3>
             <p className="goal__desc">{g.desc}</p>
           </motion.article>

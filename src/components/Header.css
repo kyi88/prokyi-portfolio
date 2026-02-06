@@ -28,12 +28,21 @@
   gap: 8px;
   text-decoration: none;
   color: var(--c-heading);
+  transition: text-shadow 0.3s;
+}
+.header__logo:hover {
+  text-shadow: 0 0 20px var(--c-accent), 0 0 40px rgba(79, 172, 254, 0.3);
 }
 .header__logo-mark {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--c-accent);
   opacity: 0.6;
+  animation: logo-pulse 3s ease-in-out infinite;
+}
+@keyframes logo-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; text-shadow: 0 0 10px var(--c-accent); }
 }
 .header__logo-text {
   font-weight: 700;
@@ -57,20 +66,22 @@
 .header__link.is-active {
   color: var(--c-accent);
   background: rgba(79, 172, 254, 0.08);
+  text-shadow: 0 0 12px rgba(79, 172, 254, 0.4);
 }
 .header__link::after {
   content: '';
   position: absolute;
   bottom: 0; left: 50%;
   width: 0; height: 2px;
-  background: var(--c-accent);
+  background: linear-gradient(90deg, var(--c-accent), var(--c-accent2));
   border-radius: 2px;
   transition: width 0.3s, left 0.3s;
+  box-shadow: 0 0 8px var(--c-glow);
 }
 .header__link:hover::after,
 .header__link.is-active::after {
-  width: 50%;
-  left: 25%;
+  width: 60%;
+  left: 20%;
 }
 
 /* Hamburger */

@@ -14,9 +14,23 @@
   background: linear-gradient(135deg, rgba(79, 172, 254, 0.03), rgba(0, 242, 254, 0.015));
   pointer-events: none;
 }
+.card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(transparent, rgba(79, 172, 254, 0.04), transparent, rgba(167, 139, 250, 0.03), transparent);
+  animation: card-rotate 12s linear infinite;
+  pointer-events: none;
+}
+@keyframes card-rotate {
+  to { transform: rotate(360deg); }
+}
 .card:hover {
   border-color: var(--c-border-hover);
-  box-shadow: 0 0 50px var(--c-glow2);
+  box-shadow: 0 0 60px var(--c-glow2), 0 0 120px rgba(167, 139, 250, 0.06);
 }
 
 .card__title {
