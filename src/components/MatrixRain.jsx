@@ -42,7 +42,12 @@ function MatrixRain() {
     const accentColor = getComputedStyle(document.documentElement)
       .getPropertyValue('--c-accent').trim() || '#4facfe';
 
-    const draw = () => {
+    // Throttle to ~20fps for authentic Matrix feel
+    let lastTime = 0;
+    const targetInterval = 50; // ms
+    let intervalId = null;
+
+    const drawFrame = () => {
       ctx.fillStyle = 'rgba(6, 8, 15, 0.06)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font = `${fontSize}px monospace`;
@@ -51,57 +56,21 @@ function MatrixRain() {
         const char = CHARS[Math.floor(Math.random() * CHARS.length)];
         const y = drops[i] * fontSize;
 
-        // Lead character brighter
-        if (Math.random() > 0.3) {
-          ctx.fillStyle = accentColor;
-          ctx.globalAlpha = 0.9;
-        } else {
-          ctx.fillStyle = accentColor;
-          ctx.globalAlpha = 0.3;
-        }
-
+        ctx.fillStyle = accentColor;
+        ctx.globalAlpha = Math.random() > 0.3 ? 0.9 : 0.3;
         ctx.fillText(char, i * fontSize, y);
         ctx.globalAlpha = 1;
 
-        if (y > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
+        if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       }
-
-      rafRef.current = requestAnimationFrame(draw);
     };
 
-    // Slow down to ~20fps for authentic Matrix feel
-    let lastTime = 0;
-    const targetInterval = 50; // ms
-    const throttledDraw = (time) => {
-      if (time - lastTime >= targetInterval) {
-        lastTime = time;
-        ctx.fillStyle = 'rgba(6, 8, 15, 0.06)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = `${fontSize}px monospace`;
-
-        for (let i = 0; i < columns; i++) {
-          const char = CHARS[Math.floor(Math.random() * CHARS.length)];
-          const y = drops[i] * fontSize;
-
-          ctx.fillStyle = accentColor;
-          ctx.globalAlpha = Math.random() > 0.3 ? 0.9 : 0.3;
-          ctx.fillText(char, i * fontSize, y);
-          ctx.globalAlpha = 1;
-
-          if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
-          drops[i]++;
-        }
-      }
-      rafRef.current = requestAnimationFrame(throttledDraw);
-    };
-
-    rafRef.current = requestAnimationFrame(throttledDraw);
+    // Use setInterval for consistent ~20fps instead of RAF (saves CPU vs RAF polling)
+    intervalId = setInterval(drawFrame, targetInterval);
 
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      clearInterval(intervalId);
       window.removeEventListener('resize', resize);
     };
   }, [visible]);

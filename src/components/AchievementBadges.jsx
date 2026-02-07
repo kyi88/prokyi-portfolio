@@ -17,31 +17,42 @@ function AchievementBadges() {
   const [toast, setToast] = useState(null);
   const toastTimerRef = useRef(null);
   const [panelOpen, setPanelOpen] = useState(false);
+  const prevUnlockedRef = useRef(unlocked);
 
   const unlock = (id) => {
     setUnlocked(prev => {
       if (prev.includes(id)) return prev;
-      const next = [...prev, id];
-      localStorage.setItem('prokyi_achievements', JSON.stringify(next));
-      // Show toast
-      const achievement = ACHIEVEMENTS.find(a => a.id === id);
+      return [...prev, id];
+    });
+  };
+
+  // Side effects when unlocked changes — kept outside updater for purity
+  useEffect(() => {
+    const prev = prevUnlockedRef.current;
+    prevUnlockedRef.current = unlocked;
+    localStorage.setItem('prokyi_achievements', JSON.stringify(unlocked));
+    const newIds = unlocked.filter(id => !prev.includes(id));
+    if (newIds.length > 0) {
+      const lastId = newIds[newIds.length - 1];
+      const achievement = ACHIEVEMENTS.find(a => a.id === lastId);
       if (achievement) {
         clearTimeout(toastTimerRef.current);
         setToast(achievement);
         toastTimerRef.current = setTimeout(() => setToast(null), 3000);
       }
-      return next;
-    });
-  };
+    }
+  }, [unlocked]);
 
   // Check condition-based achievements on mount
   useEffect(() => {
+    const timers = [];
     ACHIEVEMENTS.forEach(a => {
       if (a.condition && a.condition()) {
         // Delay so toast appears after page loads
-        setTimeout(() => unlock(a.id), 2000 + Math.random() * 1000);
+        timers.push(setTimeout(() => unlock(a.id), 2000 + Math.random() * 1000));
       }
     });
+    return () => timers.forEach(t => clearTimeout(t));
   }, []);
 
   // Scroll to bottom detection
