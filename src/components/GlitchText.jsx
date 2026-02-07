@@ -1,7 +1,8 @@
-import { useState, useCallback, useRef, memo } from 'react';
+import { useState, useCallback, useRef, useEffect, memo } from 'react';
 import './GlitchText.css';
 
 const GLITCH_CHARS = 'ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾ01#$%&@';
+const REDUCED_MOTION = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /**
  * GlitchText — wraps text and applies a cyberpunk glitch scramble on hover.
@@ -12,7 +13,14 @@ const GlitchText = memo(function GlitchText({ text, tag: Tag = 'span', className
   const rafRef = useRef(null);
   const iterRef = useRef(0);
 
+  // Sync display when text prop changes
+  useEffect(() => { setDisplay(text); }, [text]);
+
+  // Cleanup timer on unmount
+  useEffect(() => () => clearTimeout(rafRef.current), []);
+
   const scramble = useCallback(() => {
+    if (REDUCED_MOTION) return;
     iterRef.current = 0;
     const maxIter = text.length;
 

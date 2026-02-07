@@ -72,12 +72,22 @@ const NetworkGraph = memo(function NetworkGraph() {
     resize();
     window.addEventListener('resize', resize);
 
-    const accent = () => getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe';
+    let accentCache = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe';
+    const onTheme = () => { accentCache = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe'; };
+    window.addEventListener('prokyi-theme-sync', onTheme);
+
+    let isVisible = true;
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && !raf) raf = requestAnimationFrame(draw);
+    }, { threshold: 0 });
+    observer.observe(canvas);
 
     const draw = (time) => {
+      if (!isVisible) { raf = null; return; }
       ctx.clearRect(0, 0, w, h);
       const t = time * 0.001;
-      const col = accent();
+      const col = accentCache;
 
       // Update positions
       for (const n of nodes) {
@@ -132,6 +142,8 @@ const NetworkGraph = memo(function NetworkGraph() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
+      window.removeEventListener('prokyi-theme-sync', onTheme);
+      observer.disconnect();
     };
   }, []);
 

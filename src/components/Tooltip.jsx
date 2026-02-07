@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, memo } from 'react';
+import { useState, useRef, useCallback, useEffect, useId, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Tooltip.css';
 
@@ -11,6 +11,10 @@ const Tooltip = memo(function Tooltip({ content, children, position = 'top' }) {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const wrapRef = useRef(null);
   const showTimer = useRef(null);
+  const tooltipId = useId();
+
+  // Cleanup timer on unmount
+  useEffect(() => () => clearTimeout(showTimer.current), []);
 
   const show = useCallback(() => {
     clearTimeout(showTimer.current);
@@ -40,6 +44,7 @@ const Tooltip = memo(function Tooltip({ content, children, position = 'top' }) {
         onFocus={show}
         onBlur={hide}
         className="tooltip-trigger"
+        aria-describedby={visible ? tooltipId : undefined}
       >
         {children}
       </span>
@@ -57,6 +62,7 @@ const Tooltip = memo(function Tooltip({ content, children, position = 'top' }) {
             exit={{ opacity: 0, y: position === 'top' ? 6 : -6, scale: 0.9 }}
             transition={{ duration: 0.15 }}
             role="tooltip"
+            id={tooltipId}
           >
             <span className="tooltip__arrow" />
             {content}

@@ -40,12 +40,23 @@ const ParallaxStars = memo(function ParallaxStars() {
     resize();
     window.addEventListener('resize', resize);
 
+    let accentCache = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe';
+    const onTheme = () => { accentCache = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe'; };
+    window.addEventListener('prokyi-theme-sync', onTheme);
+
+    let isVisible = true;
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && !raf) raf = requestAnimationFrame(draw);
+    }, { threshold: 0 });
+    observer.observe(canvas);
+
     let raf;
     const draw = (time) => {
+      if (!isVisible) { raf = null; return; }
       ctx.clearRect(0, 0, w, h);
       const t = time * 0.001;
       const scrollY = window.scrollY;
-      const accent = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe';
 
       for (let li = 0; li < layers.length; li++) {
         const speed = SPEEDS[li];
@@ -57,7 +68,7 @@ const ParallaxStars = memo(function ParallaxStars() {
 
           ctx.beginPath();
           ctx.arc(s.x * w, y, s.size, 0, Math.PI * 2);
-          ctx.fillStyle = accent;
+          ctx.fillStyle = accentCache;
           ctx.globalAlpha = alpha;
           ctx.fill();
         }
@@ -70,6 +81,8 @@ const ParallaxStars = memo(function ParallaxStars() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
+      window.removeEventListener('prokyi-theme-sync', onTheme);
+      observer.disconnect();
     };
   }, []);
 
