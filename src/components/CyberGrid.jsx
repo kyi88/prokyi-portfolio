@@ -18,23 +18,7 @@ function CyberGrid() {
     // Cache accent color — update on resize (theme change triggers re-render)
     let accentColor = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe';
 
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      accentColor = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe';
-      scheduleDraw();
-    };
-    resize();
-
-    const onMove = (e) => { mx = e.clientX; my = e.clientY; scheduleDraw(); };
-    const onLeave = () => { mx = -1000; my = -1000; scheduleDraw(); };
-
-    // Only schedule RAF when actually needed — stop loop when idle
-    const scheduleDraw = () => {
-      needsDraw = true;
-      if (!raf) raf = requestAnimationFrame(draw);
-    };
-
+    // Declare draw & scheduleDraw BEFORE resize to avoid Temporal Dead Zone
     const draw = () => {
       raf = null;
       if (!needsDraw) return; // stop loop when idle
@@ -71,6 +55,22 @@ function CyberGrid() {
       }
       ctx.globalAlpha = 1;
     };
+
+    const scheduleDraw = () => {
+      needsDraw = true;
+      if (!raf) raf = requestAnimationFrame(draw);
+    };
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      accentColor = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe';
+      scheduleDraw();
+    };
+    resize();
+
+    const onMove = (e) => { mx = e.clientX; my = e.clientY; scheduleDraw(); };
+    const onLeave = () => { mx = -1000; my = -1000; scheduleDraw(); };
 
     // Listen for theme changes to update accent color
     const observer = new MutationObserver(() => {
