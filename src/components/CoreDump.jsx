@@ -32,6 +32,7 @@ function textToHexRows(text) {
 }
 
 function gatherPageText() {
+  if (!document.body) return '';
   const walker = document.createTreeWalker(
     document.body,
     NodeFilter.SHOW_TEXT,
@@ -69,17 +70,21 @@ function CoreDump() {
   const [active, setActive] = useState(false);
   const [revealed, setRevealed] = useState(new Set());
 
-  // Keyboard shortcut: Ctrl+Shift+D
+  // Keyboard shortcut: Ctrl+Shift+D + ESC to close
   useEffect(() => {
     const handler = (e) => {
       if (e.ctrlKey && e.shiftKey && (e.key === 'd' || e.key === 'D')) {
         e.preventDefault();
         setActive((prev) => !prev);
       }
+      if (e.key === 'Escape' && active) {
+        e.preventDefault();
+        setActive(false);
+      }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, []);
+  }, [active]);
 
   // Terminal command toggle
   useEffect(() => {
@@ -113,6 +118,7 @@ function CoreDump() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           role="dialog"
+          aria-modal="true"
           aria-label="Core Dump Hex Viewer"
         >
           <div className="coredump-overlay__scanline" />
@@ -132,6 +138,10 @@ function CoreDump() {
               key={i}
               className={`coredump-overlay__row${row.isSecret ? ' coredump-overlay__row--secret' : ''}`}
               onClick={row.isSecret ? () => handleSecretClick(row.addr) : undefined}
+              onKeyDown={row.isSecret ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSecretClick(row.addr); } } : undefined}
+              role={row.isSecret ? 'button' : undefined}
+              tabIndex={row.isSecret ? 0 : undefined}
+              aria-label={row.isSecret ? `Secret address ${row.addr}` : undefined}
             >
               <span className="coredump-overlay__addr">{row.addr}</span>
               <span className="coredump-overlay__hex">{row.hex}</span>

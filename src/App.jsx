@@ -377,17 +377,26 @@ export default function App() {
   useEffect(() => {
     if (booting) return;
     let count = 0;
+    const timers = [];
     const onDblClick = () => {
       count++;
       if (count >= 3) return; // Max 3 per session
       const flash = document.createElement('div');
       flash.style.cssText = 'position:fixed;inset:0;z-index:99998;pointer-events:none;background:var(--c-accent);opacity:0.06;transition:opacity 0.5s;';
       document.body.appendChild(flash);
-      requestAnimationFrame(() => { flash.style.opacity = '0'; });
-      setTimeout(() => flash.remove(), 600);
+      const raf = requestAnimationFrame(() => { flash.style.opacity = '0'; });
+      const t = setTimeout(() => flash.remove(), 600);
+      timers.push({ raf, t, flash });
     };
     window.addEventListener('dblclick', onDblClick);
-    return () => window.removeEventListener('dblclick', onDblClick);
+    return () => {
+      window.removeEventListener('dblclick', onDblClick);
+      timers.forEach(({ raf, t, flash }) => {
+        cancelAnimationFrame(raf);
+        clearTimeout(t);
+        if (flash.parentNode) flash.remove();
+      });
+    };
   }, [booting]);
 
   useEffect(() => {

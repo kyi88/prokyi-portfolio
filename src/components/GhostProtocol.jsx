@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, memo } from 'react';
+import { useState, useEffect, useCallback, useRef, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './GhostProtocol.css';
 
@@ -27,61 +27,55 @@ function GhostProtocol() {
   const [active, setActive] = useState(false);
   const [banner, setBanner] = useState(false);
   const [found, setFound] = useState(() => loadFound());
+  const bannerTimerRef = useRef(null);
+  const foundRef = useRef(found);
+  foundRef.current = found;
+
+  // Side effects driven by `active` state (not in updater)
+  useEffect(() => {
+    if (active) {
+      document.documentElement.classList.add('ghost-active');
+      setBanner(true);
+      clearTimeout(bannerTimerRef.current);
+      bannerTimerRef.current = setTimeout(() => setBanner(false), 3000);
+    } else {
+      document.documentElement.classList.remove('ghost-active');
+    }
+    return () => clearTimeout(bannerTimerRef.current);
+  }, [active]);
+
+  const toggle = useCallback(() => setActive((prev) => !prev), []);
 
   // Toggle with G key
   useEffect(() => {
     const onKey = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
       if ((e.key === 'g' || e.key === 'G') && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        setActive((prev) => {
-          const next = !prev;
-          if (next) {
-            document.documentElement.classList.add('ghost-active');
-            setBanner(true);
-            setTimeout(() => setBanner(false), 3000);
-          } else {
-            document.documentElement.classList.remove('ghost-active');
-          }
-          return next;
-        });
+        toggle();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [toggle]);
 
   // Terminal command toggle
   useEffect(() => {
-    const handler = () => {
-      setActive((prev) => {
-        const next = !prev;
-        if (next) {
-          document.documentElement.classList.add('ghost-active');
-          setBanner(true);
-          setTimeout(() => setBanner(false), 3000);
-        } else {
-          document.documentElement.classList.remove('ghost-active');
-        }
-        return next;
-      });
-    };
-    window.addEventListener('prokyi-ghost-toggle', handler);
-    return () => window.removeEventListener('prokyi-ghost-toggle', handler);
-  }, []);
+    window.addEventListener('prokyi-ghost-toggle', toggle);
+    return () => window.removeEventListener('prokyi-ghost-toggle', toggle);
+  }, [toggle]);
 
-  // Listen for ghost-text clicks
+  // Listen for ghost-text clicks (use foundRef to avoid re-registration)
   useEffect(() => {
     const handler = (e) => {
       const target = e.target.closest('.ghost-text');
       if (!target || !active) return;
       const id = target.dataset.ghostId;
-      if (!id || found.has(id)) return;
+      if (!id || foundRef.current.has(id)) return;
       target.classList.add('ghost-text--found');
       setFound((prev) => {
         const next = new Set(prev);
         next.add(id);
         saveFound(next);
-        // Check completion
         if (next.size >= TOTAL_MESSAGES) {
           window.dispatchEvent(new CustomEvent('prokyi-achievement', { detail: 'GHOST IN THE SHELL' }));
         }
@@ -90,7 +84,7 @@ function GhostProtocol() {
     };
     document.addEventListener('click', handler);
     return () => document.removeEventListener('click', handler);
-  }, [active, found]);
+  }, [active]);
 
   // Mark already-found ghost text on mount
   useEffect(() => {

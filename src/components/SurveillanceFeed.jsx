@@ -25,6 +25,9 @@ function SurveillanceFeed() {
   const offsetRef = useRef({ x: 0, y: 0 });
   const cycleRef = useRef(null);
   const noiseRef = useRef(null);
+  const listenersRef = useRef(null);
+  const isDragging = useRef(false);
+  const startPos = useRef({ x: 0, y: 0 });
 
   // Auto-cycle cameras
   useEffect(() => {
@@ -48,21 +51,37 @@ function SurveillanceFeed() {
     return () => clearInterval(iv);
   }, []);
 
-  // Click to scroll to section
+  // Click to scroll to section (only if not dragging)
   const handleClick = useCallback(() => {
+    if (isDragging.current) return;
     const cam = CAMERAS[camIdx];
     const el = document.getElementById(cam.section);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [camIdx]);
 
-  // Drag support
+  // Drag support — with unmount cleanup via listenersRef
+  useEffect(() => {
+    return () => {
+      if (listenersRef.current) {
+        window.removeEventListener('mousemove', listenersRef.current.onMove);
+        window.removeEventListener('mouseup', listenersRef.current.onUp);
+        listenersRef.current = null;
+      }
+    };
+  }, []);
+
   const handleMouseDown = useCallback((e) => {
     const el = dragRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     offsetRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    isDragging.current = false;
+    startPos.current = { x: e.clientX, y: e.clientY };
 
     const onMove = (ev) => {
+      const dx = ev.clientX - startPos.current.x;
+      const dy = ev.clientY - startPos.current.y;
+      if (Math.abs(dx) + Math.abs(dy) > 5) isDragging.current = true;
       const x = ev.clientX - offsetRef.current.x;
       const y = ev.clientY - offsetRef.current.y;
       el.style.left = `${Math.max(0, Math.min(window.innerWidth - 180, x))}px`;
@@ -74,8 +93,10 @@ function SurveillanceFeed() {
     const onUp = () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
+      listenersRef.current = null;
     };
 
+    listenersRef.current = { onMove, onUp };
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
   }, []);
