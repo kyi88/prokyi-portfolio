@@ -205,10 +205,10 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ delay: 0.9, duration: 0.8 }}
         >
-          <span>COMPONENTS: 33</span>
+          <span>COMPONENTS: 35</span>
           <span>CHUNKS: 8</span>
           <span>EASTER EGGS: 11</span>
-          <span>LOOPS: 65</span>
+          <span>LOOPS: 66</span>
           <LoadTime />
           <Uptime />
         </motion.div>

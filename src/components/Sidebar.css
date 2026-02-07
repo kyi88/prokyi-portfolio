@@ -257,3 +257,34 @@
   margin: 0 auto 12px;
   display: block;
 }
+
+/* World clocks */
+.world-clocks {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(79, 172, 254, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.world-clocks__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.5px;
+  color: var(--c-text-dim);
+}
+.world-clocks__flag {
+  font-size: 0.75rem;
+}
+.world-clocks__label {
+  min-width: 68px;
+  opacity: 0.6;
+}
+.world-clocks__time {
+  color: var(--c-accent);
+  opacity: 0.8;
+  font-variant-numeric: tabular-nums;
+}

@@ -3,6 +3,38 @@ import { motion, useInView } from 'framer-motion';
 import GlowCard from './GlowCard';
 import './Sidebar.css';
 
+/* World Clocks — Tokyo, London, New York */
+const ZONES = [
+  { label: 'TOKYO', tz: 'Asia/Tokyo', flag: '🇯🇵' },
+  { label: 'LONDON', tz: 'Europe/London', flag: '🇬🇧' },
+  { label: 'NEW YORK', tz: 'America/New_York', flag: '🇺🇸' },
+];
+function WorldClocks() {
+  const [times, setTimes] = useState(() => ZONES.map(() => '--:--'));
+  useEffect(() => {
+    const update = () => {
+      setTimes(ZONES.map(z => {
+        const d = new Date();
+        return d.toLocaleTimeString('en-GB', { timeZone: z.tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+      }));
+    };
+    update();
+    const iv = setInterval(update, 1000);
+    return () => clearInterval(iv);
+  }, []);
+  return (
+    <div className="world-clocks" aria-label="世界時計">
+      {ZONES.map((z, i) => (
+        <div key={z.tz} className="world-clocks__item">
+          <span className="world-clocks__flag">{z.flag}</span>
+          <span className="world-clocks__label">{z.label}</span>
+          <span className="world-clocks__time">{times[i]}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const statusItems = [
   { k: '所在地', v: '千葉県' },
   { k: '状態', v: '学習中 🔥', bar: 75, color: '#22d3a7' },
@@ -238,6 +270,7 @@ export default function Sidebar() {
             </li>
           ))}
         </ul>
+        <WorldClocks />
       </motion.div>
       </GlowCard>
 
