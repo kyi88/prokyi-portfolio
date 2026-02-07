@@ -333,6 +333,29 @@
 
 .hide-sp { display: inline; }
 
+/* Secret message */
+.hero__secret {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--c-green);
+  background: rgba(5, 7, 14, 0.9);
+  border: 1px solid var(--c-green);
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  text-shadow: 0 0 8px var(--c-glow-green);
+  box-shadow: 0 0 30px rgba(34, 211, 167, 0.1);
+}
+.hero__secret-icon { font-size: 1.1rem; }
+
 /* Responsive */
 @media (max-width: 640px) {
   .hero {

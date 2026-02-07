@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import './Hero.css';
 
 const BASE = import.meta.env.BASE_URL;
@@ -7,6 +7,8 @@ const BASE = import.meta.env.BASE_URL;
 export default function Hero() {
   const [count, setCount] = useState(0);
   const [typed, setTyped] = useState('');
+  const [avatarClicks, setAvatarClicks] = useState(0);
+  const [secretMsg, setSecretMsg] = useState(false);
   const ref = useRef(null);
   const avatarRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -66,6 +68,17 @@ export default function Hero() {
     return () => clearInterval(iv);
   }, []);
 
+  // Secret: click avatar 7 times
+  const handleAvatarClick = () => {
+    const next = avatarClicks + 1;
+    setAvatarClicks(next);
+    if (next >= 7) {
+      setSecretMsg(true);
+      setAvatarClicks(0);
+      setTimeout(() => setSecretMsg(false), 4000);
+    }
+  };
+
   return (
     <section className="hero" ref={ref} id="top" aria-label="自己紹介">
       {/* Parallax ambient glow */}
@@ -111,6 +124,7 @@ export default function Hero() {
             className="hero__avatar"
             width="200"
             height="200"
+            onClick={handleAvatarClick}
           />
         </motion.div>
 
@@ -177,6 +191,20 @@ export default function Hero() {
           </motion.div>
         </div>
       </motion.div>
+
+      {/* Secret message */}
+      <AnimatePresence>
+        {secretMsg && (
+          <motion.div className="hero__secret"
+            initial={{ opacity: 0, y: 20, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.8 }}
+          >
+            <span className="hero__secret-icon">🔓</span>
+            <span>ACCESS GRANTED — Welcome to the inner layer, traveler.</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Scroll hint */}
       <motion.div

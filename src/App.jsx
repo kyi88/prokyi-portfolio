@@ -6,7 +6,6 @@ import Section from './components/Section';
 import Profile from './components/Profile';
 import Career from './components/Career';
 import Goals from './components/Goals';
-import StatusScreen from './components/StatusScreen';
 import Gadgets from './components/Gadgets';
 import Links from './components/Links';
 import Sidebar from './components/Sidebar';
@@ -15,6 +14,7 @@ import EasterEggFab from './components/EasterEggFab';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
+const StatusScreen = lazy(() => import('./components/StatusScreen'));
 
 function BootScreen({ onDone }) {
   const [lines, setLines] = useState([]);
@@ -128,7 +128,9 @@ export default function App() {
                 <Goals />
               </Section>
               <Section id="status" num="04" title="プレイヤーステータス">
-                <StatusScreen />
+                <Suspense fallback={<div style={{textAlign:'center',padding:'40px',fontFamily:'var(--font-mono)',color:'var(--c-text-dim)',fontSize:'0.8rem'}}>Loading status...</div>}>
+                  <StatusScreen />
+                </Suspense>
               </Section>
               <Section id="gadgets" num="05" title="ガジェット">
                 <Gadgets />
