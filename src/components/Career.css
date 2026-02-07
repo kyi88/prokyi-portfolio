@@ -8,6 +8,23 @@
   background-clip: text;
 }
 
+/* Accessing Text Effect */
+.accessing-text {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  color: var(--c-accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.accessing-text__dots {
+  animation: dots-blink 1.2s step-end infinite;
+}
+@keyframes dots-blink {
+  0%, 25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}
+
 /* Timeline */
 .timeline {
   border-left: 2px solid var(--c-border);

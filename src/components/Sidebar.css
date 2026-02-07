@@ -45,6 +45,29 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Pulse Beacon */
+.pulse-beacon {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22d3a7;
+  box-shadow: 0 0 6px #22d3a7;
+  animation: pulse-beacon 2s ease-in-out infinite;
+  flex-shrink: 0;
+  /* Reset text clip for this element */
+  -webkit-text-fill-color: initial;
+}
+@keyframes pulse-beacon {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px #22d3a7; }
+  50% { opacity: 0.4; box-shadow: 0 0 12px #22d3a7, 0 0 24px rgba(34, 211, 167, 0.3); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse-beacon { animation: none; }
 }
 .side-card__meta {
   display: flex;

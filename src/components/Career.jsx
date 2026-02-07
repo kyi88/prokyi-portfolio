@@ -2,6 +2,22 @@ import { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import './Career.css';
 
+/* Accessing text effect */
+function AccessingText({ visible }) {
+  if (!visible) return null;
+  return (
+    <motion.p
+      className="accessing-text"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [0, 1, 1, 0] }}
+      transition={{ duration: 2, times: [0, 0.1, 0.8, 1] }}
+      aria-hidden="true"
+    >
+      &gt; ACCESSING RECORDS<span className="accessing-text__dots">...</span>
+    </motion.p>
+  );
+}
+
 const education = [
   { date: '2025.03', title: '千葉敬愛高等学校', sub: '理系特進コース 卒業', active: false,
     detail: '数学・物理を中心に学習。独学でHTMLを学び、Webページ制作に興味を持つきっかけとなった。' },
@@ -24,6 +40,7 @@ export default function Career() {
 
   return (
     <div ref={ref}>
+      <AccessingText visible={inView} />
       <div className="timeline">
         {education.map((edu, i) => (
           <motion.div

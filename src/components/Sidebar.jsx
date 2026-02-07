@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
+import GlowCard from './GlowCard';
 import './Sidebar.css';
 
 const statusItems = [
@@ -200,6 +201,7 @@ export default function Sidebar() {
 
   return (
     <aside className="layout__side" ref={ref} aria-label="サイド情報">
+      <GlowCard>
       <motion.div
         className="side-card"
         initial={{ opacity: 0, x: 60, scale: 0.9 }}
@@ -207,7 +209,10 @@ export default function Sidebar() {
         transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
         whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
       >
-        <h3 className="side-card__title">ステータス</h3>
+        <h3 className="side-card__title">
+          ステータス
+          <span className="pulse-beacon" aria-hidden="true" title="LIVE" />
+        </h3>
         <div className="side-card__meta">
           <span className="side-card__meta-item">{dayLabel}曜日</span>
           <SessionTimer />
@@ -234,7 +239,9 @@ export default function Sidebar() {
           ))}
         </ul>
       </motion.div>
+      </GlowCard>
 
+      <GlowCard>
       <motion.div
         className="side-card"
         initial={{ opacity: 0, x: 60, scale: 0.9 }}
@@ -264,8 +271,10 @@ export default function Sidebar() {
           ))}
         </ul>
       </motion.div>
+      </GlowCard>
 
       {/* Skills */}
+      <GlowCard>
       <motion.div
         className="side-card"
         initial={{ opacity: 0, x: 60, scale: 0.9 }}
@@ -281,6 +290,7 @@ export default function Sidebar() {
           ))}
         </ul>
       </motion.div>
+      </GlowCard>
     </aside>
   );
 }
