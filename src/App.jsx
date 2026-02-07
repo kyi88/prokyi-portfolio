@@ -361,19 +361,55 @@ export default function App() {
     }
   }, [booting]);
 
-  // Custom cursor tracking
+  // Custom cursor tracking with trail
   useEffect(() => {
     if (booting) return;
     if (window.matchMedia('(pointer: coarse)').matches) return;
     document.documentElement.style.cursor = 'none';
     const dot = document.getElementById('cyber-cursor');
     if (!dot) return;
+
+    // Create trail dots
+    const TRAIL_COUNT = 5;
+    const trailDots = [];
+    for (let i = 0; i < TRAIL_COUNT; i++) {
+      const d = document.createElement('div');
+      d.className = 'cyber-cursor-trail';
+      d.style.opacity = String(0.3 - i * 0.05);
+      d.style.width = d.style.height = `${6 - i}px`;
+      d.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(d);
+      trailDots.push({ el: d, x: 0, y: 0 });
+    }
+
+    let mx = 0, my = 0;
+    let raf = null;
+
     const move = (e) => {
-      dot.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+      mx = e.clientX;
+      my = e.clientY;
+      dot.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+      if (!raf) raf = requestAnimationFrame(updateTrail);
     };
+
+    const updateTrail = () => {
+      let prevX = mx, prevY = my;
+      for (let i = 0; i < TRAIL_COUNT; i++) {
+        const t = trailDots[i];
+        t.x += (prevX - t.x) * 0.35;
+        t.y += (prevY - t.y) * 0.35;
+        t.el.style.transform = `translate(${t.x - 3}px, ${t.y - 3}px)`;
+        prevX = t.x;
+        prevY = t.y;
+      }
+      raf = requestAnimationFrame(updateTrail);
+    };
+
     window.addEventListener('mousemove', move, { passive: true });
     return () => {
       window.removeEventListener('mousemove', move);
+      if (raf) cancelAnimationFrame(raf);
+      trailDots.forEach(t => t.el.remove());
       document.documentElement.style.cursor = '';
     };
   }, [booting]);

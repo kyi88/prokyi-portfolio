@@ -1,5 +1,6 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect, memo } from 'react';
+import SkillOrbs from './SkillOrbs';
 import './Profile.css';
 
 /* Typewriter hook — reveals text character by character */
@@ -99,6 +100,8 @@ function Profile() {
         </motion.div>
       ))}
     </motion.dl>
+
+      <SkillOrbs />
     </div>
   );
 }

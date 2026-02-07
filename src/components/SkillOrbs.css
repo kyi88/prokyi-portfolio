@@ -1,0 +1,64 @@
+/* ── Skill Orbs ── */
+.skill-orbs {
+  margin-top: 24px;
+}
+
+.skill-orbs__label {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--c-accent);
+  opacity: 0.5;
+  margin-bottom: 12px;
+  font-family: var(--f-mono);
+}
+
+.skill-orbs__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-orb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-family: var(--f-mono);
+  color: var(--c-text);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: default;
+  animation: skill-bob 3s ease-in-out infinite;
+  animation-delay: var(--bob-delay, 0s);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.skill-orb:hover {
+  border-color: var(--orb-color);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--orb-color) 30%, transparent),
+              inset 0 0 12px color-mix(in srgb, var(--orb-color) 8%, transparent);
+}
+
+.skill-orb__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orb-color);
+  box-shadow: 0 0 6px var(--orb-color);
+  flex-shrink: 0;
+}
+
+@keyframes skill-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-orb { animation: none; }
+}
+
+@media (max-width: 480px) {
+  .skill-orb { font-size: 0.7rem; padding: 4px 10px; }
+}

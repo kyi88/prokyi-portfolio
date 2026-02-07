@@ -18,6 +18,19 @@
 }
 @media (pointer: coarse) {
   .cyber-cursor { display: none; }
+  .cyber-cursor-trail { display: none; }
+}
+
+/* Cursor trail dots */
+.cyber-cursor-trail {
+  position: fixed;
+  top: 0; left: 0;
+  border-radius: 50%;
+  background: var(--c-accent, #4facfe);
+  pointer-events: none;
+  z-index: 999998;
+  transform: translate(-100px, -100px);
+  mix-blend-mode: screen;
 }
 
 /* Sound toggle button */
