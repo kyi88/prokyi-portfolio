@@ -14,6 +14,8 @@ function ParticleTrail() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    // Skip particle trail on touch devices — saves CPU/battery
+    if (window.matchMedia('(pointer: coarse)').matches) return;
     const heroEl = canvas.parentElement;
     if (!heroEl) return;
     const ctx = canvas.getContext('2d');

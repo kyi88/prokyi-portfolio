@@ -9,6 +9,7 @@
   z-index: 900;
   padding: 10px 6px;
   background: rgba(6, 8, 15, 0.5);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--c-border);

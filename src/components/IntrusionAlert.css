@@ -6,6 +6,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   background: rgba(255, 0, 0, 0.06);
   mix-blend-mode: normal;

@@ -10,57 +10,58 @@ import Gadgets from './components/Gadgets';
 import Links from './components/Links';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
-import EasterEggFab from './components/EasterEggFab';
-import CyberTerminal from './components/CyberTerminal';
-import KeyboardGuide from './components/KeyboardGuide';
 import ScrollToTop from './components/ScrollToTop';
-import CommandPalette from './components/CommandPalette';
-import Minimap from './components/Minimap';
-import WelcomeBanner from './components/WelcomeBanner';
 import CyberErrorBoundary from './components/CyberErrorBoundary';
 import NetworkStatus from './components/NetworkStatus';
 import Breadcrumbs from './components/Breadcrumbs';
 import ScrollVelocity from './components/ScrollVelocity';
-import ScrollBurst from './components/ScrollBurst';
-import FPSMonitor from './components/FPSMonitor';
 import CyberGrid from './components/CyberGrid';
 import PageProgress from './components/PageProgress';
-import AchievementBadges from './components/AchievementBadges';
-import DataStream from './components/DataStream';
-import MatrixRain from './components/MatrixRain';
-import ClickSpark from './components/ClickSpark';
 import ScrollPercentage from './components/ScrollPercentage';
 import ScanLine from './components/ScanLine';
-import Confetti from './components/Confetti';
 import ThemePreview from './components/ThemePreview';
-import IntrusionAlert from './components/IntrusionAlert';
-import PhantomCursor from './components/PhantomCursor';
-import SurveillanceFeed from './components/SurveillanceFeed';
-import GhostProtocol from './components/GhostProtocol';
-import CoreDump from './components/CoreDump';
-import SignalInterceptor from './components/SignalInterceptor';
-import PortScanner from './components/PortScanner';
-import MalwareQuarantine from './components/MalwareQuarantine';
-import PacketSniffer from './components/PacketSniffer';
-import MemoryDefrag from './components/MemoryDefrag';
-import NeuralLinkSync from './components/NeuralLinkSync';
-import DarknetRelay from './components/DarknetRelay';
-import BioChipImplant from './components/BioChipImplant';
-import HackingMinigame from './components/HackingMinigame';
-import CryptoMiner from './components/CryptoMiner';
-import AIModelArena from './components/AIModelArena';
-import SteganographyLab from './components/SteganographyLab';
-import ZeroDayVault from './components/ZeroDayVault';
-import QuantumEntangle from './components/QuantumEntangle';
-import SynapticFirewall from './components/SynapticFirewall';
-import DeadDrop from './components/DeadDrop';
-import WetwareCompiler from './components/WetwareCompiler';
-import MissionComplete from './components/MissionComplete';
 import { SoundContext } from './contexts/SoundContext';
 import './App.css';
 
+/* ── Lazy-loaded components (not needed at initial render) ── */
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
 const StatusScreen = lazy(() => import('./components/StatusScreen'));
+const EasterEggFab = lazy(() => import('./components/EasterEggFab'));
+const CyberTerminal = lazy(() => import('./components/CyberTerminal'));
+const KeyboardGuide = lazy(() => import('./components/KeyboardGuide'));
+const CommandPalette = lazy(() => import('./components/CommandPalette'));
+const Minimap = lazy(() => import('./components/Minimap'));
+const WelcomeBanner = lazy(() => import('./components/WelcomeBanner'));
+const FPSMonitor = lazy(() => import('./components/FPSMonitor'));
+const ScrollBurst = lazy(() => import('./components/ScrollBurst'));
+const AchievementBadges = lazy(() => import('./components/AchievementBadges'));
+const DataStream = lazy(() => import('./components/DataStream'));
+const MatrixRain = lazy(() => import('./components/MatrixRain'));
+const ClickSpark = lazy(() => import('./components/ClickSpark'));
+const Confetti = lazy(() => import('./components/Confetti'));
+const IntrusionAlert = lazy(() => import('./components/IntrusionAlert'));
+const PhantomCursor = lazy(() => import('./components/PhantomCursor'));
+const SurveillanceFeed = lazy(() => import('./components/SurveillanceFeed'));
+const GhostProtocol = lazy(() => import('./components/GhostProtocol'));
+const CoreDump = lazy(() => import('./components/CoreDump'));
+const SignalInterceptor = lazy(() => import('./components/SignalInterceptor'));
+const PortScanner = lazy(() => import('./components/PortScanner'));
+const MalwareQuarantine = lazy(() => import('./components/MalwareQuarantine'));
+const PacketSniffer = lazy(() => import('./components/PacketSniffer'));
+const MemoryDefrag = lazy(() => import('./components/MemoryDefrag'));
+const NeuralLinkSync = lazy(() => import('./components/NeuralLinkSync'));
+const DarknetRelay = lazy(() => import('./components/DarknetRelay'));
+const BioChipImplant = lazy(() => import('./components/BioChipImplant'));
+const HackingMinigame = lazy(() => import('./components/HackingMinigame'));
+const CryptoMiner = lazy(() => import('./components/CryptoMiner'));
+const AIModelArena = lazy(() => import('./components/AIModelArena'));
+const SteganographyLab = lazy(() => import('./components/SteganographyLab'));
+const ZeroDayVault = lazy(() => import('./components/ZeroDayVault'));
+const QuantumEntangle = lazy(() => import('./components/QuantumEntangle'));
+const SynapticFirewall = lazy(() => import('./components/SynapticFirewall'));
+const DeadDrop = lazy(() => import('./components/DeadDrop'));
+const WetwareCompiler = lazy(() => import('./components/WetwareCompiler'));
+const MissionComplete = lazy(() => import('./components/MissionComplete'));
 
 /* CRT Scanline overlay — cyberpunk monitor aesthetic */
 function CRTOverlay() {
@@ -642,7 +643,7 @@ export default function App() {
       }, 'image/png');
       frame++;
     };
-    const start = () => { if (!iv) iv = setInterval(draw, 500); };
+    const start = () => { if (!iv) iv = setInterval(draw, 1000); };
     const stop = () => { if (iv) { clearInterval(iv); iv = null; } };
     const onVisibility = () => { document.hidden ? stop() : start(); };
     document.addEventListener('visibilitychange', onVisibility);
@@ -734,23 +735,30 @@ export default function App() {
 
         <Footer />
       </div>
+      <Suspense fallback={null}>
       <EasterEggFab />
       <CyberTerminal />
       <KeyboardGuide />
+      </Suspense>
       <ScrollToTop />
+      <Suspense fallback={null}>
       <CommandPalette />
       <Minimap />
       <WelcomeBanner />
+      </Suspense>
       <Breadcrumbs />
       <ScrollVelocity />
+      <Suspense fallback={null}>
       <ScrollBurst />
       <FPSMonitor />
       <AchievementBadges />
       {procAlive.datastream && <DataStream />}
       {procAlive.matrixrain && <MatrixRain />}
       {procAlive.clickspark && <ClickSpark />}
+      </Suspense>
       <ScrollPercentage />
       {procAlive.scanline && <ScanLine />}
+      <Suspense fallback={null}>
       <IntrusionAlert />
       <PhantomCursor />
       <SurveillanceFeed />
@@ -774,6 +782,7 @@ export default function App() {
       <DeadDrop />
       <WetwareCompiler />
       <MissionComplete />
+      </Suspense>
       {kernelPanic && (
         <div className="kernel-panic" aria-live="assertive">
           <pre>{`KERNEL PANIC - NOT SYNCING: Attempted to kill init!

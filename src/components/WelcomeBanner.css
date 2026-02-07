@@ -11,6 +11,7 @@
   padding: 8px 16px;
   background: linear-gradient(90deg, rgba(79, 172, 254, 0.08), rgba(0, 242, 254, 0.06), rgba(167, 139, 250, 0.05));
   border-bottom: 1px solid var(--c-border);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }

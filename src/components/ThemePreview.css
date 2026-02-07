@@ -12,6 +12,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.06em;
   box-shadow: 0 0 14px rgba(var(--c-accent-rgb, 79, 172, 254), 0.25);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   pointer-events: none;
 }

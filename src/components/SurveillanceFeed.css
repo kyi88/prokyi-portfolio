@@ -13,6 +13,7 @@
   font-family: var(--ff-mono, 'JetBrains Mono', monospace);
   box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
   user-select: none;
+  touch-action: none;
 }
 
 .surveillance-feed:active {

@@ -7,7 +7,7 @@ function CyberGrid() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (window.matchMedia('(pointer: coarse)').matches) return; // skip on touch
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
     const ctx = canvas.getContext('2d');
     let raf = null;
     let mx = -1000, my = -1000;
@@ -83,16 +83,21 @@ function CyberGrid() {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
     window.addEventListener('resize', resize);
-    window.addEventListener('mousemove', onMove, { passive: true });
-    window.addEventListener('mouseleave', onLeave);
+    // On touch devices, draw static grid only — no mousemove tracking
+    if (!isTouch) {
+      window.addEventListener('mousemove', onMove, { passive: true });
+      window.addEventListener('mouseleave', onLeave);
+    }
     scheduleDraw();
 
     return () => {
       if (raf) cancelAnimationFrame(raf);
       observer.disconnect();
       window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseleave', onLeave);
+      if (!isTouch) {
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('mouseleave', onLeave);
+      }
     };
   }, []);
 

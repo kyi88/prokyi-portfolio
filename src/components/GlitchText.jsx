@@ -52,6 +52,7 @@ const GlitchText = memo(function GlitchText({ text, tag: Tag = 'span', className
       className={`glitch-text ${className}`}
       onMouseEnter={scramble}
       onMouseLeave={reset}
+      onClick={scramble}
       aria-label={ariaLabel || text}
       data-text={text}
     >

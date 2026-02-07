@@ -63,16 +63,17 @@ function SurveillanceFeed() {
   useEffect(() => {
     return () => {
       if (listenersRef.current) {
-        window.removeEventListener('mousemove', listenersRef.current.onMove);
-        window.removeEventListener('mouseup', listenersRef.current.onUp);
+        window.removeEventListener('pointermove', listenersRef.current.onMove);
+        window.removeEventListener('pointerup', listenersRef.current.onUp);
         listenersRef.current = null;
       }
     };
   }, []);
 
-  const handleMouseDown = useCallback((e) => {
+  const handlePointerDown = useCallback((e) => {
     const el = dragRef.current;
     if (!el) return;
+    el.setPointerCapture(e.pointerId);
     const rect = el.getBoundingClientRect();
     offsetRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
     isDragging.current = false;
@@ -91,14 +92,14 @@ function SurveillanceFeed() {
     };
 
     const onUp = () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup', onUp);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
       listenersRef.current = null;
     };
 
     listenersRef.current = { onMove, onUp };
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
   }, []);
 
   const cam = CAMERAS[camIdx];
@@ -107,7 +108,8 @@ function SurveillanceFeed() {
     <div
       ref={dragRef}
       className="surveillance-feed"
-      onMouseDown={handleMouseDown}
+      onPointerDown={handlePointerDown}
+      style={{ touchAction: 'none' }}
       onClick={handleClick}
       title={`Click to scroll to ${cam.label}`}
     >

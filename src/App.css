@@ -43,6 +43,7 @@
   height: 44px;
   border-radius: 50%;
   background: rgba(6, 8, 15, 0.6);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--c-border);
@@ -63,6 +64,7 @@
   position: relative;
   z-index: 1;
   min-height: 100vh;
+  min-height: 100dvh;
   opacity: 0;
   transition: opacity 0.8s ease;
 }
@@ -160,6 +162,7 @@
 .boot-screen__inner {
   max-width: 600px;
   width: 90%;
+  overflow-x: hidden;
 }
 .boot-screen__ascii {
   font-family: var(--font-mono, monospace);
@@ -376,6 +379,7 @@
   font-size: 0.7rem;
   color: var(--c-text);
   background: rgba(6, 8, 15, 0.85);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--c-border);

@@ -12,6 +12,7 @@
   font-family: 'Courier New', monospace;
   font-size: 0.85rem;
   letter-spacing: 0.06em;
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border: 1px solid;
   pointer-events: none;
