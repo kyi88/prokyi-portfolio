@@ -2,6 +2,30 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './TypingGame.css';
 
+/* ── Sound effects via Web Audio API ── */
+const makeBeep = (freq, dur = 0.04, vol = 0.04) => {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.value = freq;
+    gain.gain.value = vol;
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    osc.stop(ctx.currentTime + dur + 0.01);
+  } catch (_) {}
+};
+const sfx = {
+  key:   () => makeBeep(800 + Math.random() * 200, 0.02, 0.02),
+  ok:    () => makeBeep(1200, 0.06, 0.04),
+  miss:  () => makeBeep(200, 0.08, 0.04),
+  start: () => { makeBeep(600, 0.05); setTimeout(() => makeBeep(900, 0.05), 60); },
+  done:  () => { makeBeep(800, 0.06); setTimeout(() => makeBeep(1000, 0.06), 80); setTimeout(() => makeBeep(1300, 0.08), 160); },
+};
+
 const WORDS = [
   'cyberdeck', 'neural', 'proxy', 'encrypt', 'kernel',
   'daemon', 'socket', 'buffer', 'malloc', 'thread',
@@ -46,12 +70,13 @@ export default function TypingGame({ onClose }) {
     setTimeLeft(DURATION);
     setMistakes(0);
     setPhase('playing');
+    sfx.start();
   }, []);
 
   // Timer
   useEffect(() => {
     if (phase !== 'playing') return;
-    if (timeLeft <= 0) { setPhase('done'); return; }
+    if (timeLeft <= 0) { setPhase('done'); sfx.done(); return; }
     const t = setTimeout(() => setTimeLeft(prev => prev - 1), 1000);
     return () => clearTimeout(t);
   }, [phase, timeLeft]);
@@ -76,6 +101,7 @@ export default function TypingGame({ onClose }) {
         return next;
       });
       setFlash('correct');
+      sfx.ok();
       setTimeout(() => setFlash(null), 300);
       setInput('');
 
@@ -86,11 +112,13 @@ export default function TypingGame({ onClose }) {
         setWordIdx(prev => prev + 1);
       }
     } else if (currentWord.startsWith(val)) {
-      // partial correct — do nothing
+      // partial correct — key sound
+      sfx.key();
     } else {
       setMistakes(prev => prev + 1);
       setCombo(0);
       setFlash('miss');
+      sfx.miss();
       setTimeout(() => setFlash(null), 200);
     }
   };

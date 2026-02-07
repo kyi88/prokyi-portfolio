@@ -59,6 +59,8 @@ export default function Section({ id, num, title, children }) {
         </motion.span>
         <span className="card__title-text glitch" data-text={title}>{title}</span>
       </motion.h2>
+      {/* Hologram shimmer */}
+      <span className="card__holo" aria-hidden="true" />
       {/* Cyber corner accents */}
       <span className="card__corner card__corner--tl" aria-hidden="true" />
       <span className="card__corner card__corner--tr" aria-hidden="true" />

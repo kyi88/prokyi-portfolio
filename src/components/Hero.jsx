@@ -1,8 +1,76 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import './Hero.css';
 
 const BASE = import.meta.env.BASE_URL;
+
+/* ── Particle trail on mouse ── */
+function ParticleTrail() {
+  const canvasRef = useRef(null);
+  const particles = useRef([]);
+  const mouse = useRef({ x: -100, y: -100 });
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let raf;
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const onMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      // Spawn particles
+      for (let i = 0; i < 2; i++) {
+        particles.current.push({
+          x: mouse.current.x,
+          y: mouse.current.y,
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          life: 1,
+          size: Math.random() * 3 + 1,
+          hue: 190 + Math.random() * 60,
+        });
+      }
+      if (particles.current.length > 80) particles.current.splice(0, particles.current.length - 80);
+    };
+    canvas.addEventListener('mousemove', onMove);
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const ps = particles.current;
+      for (let i = ps.length - 1; i >= 0; i--) {
+        const p = ps[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= 0.025;
+        if (p.life <= 0) { ps.splice(i, 1); continue; }
+        ctx.globalAlpha = p.life * 0.7;
+        ctx.fillStyle = `hsl(${p.hue}, 85%, 65%)`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(draw);
+    };
+    raf = requestAnimationFrame(draw);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', resize);
+      canvas.removeEventListener('mousemove', onMove);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="hero__trail" aria-hidden="true" />;
+}
+
+/* ── XP bar ── */
+const XP_CURRENT = 1450;
+const XP_MAX = 5000;
+const XP_LEVEL = 19;
 
 export default function Hero() {
   const [count, setCount] = useState(0);
@@ -81,6 +149,9 @@ export default function Hero() {
 
   return (
     <section className="hero" ref={ref} id="top" aria-label="自己紹介">
+      {/* Particle trail canvas (desktop) */}
+      <ParticleTrail />
+
       {/* Parallax ambient glow */}
       <motion.div className="hero__ambient" style={{ y }} aria-hidden="true" />
 
@@ -188,6 +259,25 @@ export default function Hero() {
           >
             <span className="hero__counter-label">visitors</span>
             <span className="hero__counter-num">{count.toLocaleString()}</span>
+          </motion.div>
+
+          {/* XP Progress bar */}
+          <motion.div
+            className="hero__xp"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.7 }}
+          >
+            <span className="hero__xp-label">LV.{XP_LEVEL}</span>
+            <div className="hero__xp-bar">
+              <motion.div
+                className="hero__xp-fill"
+                initial={{ width: 0 }}
+                animate={{ width: `${(XP_CURRENT / XP_MAX) * 100}%` }}
+                transition={{ duration: 1.5, delay: 2.0, ease: [0.22, 1, 0.36, 1] }}
+              />
+            </div>
+            <span className="hero__xp-text">{XP_CURRENT}/{XP_MAX} XP</span>
           </motion.div>
         </div>
       </motion.div>
