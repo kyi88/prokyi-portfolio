@@ -184,6 +184,12 @@
   97% { opacity: 0.4; transform: translate(-1px, 1px); clip-path: inset(15% 0 55% 0); }
 }
 
+/* Section divider accent line */
+.card + .card::before {
+  /* Already has ::before for border animation, use a separate element via CSS grid trick not possible.
+     Instead use margin-top gap + layout gap. */
+}
+
 @media (max-width: 640px) {
   .card {
     padding: 24px 20px;

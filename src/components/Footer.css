@@ -65,3 +65,15 @@
   margin-top: 8px;
   text-transform: uppercase;
 }
+.footer__stats {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 1px;
+  color: var(--c-text-dim);
+  text-transform: uppercase;
+}

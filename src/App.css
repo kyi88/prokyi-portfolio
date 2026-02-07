@@ -50,6 +50,27 @@
   gap: 36px;
 }
 
+/* Section divider line */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--c-accent), var(--c-accent2), var(--c-accent3), transparent);
+  opacity: 0.2;
+  position: relative;
+}
+.section-divider::before {
+  content: '◇';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.55rem;
+  color: var(--c-accent);
+  background: var(--c-bg);
+  padding: 0 10px;
+  opacity: 0.5;
+}
+
 @media (max-width: 1024px) {
   .layout {
     grid-template-columns: 1fr;

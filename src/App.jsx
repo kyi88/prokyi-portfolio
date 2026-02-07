@@ -184,20 +184,25 @@ export default function App() {
               <Section id="profile" num="01" title="基本情報">
                 <Profile />
               </Section>
+              <div className="section-divider" aria-hidden="true" />
               <Section id="career" num="02" title="学歴・経歴">
                 <Career />
               </Section>
+              <div className="section-divider" aria-hidden="true" />
               <Section id="goals" num="03" title="今後の目標・技術的関心">
                 <Goals />
               </Section>
+              <div className="section-divider" aria-hidden="true" />
               <Section id="status" num="04" title="プレイヤーステータス">
                 <Suspense fallback={<div style={{textAlign:'center',padding:'40px',fontFamily:'var(--font-mono)',color:'var(--c-text-dim)',fontSize:'0.8rem'}}>Loading status...</div>}>
                   <StatusScreen />
                 </Suspense>
               </Section>
+              <div className="section-divider" aria-hidden="true" />
               <Section id="gadgets" num="05" title="ガジェット">
                 <Gadgets />
               </Section>
+              <div className="section-divider" aria-hidden="true" />
               <Section id="links" num="06" title="リンク / SNS">
                 <Links />
               </Section>

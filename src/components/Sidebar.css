@@ -72,6 +72,15 @@
 .status-bar__fill {
   height: 100%;
   border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.status-bar__fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -60%; width: 40%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: bar-shimmer 2.5s ease-in-out infinite;
 }
 
 .news-list {
@@ -162,6 +171,19 @@
   height: 100%;
   border-radius: 2px;
   box-shadow: 0 0 6px rgba(79, 172, 254, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+.skill-list__fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -60%; width: 40%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  animation: bar-shimmer 2.5s ease-in-out infinite;
+}
+@keyframes bar-shimmer {
+  0% { left: -60%; }
+  100% { left: 160%; }
 }
 
 @media (max-width: 1024px) {

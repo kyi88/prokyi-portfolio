@@ -67,6 +67,18 @@ export default function Footer() {
         >
           SYSTEM: React 19 + Vite 6 + Three.js + Framer Motion
         </motion.p>
+        <motion.div
+          className="footer__stats"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.25 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.9, duration: 0.8 }}
+        >
+          <span>COMPONENTS: 18</span>
+          <span>CHUNKS: 8</span>
+          <span>EASTER EGGS: 5</span>
+          <span>LOOPS: 10</span>
+        </motion.div>
       </div>
     </motion.footer>
   );
