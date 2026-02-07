@@ -62,6 +62,24 @@ function LoadTime() {
   return <span className="footer__load-time">LOAD: {ms}ms</span>;
 }
 
+/* ── Uptime counter ── */
+function Uptime() {
+  const [uptime, setUptime] = useState('0:00:00');
+  useEffect(() => {
+    const start = Date.now();
+    const fmt = () => {
+      const s = Math.floor((Date.now() - start) / 1000);
+      const h = Math.floor(s / 3600);
+      const m = Math.floor((s % 3600) / 60);
+      const sec = s % 60;
+      setUptime(`${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`);
+    };
+    const iv = setInterval(fmt, 1000);
+    return () => clearInterval(iv);
+  }, []);
+  return <span className="footer__uptime">UPTIME: {uptime}</span>;
+}
+
 export default function Footer() {
   return (
     <motion.footer
@@ -115,8 +133,9 @@ export default function Footer() {
           <span>COMPONENTS: 18</span>
           <span>CHUNKS: 8</span>
           <span>EASTER EGGS: 8</span>
-          <span>LOOPS: 21</span>
+          <span>LOOPS: 22</span>
           <LoadTime />
+          <Uptime />
         </motion.div>
       </div>
     </motion.footer>

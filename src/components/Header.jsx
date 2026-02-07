@@ -21,7 +21,7 @@ export default function Header() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
-  // Apply theme
+  // Apply theme with flash transition
   useEffect(() => {
     if (theme === 'green') {
       document.documentElement.setAttribute('data-theme', 'green');
@@ -31,7 +31,15 @@ export default function Header() {
     localStorage.setItem('prokyi_theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => setTheme(prev => prev === 'cyber' ? 'green' : 'cyber');
+  const toggleTheme = () => {
+    // Flash effect on toggle
+    const flash = document.createElement('div');
+    flash.style.cssText = 'position:fixed;inset:0;z-index:99990;pointer-events:none;background:var(--c-accent);opacity:0.08;transition:opacity 0.4s;';
+    document.body.appendChild(flash);
+    requestAnimationFrame(() => { flash.style.opacity = '0'; });
+    setTimeout(() => flash.remove(), 500);
+    setTheme(prev => prev === 'cyber' ? 'green' : 'cyber');
+  };
 
   useEffect(() => {
     const onScroll = () => {

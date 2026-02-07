@@ -24,6 +24,7 @@ function SkillRadar({ data, inView }) {
   const cx = 100, cy = 100, maxR = 75;
   const n = data.length;
   const angleStep = (Math.PI * 2) / n;
+  const [hovered, setHovered] = useState(null);
 
   const getPoint = (i, pct) => {
     const angle = angleStep * i - Math.PI / 2;
@@ -65,11 +66,18 @@ function SkillRadar({ data, inView }) {
         transition={{ duration: 0.8, delay: 1 }}
         style={{ transformOrigin: `${cx}px ${cy}px` }}
       />
-      {/* Data points + labels */}
+      {/* Data points + labels + hover zones */}
       {dataPoints.map((p, i) => (
-        <g key={i}>
+        <g key={i}
+          onMouseEnter={() => setHovered(i)}
+          onMouseLeave={() => setHovered(null)}
+          style={{ cursor: 'pointer' }}
+        >
+          {/* Invisible hit area */}
+          <circle cx={p[0]} cy={p[1]} r="12" fill="transparent" />
           <motion.circle
-            cx={p[0]} cy={p[1]} r="3"
+            cx={p[0]} cy={p[1]}
+            r={hovered === i ? 5 : 3}
             fill={data[i].color}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
@@ -84,10 +92,35 @@ function SkillRadar({ data, inView }) {
             fill={data[i].color}
             fontSize="6.5"
             fontFamily="var(--font-mono)"
-            opacity={0.8}
+            opacity={hovered === i ? 1 : 0.8}
+            fontWeight={hovered === i ? 'bold' : 'normal'}
           >
             {data[i].name}
           </text>
+          {/* Tooltip on hover */}
+          {hovered === i && (
+            <g>
+              <rect
+                x={p[0] - 18} y={p[1] - 20}
+                width="36" height="14"
+                rx="3"
+                fill="rgba(6,8,15,0.9)"
+                stroke={data[i].color}
+                strokeWidth="0.8"
+              />
+              <text
+                x={p[0]} y={p[1] - 11}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fill={data[i].color}
+                fontSize="7"
+                fontFamily="var(--font-mono)"
+                fontWeight="bold"
+              >
+                {data[i].lv}%
+              </text>
+            </g>
+          )}
         </g>
       ))}
     </svg>

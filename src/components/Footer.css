@@ -88,3 +88,6 @@
 .footer__load-time {
   color: var(--c-green);
 }
+.footer__uptime {
+  color: var(--c-accent);
+}
