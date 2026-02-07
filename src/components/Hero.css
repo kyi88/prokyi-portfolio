@@ -514,8 +514,11 @@
   .hero__orb--2 { width: 100px; height: 100px; }
   .hero__orb--3 { width: 80px; height: 80px; }
   .hero__xp-ring { width: 100px; height: 100px; }
-  .hero__xp-label { font-size: 0.65rem; }
-  .hero__xp-value { font-size: 0.5rem; }
-  .hero__quote { font-size: 0.72rem; padding: 8px 12px; }
+  .hero__xp-ring-wrap { justify-content: center; }
+  .hero__xp-ring-level { font-size: 0.65rem; }
+  .hero__xp-ring-val { font-size: 0.5rem; }
+  .hero__counter { justify-content: center; }
+  .hero__leds { justify-content: center; }
+  .hero__quote { font-size: 0.65rem; padding: 8px 12px; }
   .hero__secret { font-size: 0.7rem; padding: 6px 10px; }
 }

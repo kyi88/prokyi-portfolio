@@ -386,7 +386,7 @@ export default function App() {
     );
   }, []);
 
-  // Animated favicon
+  // Animated favicon — pause when tab is hidden
   useEffect(() => {
     const canvas = document.createElement('canvas');
     canvas.width = 32;
@@ -399,6 +399,7 @@ export default function App() {
       document.head.appendChild(link);
     }
     let frame = 0;
+    let iv = null;
     const draw = () => {
       ctx.clearRect(0, 0, 32, 32);
       // Outer ring
@@ -424,9 +425,16 @@ export default function App() {
       link.href = canvas.toDataURL('image/png');
       frame++;
     };
-    const iv = setInterval(draw, 100);
+    const start = () => { if (!iv) iv = setInterval(draw, 100); };
+    const stop = () => { if (iv) { clearInterval(iv); iv = null; } };
+    const onVisibility = () => { document.hidden ? stop() : start(); };
+    document.addEventListener('visibilitychange', onVisibility);
     draw();
-    return () => clearInterval(iv);
+    start();
+    return () => {
+      stop();
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
   }, []);
 
   return (

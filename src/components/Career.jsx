@@ -34,6 +34,10 @@ export default function Career() {
             transition={{ duration: 0.8, delay: i * 0.2, ease: [0.22, 1, 0.36, 1] }}
             whileHover={{ x: 8, transition: { duration: 0.2 } }}
             onClick={() => setExpandedEdu(expandedEdu === i ? null : i)}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setExpandedEdu(expandedEdu === i ? null : i); } }}
+            role="button"
+            tabIndex={0}
+            aria-expanded={expandedEdu === i}
             style={{ cursor: 'pointer' }}
           >
             <span className="timeline__date">{e.date}</span>
@@ -76,6 +80,10 @@ export default function Career() {
             transition={{ duration: 0.7, delay: 0.5 + i * 0.15, type: 'spring', stiffness: 120 }}
             whileHover={{ y: -6, scale: 1.05, rotate: 1, boxShadow: '0 12px 30px rgba(79, 172, 254, 0.15)', transition: { duration: 0.25 } }}
             onClick={() => setExpandedJob(expandedJob === i ? null : i)}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setExpandedJob(expandedJob === i ? null : i); } }}
+            role="button"
+            tabIndex={0}
+            aria-expanded={expandedJob === i}
             style={{ cursor: 'pointer', flexDirection: 'column', alignItems: 'flex-start' }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', width: '100%' }}>
