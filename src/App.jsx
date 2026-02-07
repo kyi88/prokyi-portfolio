@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, lazy, Suspense, createContext, useContext } from 'react';
+import { useEffect, useState, useRef, useMemo, lazy, Suspense, createContext, useContext } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -356,6 +356,9 @@ export default function App() {
     });
   };
 
+  // Memoize context value to avoid re-rendering all consumers on unrelated state changes
+  const soundValue = useMemo(() => ({ muted }), [muted]);
+
   // Section scroll sound effects — wait until sections are rendered
   useSectionSFX(mutedRef, loaded);
 
@@ -535,7 +538,7 @@ export default function App() {
 
   return (
     <CyberErrorBoundary>
-    <SoundContext.Provider value={{ muted }}>
+    <SoundContext.Provider value={soundValue}>
       {/* Custom cursor dot (desktop only) */}
       <div id="cyber-cursor" className="cyber-cursor" aria-hidden="true" />
 

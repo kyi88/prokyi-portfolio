@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { Color, AdditiveBlending, DoubleSide } from 'three';
 
 /* ── Responsive particle count ── */
 function useParticleCount() {
@@ -39,12 +39,12 @@ function Particles({ count = 500 }) {
     const col = new Float32Array(count * 3);
     const spd = new Float32Array(count);
     const palette = [
-      new THREE.Color('#4facfe'),
-      new THREE.Color('#00f2fe'),
-      new THREE.Color('#a855f7'),
-      new THREE.Color('#f59e0b'),
-      new THREE.Color('#ff2d87'),
-      new THREE.Color('#22d3a7'),
+      new Color('#4facfe'),
+      new Color('#00f2fe'),
+      new Color('#a855f7'),
+      new Color('#f59e0b'),
+      new Color('#ff2d87'),
+      new Color('#22d3a7'),
     ];
     for (let i = 0; i < count; i++) {
       pos[i * 3]     = (Math.random() - 0.5) * 22;
@@ -85,7 +85,7 @@ function Particles({ count = 500 }) {
         opacity={0.65}
         sizeAttenuation
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
+        blending={AdditiveBlending}
       />
     </points>
   );
@@ -122,7 +122,7 @@ function ClickRipple() {
   return (
     <mesh ref={ringRef}>
       <ringGeometry args={[0.9, 1, 48]} />
-      <meshBasicMaterial color="#4facfe" transparent opacity={0} side={THREE.DoubleSide} blending={THREE.AdditiveBlending} />
+      <meshBasicMaterial color="#4facfe" transparent opacity={0} side={DoubleSide} blending={AdditiveBlending} />
     </mesh>
   );
 }

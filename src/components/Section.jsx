@@ -79,31 +79,40 @@ function Section({ id, num, title, children }) {
     if (!el) return;
     let totalTime = 0;
     let lastEntry = null;
+    let timer = null;
+    const check = () => {
+      if (lastEntry) {
+        totalTime += Date.now() - lastEntry;
+        lastEntry = Date.now();
+      }
+      if (totalTime > 15000) {
+        setIsHot(true);
+        observer.disconnect();
+        return;
+      }
+      // Schedule next check for remaining time
+      timer = setTimeout(check, Math.min(5000, 15500 - totalTime));
+    };
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           lastEntry = Date.now();
+          clearTimeout(timer);
+          check();
         } else if (lastEntry) {
           totalTime += Date.now() - lastEntry;
           lastEntry = null;
-          if (totalTime > 15000) setIsHot(true);
+          clearTimeout(timer);
+          if (totalTime > 15000) {
+            setIsHot(true);
+            observer.disconnect();
+          }
         }
       },
       { threshold: 0.4 }
     );
     observer.observe(el);
-    // Check periodically while visible
-    const iv = setInterval(() => {
-      if (lastEntry) {
-        const elapsed = totalTime + (Date.now() - lastEntry);
-        if (elapsed > 15000) {
-          setIsHot(true);
-          clearInterval(iv);
-          observer.disconnect();
-        }
-      }
-    }, 5000);
-    return () => { observer.disconnect(); clearInterval(iv); };
+    return () => { observer.disconnect(); clearTimeout(timer); };
   }, []);
 
   /* Mouse proximity glow tracking (RAF throttled) */

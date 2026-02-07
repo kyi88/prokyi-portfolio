@@ -229,14 +229,18 @@ function SessionTimer() {
 }
 
 /* Audio Bars — CSS-only equalizer visualization */
+const BAR_DURATIONS = Array.from({ length: 5 }, (_, i) => ({
+  animationDelay: `${i * 0.12}s`,
+  animationDuration: `${0.4 + ((i * 7 + 3) % 5) * 0.08 + 0.1}s`,
+}));
 function AudioBars() {
   return (
     <div className="audio-bars" aria-hidden="true" title="System Audio">
-      {Array.from({ length: 5 }, (_, i) => (
+      {BAR_DURATIONS.map((style, i) => (
         <span
           key={i}
           className="audio-bars__bar"
-          style={{ animationDelay: `${i * 0.12}s`, animationDuration: `${0.4 + Math.random() * 0.4}s` }}
+          style={style}
         />
       ))}
     </div>
@@ -260,7 +264,7 @@ export default function Sidebar() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
   const dayLabel = ['日','月','火','水','木','金','土'][new Date().getDay()];
-  const streak = getVisitStreak();
+  const [streak] = useState(getVisitStreak);
 
   return (
     <aside className="layout__side" ref={ref} aria-label="サイド情報">
