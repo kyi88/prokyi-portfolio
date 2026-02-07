@@ -299,6 +299,19 @@
   color: var(--c-accent2);
 }
 
+/* Cyber quote */
+.hero__quote {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--c-text-dim);
+  text-align: center;
+  max-width: 500px;
+  margin: 16px auto 0;
+  font-style: italic;
+  letter-spacing: 0.3px;
+  line-height: 1.6;
+}
+
 /* Scroll hint */
 .hero__scroll-hint {
   position: absolute;

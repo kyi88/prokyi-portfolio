@@ -72,6 +72,17 @@ const XP_CURRENT = 1450;
 const XP_MAX = 5000;
 const XP_LEVEL = 19;
 
+const CYBER_QUOTES = [
+  '"The future is already here — it\'s just not evenly distributed." — W. Gibson',
+  '"Any sufficiently advanced technology is indistinguishable from magic." — A.C. Clarke',
+  '"Stay hungry, stay foolish." — Steve Jobs',
+  '"Talk is cheap. Show me the code." — Linus Torvalds',
+  '"Code is poetry." — WordPress',
+  '"First, solve the problem. Then, write the code." — John Johnson',
+  '"The best way to predict the future is to invent it." — Alan Kay',
+  '"Debugging is twice as hard as writing code." — Brian Kernighan',
+];
+
 export default function Hero() {
   const [count, setCount] = useState(0);
   const [typed, setTyped] = useState('');
@@ -353,6 +364,17 @@ export default function Hero() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Random cyber quote */}
+      <motion.p
+        className="hero__quote"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.4 }}
+        transition={{ delay: 2.5, duration: 1.5 }}
+        aria-hidden="true"
+      >
+        {CYBER_QUOTES[Math.floor(Math.random() * CYBER_QUOTES.length)]}
+      </motion.p>
 
       {/* Scroll hint */}
       <motion.div

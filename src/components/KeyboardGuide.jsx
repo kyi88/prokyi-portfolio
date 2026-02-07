@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './KeyboardGuide.css';
 
 const shortcuts = [
+  { keys: ['Ctrl+K'], desc: 'クイックジャンプパレット' },
   { keys: ['`'], desc: 'サイバーターミナルを開く' },
   { keys: ['↑↑↓↓←→←→BA'], desc: 'レトロモード(5秒)' },
   { keys: ['?'], desc: 'このヘルプを表示' },

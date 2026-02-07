@@ -14,6 +14,7 @@ import EasterEggFab from './components/EasterEggFab';
 import CyberTerminal from './components/CyberTerminal';
 import KeyboardGuide from './components/KeyboardGuide';
 import ScrollToTop from './components/ScrollToTop';
+import CommandPalette from './components/CommandPalette';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -386,6 +387,7 @@ export default function App() {
       <CyberTerminal />
       <KeyboardGuide />
       <ScrollToTop />
+      <CommandPalette />
         </>
       )}
     </>
