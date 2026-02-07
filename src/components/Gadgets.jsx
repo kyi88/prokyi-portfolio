@@ -155,11 +155,23 @@ export default function Gadgets() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
   const [filter, setFilter] = useState(allId);
+  const [search, setSearch] = useState('');
   const tilt = useTilt();
 
-  const visible = filter === allId
+  const filteredCats = filter === allId
     ? categories
     : categories.filter((c) => c.id === filter);
+
+  // Apply search filter
+  const visible = search.trim()
+    ? filteredCats.map(cat => ({
+        ...cat,
+        devices: cat.devices.filter(d =>
+          d.name.toLowerCase().includes(search.toLowerCase()) ||
+          d.specs.some(s => s.value.toLowerCase().includes(search.toLowerCase()))
+        ),
+      })).filter(cat => cat.devices.length > 0)
+    : filteredCats;
 
   const totalDevices = categories.reduce((s, c) => s + c.devices.length, 0);
 
@@ -200,6 +212,28 @@ export default function Gadgets() {
             {cat.name}
           </button>
         ))}
+      </motion.div>
+
+      {/* Search input */}
+      <motion.div
+        className="gadgets__search"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <span className="gadgets__search-icon" aria-hidden="true">🔍</span>
+        <input
+          type="text"
+          className="gadgets__search-input"
+          placeholder="デバイスを検索..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          autoComplete="off"
+          spellCheck="false"
+        />
+        {search && (
+          <button className="gadgets__search-clear" onClick={() => setSearch('')} aria-label="クリア">✕</button>
+        )}
       </motion.div>
 
       {/* Categories + devices */}

@@ -148,6 +148,23 @@
 }
 @keyframes ring-spin { to { transform: rotate(360deg); } }
 
+/* Breathing pulse ring */
+.hero__avatar-wrap::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--c-accent);
+  opacity: 0;
+  animation: ring-breathe 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes ring-breathe {
+  0% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.15); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
 .hero__avatar {
   width: 100%;
   height: 100%;
