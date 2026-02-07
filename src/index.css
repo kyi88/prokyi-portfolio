@@ -115,6 +115,7 @@ body::before {
   animation: bg-shift 25s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
+  will-change: background-position;
 }
 @keyframes bg-shift {
   0% { background-position: 0% 0%; }
@@ -157,13 +158,16 @@ a {
   border-radius: 4px;
 }
 
-/* Reduced motion preference */
+/* Reduced motion preference — scope to CSS-driven animations only;
+   Framer Motion handles its own reduced-motion internally */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *:not([style*="transform"]):not([style*="opacity"]),
+  *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  html { scroll-behavior: auto; }
 }
 
 /* Skip link for a11y */
@@ -203,6 +207,7 @@ a {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: gradient-flow 6s ease-in-out infinite;
+  will-change: background-position;
 }
 @keyframes gradient-flow {
   0% { background-position: 0% 50%; }

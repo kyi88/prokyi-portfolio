@@ -78,6 +78,9 @@ function Profile() {
           key={d.label}
           className="profile-grid__item"
           variants={itemVariant(i)}
+          tabIndex={0}
+          role="group"
+          aria-label={`${d.label}: ${d.value}`}
           whileHover={{ scale: 1.03, x: 6, transition: { duration: 0.2 } }}
         >
           <motion.span

@@ -125,7 +125,11 @@ function useSectionSFX(mutedRef, ready) {
     );
     // Observe all sections — now safe because ready===true means DOM is rendered
     document.querySelectorAll('.section').forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      try { audioCtxRef.current?.close(); } catch (_) {}
+      audioCtxRef.current = null;
+    };
   }, [ready]);
 }
 
@@ -444,7 +448,13 @@ export default function App() {
       ctx.strokeStyle = `hsla(${(hue + 60) % 360}, 80%, 50%, 0.6)`;
       ctx.lineWidth = 1.5;
       ctx.stroke();
-      link.href = canvas.toDataURL('image/png');
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        if (link._prevBlobUrl) URL.revokeObjectURL(link._prevBlobUrl);
+        link.href = url;
+        link._prevBlobUrl = url;
+      }, 'image/png');
       frame++;
     };
     const start = () => { if (!iv) iv = setInterval(draw, 500); };
@@ -456,6 +466,7 @@ export default function App() {
     return () => {
       stop();
       document.removeEventListener('visibilitychange', onVisibility);
+      if (link._prevBlobUrl) URL.revokeObjectURL(link._prevBlobUrl);
     };
   }, []);
 

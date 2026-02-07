@@ -43,6 +43,20 @@ export default function KeyboardGuide() {
     }
   }, [open]);
 
+  // Trap focus within the dialog
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e) => {
+      if (e.key === 'Tab') {
+        // Keep focus within the panel
+        e.preventDefault();
+        panelRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open]);
+
   return (
     <AnimatePresence>
       {open && (

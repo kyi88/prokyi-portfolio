@@ -114,7 +114,6 @@
 
 /* Tooltip */
 .profile-grid__tip {
-  display: none;
   position: absolute;
   bottom: calc(100% + 6px);
   left: 50%;
@@ -130,6 +129,9 @@
   z-index: 20;
   box-shadow: 0 0 12px var(--c-glow);
   pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
 }
 .profile-grid__tip::after {
   content: '';
@@ -140,8 +142,10 @@
   border: 4px solid transparent;
   border-top-color: var(--c-accent);
 }
-.profile-grid__item:hover .profile-grid__tip {
-  display: block;
+.profile-grid__item:hover .profile-grid__tip,
+.profile-grid__item:focus-within .profile-grid__tip {
+  opacity: 1;
+  visibility: visible;
 }
 
 @media (max-width: 640px) {

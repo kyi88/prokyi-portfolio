@@ -64,6 +64,9 @@ export default function CommandPalette() {
       setActiveIdx(prev => (prev - 1 + filtered.length) % filtered.length);
     } else if (e.key === 'Enter' && filtered.length > 0) {
       handleSelect(filtered[activeIdx].target);
+    } else if (e.key === 'Tab') {
+      // Trap focus within palette
+      e.preventDefault();
     }
   };
 
@@ -108,13 +111,11 @@ export default function CommandPalette() {
             </div>
             <ul className="cmd-panel__list" role="listbox" id="cmd-panel-listbox">
               {filtered.map((c, i) => (
-                <li key={c.id} id={`cmd-opt-${i}`} role="option" aria-selected={activeIdx === i}>
-                  <button
-                    className={`cmd-panel__item ${activeIdx === i ? 'cmd-panel__item--active' : ''}`}
-                    onClick={() => handleSelect(c.target)}
-                  >
-                    {c.label}
-                  </button>
+                <li key={c.id} id={`cmd-opt-${i}`} role="option" aria-selected={activeIdx === i}
+                  className={`cmd-panel__item ${activeIdx === i ? 'cmd-panel__item--active' : ''}`}
+                  onClick={() => handleSelect(c.target)}
+                >
+                  {c.label}
                 </li>
               ))}
               {filtered.length === 0 && (

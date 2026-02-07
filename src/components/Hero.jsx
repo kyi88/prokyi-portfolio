@@ -129,20 +129,24 @@ export default function Hero() {
     tiltY.set(0);
   };
 
-  useEffect(() => {
+  // Increment visit counter outside effect to avoid StrictMode double-counting
+  const visitTarget = useRef(null);
+  if (visitTarget.current === null) {
     let c = parseInt(localStorage.getItem('prokyi_visits') || '0', 10);
     c++;
     localStorage.setItem('prokyi_visits', String(c));
-    const target = c;
-    let cur = 0;
+    visitTarget.current = c;
+  }
+
+  useEffect(() => {
+    const target = visitTarget.current;
     const dur = 1400;
     const start = performance.now();
     let raf;
     const tick = (now) => {
       const p = Math.min((now - start) / dur, 1);
       const eased = 1 - Math.pow(1 - p, 3);
-      cur = Math.round(eased * target);
-      setCount(cur);
+      setCount(Math.round(eased * target));
       if (p < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -187,14 +191,16 @@ export default function Hero() {
 
   // Secret: click avatar 7 times
   const handleAvatarClick = () => {
-    const next = avatarClicks + 1;
-    setAvatarClicks(next);
-    if (next >= 7) {
-      setSecretMsg(true);
-      setAvatarClicks(0);
-      clearTimeout(secretTimerRef.current);
-      secretTimerRef.current = setTimeout(() => setSecretMsg(false), 4000);
-    }
+    setAvatarClicks(prev => {
+      const next = prev + 1;
+      if (next >= 7) {
+        setSecretMsg(true);
+        clearTimeout(secretTimerRef.current);
+        secretTimerRef.current = setTimeout(() => setSecretMsg(false), 4000);
+        return 0;
+      }
+      return next;
+    });
   };
 
   // Cleanup secret timer

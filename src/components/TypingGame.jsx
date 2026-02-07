@@ -64,6 +64,7 @@ export default function TypingGame({ onClose }) {
   const [wordIdx, setWordIdx] = useState(0);
   const [input, setInput] = useState('');
   const [score, setScore] = useState(0);
+  const [totalChars, setTotalChars] = useState(0);
   const [combo, setCombo] = useState(0);
   const [maxCombo, setMaxCombo] = useState(0);
   const [timeLeft, setTimeLeft] = useState(DURATION);
@@ -86,6 +87,7 @@ export default function TypingGame({ onClose }) {
     setWordIdx(0);
     setInput('');
     setScore(0);
+    setTotalChars(0);
     setCombo(0);
     setMaxCombo(0);
     setTimeLeft(DURATION);
@@ -121,6 +123,7 @@ export default function TypingGame({ onClose }) {
     if (val === currentWord) {
       const points = currentWord.length * (1 + combo * 0.2);
       setScore(prev => prev + Math.round(points));
+      setTotalChars(prev => prev + currentWord.length);
       setCombo(prev => {
         const next = prev + 1;
         setMaxCombo(m => Math.max(m, next));
@@ -164,8 +167,9 @@ export default function TypingGame({ onClose }) {
     });
   };
 
+  const elapsedSeconds = DURATION - timeLeft;
   const wpm = phase === 'done'
-    ? Math.round((score / Math.max(DURATION - timeLeft, 1)) * 12)
+    ? Math.round((totalChars / 5) / (Math.max(elapsedSeconds, 1) / 60))
     : 0;
 
   // Save best score

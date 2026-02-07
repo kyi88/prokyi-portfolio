@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import './Header.css';
 
@@ -38,13 +38,21 @@ export default function Header() {
     return () => window.removeEventListener('prokyi-theme-sync', onSync);
   }, []);
 
-  const toggleTheme = () => {
+  const sparkleTimers = useRef([]);
+
+  // Cleanup sparkle DOM timers on unmount
+  useEffect(() => () => {
+    sparkleTimers.current.forEach(t => clearTimeout(t));
+    sparkleTimers.current = [];
+  }, []);
+
+  const toggleTheme = useCallback(() => {
     // Flash effect on toggle
     const flash = document.createElement('div');
     flash.style.cssText = 'position:fixed;inset:0;z-index:99990;pointer-events:none;background:var(--c-accent);opacity:0.08;transition:opacity 0.4s;';
     document.body.appendChild(flash);
     requestAnimationFrame(() => { flash.style.opacity = '0'; });
-    setTimeout(() => flash.remove(), 500);
+    sparkleTimers.current.push(setTimeout(() => flash.remove(), 500));
 
     // Sparkle particles burst from toggle button
     const btn = document.querySelector('.header__theme-btn');
@@ -71,28 +79,36 @@ export default function Header() {
           p.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0)`;
           p.style.opacity = '0';
         });
-        setTimeout(() => p.remove(), 700);
+        sparkleTimers.current.push(setTimeout(() => p.remove(), 700));
       }
     }
 
     setTheme(prev => prev === 'cyber' ? 'green' : 'cyber');
-  };
+  }, []);
+
+  const sectionsRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 60);
 
-      const sections = document.querySelectorAll('section[id]');
+      // Cache section elements on first scroll
+      if (!sectionsRef.current) {
+        sectionsRef.current = Array.from(document.querySelectorAll('section[id]'));
+      }
       const y = window.scrollY + 140;
-      const seen = new Set(viewedRef.current);
-      for (const s of sections) {
+      const seen = viewedRef.current;
+      let changed = false;
+      for (const s of sectionsRef.current) {
         if (y >= s.offsetTop && y < s.offsetTop + s.offsetHeight) {
           setActive(s.id);
-          seen.add(s.id);
+          if (!seen.has(s.id)) {
+            seen.add(s.id);
+            changed = true;
+          }
         }
       }
-      if (seen.size !== viewedRef.current.size) {
-        viewedRef.current = seen;
+      if (changed) {
         setViewedCount(seen.size);
       }
     };

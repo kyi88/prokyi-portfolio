@@ -13,15 +13,19 @@ function useParticleCount() {
     return 400;
   });
   useEffect(() => {
+    let timer;
     const onResize = () => {
-      const w = window.innerWidth;
-      if (w < 480) setCount(0);
-      else if (w < 768) setCount(120);
-      else if (w < 1024) setCount(200);
-      else setCount(400);
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const w = window.innerWidth;
+        if (w < 480) setCount(0);
+        else if (w < 768) setCount(120);
+        else if (w < 1024) setCount(200);
+        else setCount(400);
+      }, 250);
     };
     window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    return () => { window.removeEventListener('resize', onResize); clearTimeout(timer); };
   }, []);
   return count;
 }

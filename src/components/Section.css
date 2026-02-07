@@ -139,8 +139,12 @@
     rgba(0, 242, 254, 0.03),
     transparent
   );
-  animation: card-rotate 10s linear infinite;
+  animation: none;
   pointer-events: none;
+  will-change: transform;
+}
+.card:hover::after {
+  animation: card-rotate 10s linear infinite;
 }
 @keyframes card-rotate {
   to { transform: rotate(360deg); }

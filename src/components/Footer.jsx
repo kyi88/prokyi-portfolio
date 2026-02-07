@@ -85,6 +85,9 @@ export default function Footer() {
   const eggTimerRef = useRef(null);
   const [showEgg, setShowEgg] = useState(false);
 
+  // Cleanup egg timer on unmount
+  useEffect(() => () => clearTimeout(eggTimerRef.current), []);
+
   const handleCopyClick = () => {
     const next = eggClicks + 1;
     setEggClicks(next);
@@ -160,7 +163,7 @@ export default function Footer() {
           <span>COMPONENTS: 21</span>
           <span>CHUNKS: 8</span>
           <span>EASTER EGGS: 10</span>
-          <span>LOOPS: 45</span>
+          <span>LOOPS: 46</span>
           <LoadTime />
           <Uptime />
         </motion.div>

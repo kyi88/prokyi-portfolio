@@ -25,10 +25,10 @@ export default function Career() {
   return (
     <div ref={ref}>
       <div className="timeline">
-        {education.map((e, i) => (
+        {education.map((edu, i) => (
           <motion.div
-            key={e.date}
-            className={`timeline__item ${e.active ? 'timeline__item--active' : ''}`}
+            key={edu.date}
+            className={`timeline__item ${edu.active ? 'timeline__item--active' : ''}`}
             initial={{ opacity: 0, x: -50, scale: 0.9, filter: 'blur(5px)' }}
             animate={inView ? { opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' } : {}}
             transition={{ duration: 0.8, delay: i * 0.2, ease: [0.22, 1, 0.36, 1] }}
@@ -40,9 +40,9 @@ export default function Career() {
             aria-expanded={expandedEdu === i}
             style={{ cursor: 'pointer' }}
           >
-            <span className="timeline__date">{e.date}</span>
-            <h3 className="timeline__heading">{e.title}</h3>
-            <p className="timeline__sub">{e.sub}</p>
+            <span className="timeline__date">{edu.date}</span>
+            <h3 className="timeline__heading">{edu.title}</h3>
+            <p className="timeline__sub">{edu.sub}</p>
             <AnimatePresence>
               {expandedEdu === i && (
                 <motion.p
@@ -52,7 +52,7 @@ export default function Career() {
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {e.detail}
+                  {edu.detail}
                 </motion.p>
               )}
             </AnimatePresence>

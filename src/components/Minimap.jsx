@@ -21,7 +21,7 @@ export default function Minimap() {
   useEffect(() => {
     const onKey = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
-      if (e.key === 'm' || e.key === 'M') {
+      if ((e.key === 'm' || e.key === 'M') && !e.ctrlKey && !e.metaKey && !e.altKey) {
         setHidden(prev => !prev);
       }
     };
@@ -29,14 +29,18 @@ export default function Minimap() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  const elCacheRef = useRef(null);
   useEffect(() => {
     const onScroll = () => {
       setVisible(window.scrollY > 400);
+      if (!elCacheRef.current) {
+        elCacheRef.current = sections.map(s => document.getElementById(s.id));
+      }
       const y = window.scrollY + window.innerHeight / 2;
-      for (const s of sections) {
-        const el = document.getElementById(s.id);
+      for (let i = 0; i < sections.length; i++) {
+        const el = elCacheRef.current[i];
         if (el && y >= el.offsetTop && y < el.offsetTop + el.offsetHeight) {
-          setActive(s.id);
+          setActive(sections[i].id);
           break;
         }
       }

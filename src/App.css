@@ -102,7 +102,7 @@
   content: '';
   position: absolute;
   top: -2px;
-  left: -10%;
+  left: 0;
   width: 30px;
   height: 5px;
   background: linear-gradient(90deg, transparent, var(--c-accent), var(--c-accent2), transparent);
@@ -110,12 +110,13 @@
   box-shadow: 0 0 8px var(--c-accent), 0 0 16px var(--c-glow);
   animation: divider-packet 4s linear infinite;
   opacity: 0.7;
+  will-change: transform;
 }
 @keyframes divider-packet {
-  0% { left: -10%; opacity: 0; }
+  0% { transform: translateX(-10vw); opacity: 0; }
   5% { opacity: 0.7; }
   95% { opacity: 0.7; }
-  100% { left: 110%; opacity: 0; }
+  100% { transform: translateX(calc(100vw + 10vw)); opacity: 0; }
 }
 
 @media (max-width: 1024px) {
@@ -244,6 +245,7 @@
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  contain: strict;
 }
 .parallax-fog__layer {
   position: absolute;
@@ -286,6 +288,7 @@
   inset: 0;
   z-index: 9998;
   pointer-events: none;
+  contain: strict;
 }
 .crt-overlay__scanlines {
   position: absolute;
