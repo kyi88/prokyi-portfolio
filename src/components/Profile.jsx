@@ -44,7 +44,15 @@ export default function Profile() {
           variants={itemVariant(i)}
           whileHover={{ scale: 1.03, x: 6, transition: { duration: 0.2 } }}
         >
-          <span className="profile-grid__icon" aria-hidden="true">{d.icon}</span>
+          <motion.span
+            className="profile-grid__icon"
+            aria-hidden="true"
+            initial={{ scale: 0, rotate: -30 }}
+            animate={inView ? { scale: 1, rotate: 0 } : {}}
+            transition={{ type: 'spring', stiffness: 400, damping: 10, delay: 0.3 + i * 0.12 }}
+          >
+            {d.icon}
+          </motion.span>
           <dt>{d.label}</dt>
           <dd>{d.value}</dd>
           {d.tip && <span className="profile-grid__tip" aria-label={d.tip}>{d.tip}</span>}

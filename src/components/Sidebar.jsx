@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import './Sidebar.css';
 
@@ -97,6 +97,20 @@ function SkillRadar({ data, inView }) {
 export default function Sidebar() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
+  const [session, setSession] = useState('0:00');
+
+  // Session timer
+  useEffect(() => {
+    const start = Date.now();
+    const iv = setInterval(() => {
+      const s = Math.floor((Date.now() - start) / 1000);
+      const m = Math.floor(s / 60);
+      setSession(`${m}:${String(s % 60).padStart(2, '0')}`);
+    }, 1000);
+    return () => clearInterval(iv);
+  }, []);
+
+  const dayLabel = ['日','月','火','水','木','金','土'][new Date().getDay()];
 
   return (
     <aside className="layout__side" ref={ref} aria-label="サイド情報">
@@ -108,6 +122,10 @@ export default function Sidebar() {
         whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
       >
         <h3 className="side-card__title">ステータス</h3>
+        <div className="side-card__meta">
+          <span className="side-card__meta-item">{dayLabel}曜日</span>
+          <span className="side-card__meta-item">SESSION {session}</span>
+        </div>
         <ul className="status-list">
           {statusItems.map(({ k, v, bar, color }) => (
             <li key={k}>

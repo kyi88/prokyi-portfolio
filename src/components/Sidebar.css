@@ -46,6 +46,21 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+.side-card__meta {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.side-card__meta-item {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--c-green);
+  background: rgba(34, 211, 167, 0.06);
+  border: 1px solid rgba(34, 211, 167, 0.15);
+  padding: 2px 8px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
 .status-list {
   list-style: none;
   display: flex;
