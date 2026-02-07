@@ -1,0 +1,36 @@
+.fps-monitor {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: rgba(10, 10, 18, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  pointer-events: none;
+}
+.fps-monitor__fps {
+  color: #00ff88;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+}
+.fps-monitor__fps--low {
+  color: #ff2d4a;
+  text-shadow: 0 0 8px rgba(255, 45, 74, 0.4);
+}
+.fps-monitor__mem {
+  color: #4facfe;
+  font-size: 0.65rem;
+}
+.fps-monitor__hint {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.55rem;
+  margin-top: 2px;
+}
