@@ -213,6 +213,9 @@ export default function Header() {
               onMouseEnter={hoverSound.onMouseEnter}
             >
               {item.label}
+              {!viewedRef.current.has(item.href.slice(1)) && (
+                <span className="header__link-dot" aria-label="未閲覧" />
+              )}
             </a>
           ))}
         </nav>

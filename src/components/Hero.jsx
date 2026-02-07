@@ -405,6 +405,27 @@ export default function Hero() {
             <span className="hero__led hero__led--blue" title="NET OK" />
             <span className="hero__led hero__led--amber" title="LEARNING" />
           </motion.div>
+
+          {/* Site stats strip */}
+          <motion.div
+            className="hero__site-stats"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 0.5, y: 0 }}
+            transition={{ duration: 0.6, delay: 2.1 }}
+            aria-hidden="true"
+          >
+            {[
+              { label: 'COMPONENTS', value: '35+' },
+              { label: 'LOOPS', value: '70' },
+              { label: 'EGGS', value: '11' },
+              { label: 'LINES', value: '10K+' },
+            ].map(s => (
+              <span key={s.label} className="hero__site-stat">
+                <span className="hero__site-stat-val">{s.value}</span>
+                <span className="hero__site-stat-label">{s.label}</span>
+              </span>
+            ))}
+          </motion.div>
         </div>
       </motion.div>
 

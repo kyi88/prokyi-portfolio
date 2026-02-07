@@ -159,6 +159,23 @@
   100% { transform: translate(0); }
 }
 
+/* Unviewed dot */
+.header__link-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  box-shadow: 0 0 6px var(--c-accent);
+  margin-left: 4px;
+  vertical-align: super;
+  animation: dot-pulse 1.5s ease-in-out infinite;
+}
+@keyframes dot-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
 /* Hamburger */
 .header__menu-btn {
   display: none;
