@@ -43,10 +43,10 @@ const INVENTORY = [
   { slot: 'ARTIFACT',      name: 'AYN Thor',                type: 'Emulation Console [MAX]', icon: '🎮', rarity: 'LEGENDARY', color: '#ef4444', specs: [{ l: 'CPU',     v: 'Snapdragon 8 Gen 2' }, { l: 'RAM/ROM', v: '16GB / 1TB' }, { l: 'UPPER',  v: '6" 120Hz' }, { l: 'LOWER', v: '3.92" 60Hz' }] },
 ];
 const CARDS = [
-  { name: '楽天カード',                                 brand: 'Visa / Mastercard / JCB / AMEX', type: 'CREDIT',  icon: '💳', color: '#e60033', issuer: '楽天カード株式会社' },
-  { name: '楽天銀行デビットカード',                     brand: 'Visa / Mastercard / JCB',         type: 'DEBIT',   icon: '🏦', color: '#bf0000', issuer: '楽天銀行株式会社' },
+  { name: '楽天カード',                                 brand: 'Visa',                            type: 'CREDIT',  icon: '💳', color: '#e60033', issuer: '楽天カード株式会社' },
+  { name: '楽天銀行デビットカード',                     brand: 'JCB',                             type: 'DEBIT',   icon: '🏦', color: '#bf0000', issuer: '楽天銀行株式会社' },
   { name: 'Amazon Prime Mastercard',                    brand: 'Mastercard',                      type: 'CREDIT',  icon: '📦', color: '#ff9900', issuer: '三井住友カード株式会社' },
-  { name: 'PayPayカード',                               brand: 'Visa / Mastercard / JCB',         type: 'CREDIT',  icon: '🔴', color: '#ff0033', issuer: 'PayPayカード株式会社' },
+  { name: 'PayPayカード',                               brand: 'Visa',                            type: 'CREDIT',  icon: '🔴', color: '#ff0033', issuer: 'PayPayカード株式会社' },
   { name: 'Olive フレキシブルペイ（一般）',             brand: 'Visa',                            type: 'FLEXIBLE',icon: '🫒', color: '#2e8b57', issuer: '三井住友カード株式会社' },
 ];
 /* ════════════════════════ SUB-COMPONENTS ════════════════════════ */
