@@ -85,9 +85,10 @@ const CYBER_QUOTES = [
 
 const SUBTITLES = [
   '> Hello, I\'m_',
-  '> AI Engineer Candidate_',
-  '> Linux Enthusiast_',
-  '> Cyberdeck Builder_',
+  '> 2000s Japan Vibes_',
+  '> AI Enthusiast_',
+  '> 二次元大好き_',
+  '> Cyberpunk Dreamer_',
   '> Always Learning_',
 ];
 
@@ -279,9 +280,9 @@ export default function Hero() {
             animate={{ opacity: 1, filter: 'blur(0px)' }}
             transition={{ duration: 1.0, delay: 0.9 }}
           >
-            AI / データサイエンス分野への学習意欲を持つ、
+            2000年代の日本の空気が好きなAI好き。
             <br className="hide-sp" />
-            フットワークの軽いエンジニア志望
+            サイバーパンクとかわいい二次元をこよなく愛する人間
           </motion.p>
 
           <motion.div

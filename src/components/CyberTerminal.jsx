@@ -94,7 +94,6 @@ const COMMANDS = {
   projects: () => [
     '[PROJECTS]',
     '  ► prokyi-portfolio  — This cyberdeck portfolio (React + Three.js)',
-    '  ► zenbukko          — Automated course downloader & transcriber',
     '  ► home-lab          — Self-hosted server infrastructure',
     '  ► ...more in development',
   ],

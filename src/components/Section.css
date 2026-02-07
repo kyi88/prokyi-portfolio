@@ -215,21 +215,23 @@
 .card__corner--br { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
 .card__title-num {
   font-family: var(--font-mono);
-  font-size: 1.1rem;
-  font-weight: 800;
-  min-width: 32px;
-  padding: 2px 10px;
-  border: 1px solid rgba(0, 242, 254, 0.3);
-  border-radius: 4px;
-  background: rgba(0, 242, 254, 0.08);
-  color: var(--c-accent2);
+  font-size: 1.15rem;
+  font-weight: 900;
+  min-width: 34px;
+  padding: 3px 10px;
+  border: 1.5px solid rgba(0, 242, 254, 0.45);
+  border-radius: 5px;
+  background: rgba(0, 242, 254, 0.12);
+  color: #00f2fe;
   letter-spacing: 3px;
-  text-shadow: 0 0 8px var(--c-accent2), 0 0 16px rgba(0, 242, 254, 0.3);
-  box-shadow: 0 0 6px rgba(0, 242, 254, 0.1);
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.7), 0 0 20px rgba(0, 242, 254, 0.35);
+  box-shadow: 0 0 8px rgba(0, 242, 254, 0.15), inset 0 0 6px rgba(0, 242, 254, 0.06);
   -webkit-text-fill-color: initial;
+  flex-shrink: 0;
+  text-align: center;
 }
 
-/* Section title glitch */
+/* Section title glitch — short flicker bursts, never fully transparent */
 .card__title-text.glitch {
   position: relative;
 }
@@ -248,37 +250,40 @@
 }
 .card__title-text.glitch::before {
   color: var(--c-accent2);
-  animation: section-glitch-1 4s infinite linear;
+  animation: section-glitch-1 6s infinite linear;
 }
 .card__title-text.glitch::after {
   color: var(--c-pink);
-  animation: section-glitch-2 4s infinite linear;
+  animation: section-glitch-2 6s infinite linear;
 }
 @keyframes section-glitch-1 {
-  0%, 4%, 8%, 20%, 24%, 40%, 44%, 60%, 64%, 80%, 84%, 100% { opacity: 0; transform: translate(0); }
-  2% { opacity: 0.5; transform: translate(-2px, -1px); clip-path: inset(25% 0 45% 0); }
-  3% { opacity: 0.5; transform: translate(2px, 1px); clip-path: inset(55% 0 15% 0); }
-  22% { opacity: 0.4; transform: translate(-1px, 1px); clip-path: inset(35% 0 35% 0); }
-  23% { opacity: 0.4; transform: translate(1px, -1px); clip-path: inset(10% 0 65% 0); }
-  42% { opacity: 0.5; transform: translate(2px, -1px); clip-path: inset(40% 0 30% 0); }
-  43% { opacity: 0.4; transform: translate(-1px, 1px); clip-path: inset(20% 0 50% 0); }
-  62% { opacity: 0.5; transform: translate(-2px, 1px); clip-path: inset(50% 0 20% 0); }
-  63% { opacity: 0.3; transform: translate(1px, -1px); clip-path: inset(15% 0 60% 0); }
-  82% { opacity: 0.4; transform: translate(2px, 1px); clip-path: inset(30% 0 40% 0); }
-  83% { opacity: 0.5; transform: translate(-2px, -1px); clip-path: inset(60% 0 10% 0); }
+  0%, 100% { opacity: 0; transform: translate(0); }
+  2%  { opacity: 0.6; transform: translate(-2px, -1px); clip-path: inset(20% 0 50% 0); }
+  3%  { opacity: 0.5; transform: translate(2px, 1px);   clip-path: inset(50% 0 20% 0); }
+  4%  { opacity: 0; transform: translate(0); }
+  30% { opacity: 0; transform: translate(0); }
+  31% { opacity: 0.5; transform: translate(-1px, 1px);  clip-path: inset(35% 0 30% 0); }
+  32% { opacity: 0.4; transform: translate(1px, -1px);  clip-path: inset(10% 0 60% 0); }
+  33% { opacity: 0; transform: translate(0); }
+  65% { opacity: 0; transform: translate(0); }
+  66% { opacity: 0.5; transform: translate(2px, -1px);  clip-path: inset(40% 0 25% 0); }
+  67% { opacity: 0.4; transform: translate(-1px, 1px);  clip-path: inset(15% 0 55% 0); }
+  68% { opacity: 0; transform: translate(0); }
 }
 @keyframes section-glitch-2 {
-  0%, 12%, 16%, 30%, 34%, 50%, 54%, 70%, 74%, 90%, 94%, 100% { opacity: 0; transform: translate(0); }
-  13% { opacity: 0.4; transform: translate(2px, 1px); clip-path: inset(30% 0 40% 0); }
-  14% { opacity: 0.5; transform: translate(-2px, -1px); clip-path: inset(60% 0 10% 0); }
-  32% { opacity: 0.3; transform: translate(1px, -1px); clip-path: inset(50% 0 25% 0); }
-  33% { opacity: 0.4; transform: translate(-1px, 1px); clip-path: inset(15% 0 55% 0); }
-  52% { opacity: 0.5; transform: translate(-2px, 1px); clip-path: inset(45% 0 20% 0); }
-  53% { opacity: 0.3; transform: translate(2px, -1px); clip-path: inset(10% 0 65% 0); }
-  72% { opacity: 0.4; transform: translate(1px, 1px); clip-path: inset(55% 0 15% 0); }
-  73% { opacity: 0.5; transform: translate(-1px, -1px); clip-path: inset(25% 0 45% 0); }
-  92% { opacity: 0.4; transform: translate(2px, -1px); clip-path: inset(35% 0 35% 0); }
-  93% { opacity: 0.3; transform: translate(-2px, 1px); clip-path: inset(20% 0 50% 0); }
+  0%, 100% { opacity: 0; transform: translate(0); }
+  15% { opacity: 0; transform: translate(0); }
+  16% { opacity: 0.5; transform: translate(2px, 1px);   clip-path: inset(25% 0 45% 0); }
+  17% { opacity: 0.4; transform: translate(-2px, -1px); clip-path: inset(55% 0 15% 0); }
+  18% { opacity: 0; transform: translate(0); }
+  48% { opacity: 0; transform: translate(0); }
+  49% { opacity: 0.4; transform: translate(-2px, 1px);  clip-path: inset(45% 0 20% 0); }
+  50% { opacity: 0.5; transform: translate(1px, -1px);  clip-path: inset(10% 0 60% 0); }
+  51% { opacity: 0; transform: translate(0); }
+  82% { opacity: 0; transform: translate(0); }
+  83% { opacity: 0.5; transform: translate(1px, 1px);   clip-path: inset(30% 0 40% 0); }
+  84% { opacity: 0.3; transform: translate(-1px, -1px); clip-path: inset(60% 0 10% 0); }
+  85% { opacity: 0; transform: translate(0); }
 }
 
 /* Section divider accent line */

@@ -24,7 +24,7 @@ function useTypewriter(text, active, speed = 35, delay = 400) {
   return displayed;
 }
 
-const BIO_TEXT = '独学でWeb技術を学び続けるエンジニア志望。サイバーパンクな世界観と最新テクノロジーに惹かれ、日々コードを書いています。';
+const BIO_TEXT = '2000年代の日本の雰囲気が好きなAI好き。サイバーパンクな世界観とかわいい二次元の女の子をこよなく愛する、日々コードを書く人間です。';
 
 const items = [
   { label: '名前', value: 'ぷろきぃ (prokyi)', icon: '👤', tip: 'ネットの名前です' },

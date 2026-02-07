@@ -10,13 +10,6 @@ const projects = [
     url: 'https://github.com/kyi88/prokyi-portfolio',
     color: '#4facfe',
   },
-  {
-    name: 'zenbukko',
-    desc: 'N予備校のコース教材を一括ダウンロード＆Whisperで文字起こしするCLIツール',
-    tech: ['TypeScript', 'Node.js', 'Whisper'],
-    url: 'https://github.com/kyi88/zenbukko',
-    color: '#00f2fe',
-  },
 ];
 
 export default function Links() {
