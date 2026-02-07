@@ -64,8 +64,8 @@ function Particles({ count = 500 }) {
     const t = clock.getElapsedTime();
     const arr = mesh.current.geometry.attributes.position.array;
     for (let i = 0; i < count; i++) {
-      arr[i * 3 + 1] += Math.sin(t * 0.3 * spd[i] + i * 0.1) * 0.0015;
-      arr[i * 3]     += Math.cos(t * 0.2 * spd[i] + i * 0.07) * 0.001;
+      arr[i * 3 + 1] += Math.sin(t * 0.3 * speeds[i] + i * 0.1) * 0.0015;
+      arr[i * 3]     += Math.cos(t * 0.2 * speeds[i] + i * 0.07) * 0.001;
     }
     mesh.current.geometry.attributes.position.needsUpdate = true;
     mesh.current.rotation.y = pointer.x * 0.12;
