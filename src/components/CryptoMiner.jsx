@@ -35,13 +35,16 @@ function CryptoMiner() {
     };
   }, [open]);
 
+  // Keep overclock value accessible in interval without restarting it
+  const clockRef = useRef(clock);
+  clockRef.current = clock;
+
   // Mining loop
   useEffect(() => {
     if (!open || !mining) {
       setStats({ hashrate: 0, temp: 42, vram: 0, power: 0 });
       return;
     }
-    const clockRef = { current: clock };
     const update = () => {
       const oc = clockRef.current / 100;
       const baseHash = 24.5 + Math.random() * 8;
@@ -69,11 +72,6 @@ function CryptoMiner() {
     return () => clearInterval(mineRef.current);
   }, [open, mining]);
 
-  // Keep clock synced to mining loop without restarting
-  useEffect(() => {
-    // Stats update uses closure over clock; fine because setInterval recreated when mining changes
-  }, [clock]);
-
   useEffect(() => () => clearInterval(mineRef.current), []);
 
   useEffect(() => {
@@ -85,10 +83,6 @@ function CryptoMiner() {
       setClock(100);
     }
   }, [open]);
-
-  // Restart mining interval when clock changes (so overclock takes effect)
-  const clockRef = useRef(clock);
-  clockRef.current = clock;
 
   const toggleMining = useCallback(() => setMining((p) => !p), []);
 

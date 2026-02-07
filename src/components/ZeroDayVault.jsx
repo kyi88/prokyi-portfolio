@@ -98,6 +98,7 @@ function ZeroDayVault() {
   const handleSelect = useCallback((idx) => {
     setSelected((prev) => (prev === idx ? null : idx));
     setViewed((prev) => {
+      if (prev.has(idx)) return prev;
       const next = new Set(prev);
       next.add(idx);
       return next;

@@ -9,6 +9,7 @@ const PRESETS = [
   { emoji: '🤖', hidden: 'AI will not replace prokyi. prokyi IS the AI.' },
 ];
 const GRID_SIZE = 16 * 8; // 128 pixels
+const EMPTY_PIXELS = Array.from({ length: GRID_SIZE }, () => ({ r: 30, g: 30, b: 30, hasBit: false }));
 
 function textToBits(text) {
   return Array.from(new TextEncoder().encode(text))
@@ -50,6 +51,7 @@ function SteganographyLab() {
   const [decoded, setDecoded] = useState('');
   const [bits, setBits] = useState('');
   const [activePreset, setActivePreset] = useState(null);
+  const decodeTimerRef = useRef(null);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -64,8 +66,11 @@ function SteganographyLab() {
     };
   }, [open]);
 
+  useEffect(() => () => clearInterval(decodeTimerRef.current), []);
+
   useEffect(() => {
     if (!open) {
+      clearInterval(decodeTimerRef.current);
       setInput('');
       setPixels([]);
       setDecoded('');
@@ -84,6 +89,7 @@ function SteganographyLab() {
   }, [input]);
 
   const handlePreset = useCallback((idx) => {
+    clearInterval(decodeTimerRef.current);
     const p = PRESETS[idx];
     setActivePreset(idx);
     setMode('decode');
@@ -93,10 +99,10 @@ function SteganographyLab() {
     // Animate decode
     setDecoded('');
     let i = 0;
-    const iv = setInterval(() => {
+    decodeTimerRef.current = setInterval(() => {
       i += 2;
       if (i >= b.length) {
-        clearInterval(iv);
+        clearInterval(decodeTimerRef.current);
         setDecoded(p.hidden);
         return;
       }
@@ -171,14 +177,14 @@ function SteganographyLab() {
           </>
         )}
 
-        {mode === 'decode' && pixels.length > 0 && !activePreset && activePreset !== 0 && (
+        {mode === 'decode' && pixels.length > 0 && activePreset === null && (
           <button className="stegano-lab__btn" onClick={handleDecode} style={{ marginBottom: 8 }}>
             🔍 EXTRACT HIDDEN DATA
           </button>
         )}
 
         <div className="stegano-lab__grid">
-          {(pixels.length > 0 ? pixels : Array.from({ length: GRID_SIZE }, () => ({ r: 30, g: 30, b: 30, hasBit: false }))).map((p, i) => (
+          {(pixels.length > 0 ? pixels : EMPTY_PIXELS).map((p, i) => (
             <div
               key={i}
               className="stegano-lab__pixel"

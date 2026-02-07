@@ -32,6 +32,7 @@ function AIModelArena() {
   const [streak, setStreak] = useState(0);
   const [isBoss, setIsBoss] = useState(false);
   const timerRef = useRef(null);
+  const bossTimerRef = useRef(null);
   const logRef = useRef(null);
 
   useEffect(() => {
@@ -47,7 +48,7 @@ function AIModelArena() {
     };
   }, [open]);
 
-  useEffect(() => () => clearInterval(timerRef.current), []);
+  useEffect(() => () => { clearInterval(timerRef.current); clearTimeout(bossTimerRef.current); }, []);
 
   useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
@@ -56,13 +57,14 @@ function AIModelArena() {
   useEffect(() => {
     if (!open) {
       clearInterval(timerRef.current);
+      clearTimeout(bossTimerRef.current);
       setFighting(false);
       setResult(null);
       setStreak(0);
       setIsBoss(false);
       resetFight();
     }
-  }, [open]);
+  }, [open, resetFight]);
 
   const resetFight = useCallback(() => {
     setProkyiHp(100);
@@ -88,6 +90,14 @@ function AIModelArena() {
     setResult(null);
     setFighting(false);
   }, []);
+
+  // Spawn boss after 10 streak (via useEffect, not inside state updater)
+  useEffect(() => {
+    if (streak >= 10 && !isBoss) {
+      clearTimeout(bossTimerRef.current);
+      bossTimerRef.current = setTimeout(() => spawnBoss(), 2000);
+    }
+  }, [streak, isBoss, spawnBoss]);
 
   const startFight = useCallback(() => {
     if (fighting) return;
@@ -123,14 +133,7 @@ function AIModelArena() {
         clearInterval(timerRef.current);
         setFighting(false);
         setResult('win');
-        setStreak((s) => {
-          const next = s + 1;
-          if (next >= 10 && !isBoss) {
-            // Trigger boss after 10 wins
-            setTimeout(() => spawnBoss(), 2000);
-          }
-          return next;
-        });
+        setStreak((s) => s + 1);
         if (isBoss) {
           setLog((l) => [...l, { text: '🎉 人類の勝利！GPT-∞ を倒した！🍣', type: 'system' }]);
           window.dispatchEvent(new CustomEvent('prokyi-confetti'));
