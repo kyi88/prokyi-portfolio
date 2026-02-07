@@ -17,6 +17,8 @@ import ScrollToTop from './components/ScrollToTop';
 import CommandPalette from './components/CommandPalette';
 import Minimap from './components/Minimap';
 import WelcomeBanner from './components/WelcomeBanner';
+import CyberErrorBoundary from './components/CyberErrorBoundary';
+import NetworkStatus from './components/NetworkStatus';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -471,6 +473,7 @@ export default function App() {
   }, []);
 
   return (
+    <CyberErrorBoundary>
     <SoundContext.Provider value={{ muted }}>
       {/* Custom cursor dot (desktop only) */}
       <div id="cyber-cursor" className="cyber-cursor" aria-hidden="true" />
@@ -488,6 +491,7 @@ export default function App() {
       <CRTOverlay />
       <SystemGlitch />
       <SystemAlerts />
+      <NetworkStatus />
 
       {/* Sound toggle */}
       <button
@@ -555,5 +559,6 @@ export default function App() {
         </>
       )}
     </SoundContext.Provider>
+    </CyberErrorBoundary>
   );
 }

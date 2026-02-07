@@ -1,0 +1,98 @@
+.cyber-crash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #0a0a12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier New', monospace;
+  color: #ff2d4a;
+  overflow: hidden;
+}
+.cyber-crash__crt {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 45, 74, 0.03) 2px,
+    rgba(255, 45, 74, 0.03) 4px
+  );
+  pointer-events: none;
+  animation: crash-flicker 0.15s infinite;
+}
+@keyframes crash-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
+}
+.cyber-crash__content {
+  text-align: center;
+  z-index: 1;
+  animation: crash-glitch 2s ease-out forwards;
+}
+@keyframes crash-glitch {
+  0% { transform: translate(-5px, 3px); filter: blur(2px); opacity: 0; }
+  10% { transform: translate(3px, -2px); filter: blur(0); opacity: 1; }
+  20% { transform: translate(-2px, 1px); }
+  30% { transform: translate(0); }
+  100% { transform: translate(0); }
+}
+.cyber-crash__skull {
+  font-size: 12px;
+  line-height: 1.1;
+  color: #ff2d4a;
+  margin-bottom: 16px;
+  text-shadow: 0 0 10px rgba(255, 45, 74, 0.6);
+}
+.cyber-crash__title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  text-shadow: 0 0 20px rgba(255, 45, 74, 0.8), 0 0 60px rgba(255, 45, 74, 0.4);
+  margin: 0 0 8px;
+}
+.cyber-crash__code {
+  font-size: 0.9rem;
+  color: #ff6b8a;
+  margin: 0 0 12px;
+  opacity: 0.8;
+}
+.cyber-crash__msg {
+  font-size: 0.85rem;
+  color: #884455;
+  margin: 0 0 24px;
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cyber-crash__bar {
+  width: 200px;
+  height: 2px;
+  margin: 0 auto 24px;
+  background: linear-gradient(90deg, transparent, #ff2d4a, transparent);
+  animation: crash-scan 2s linear infinite;
+}
+@keyframes crash-scan {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+.cyber-crash__btn {
+  background: transparent;
+  border: 1px solid #ff2d4a;
+  color: #ff2d4a;
+  padding: 12px 32px;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: all 0.3s;
+}
+.cyber-crash__btn:hover {
+  background: #ff2d4a;
+  color: #0a0a12;
+  box-shadow: 0 0 20px rgba(255, 45, 74, 0.5);
+}

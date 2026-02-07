@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect, useCallback, memo } from 'react';
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import TextScramble from './TextScramble';
 import './Section.css';
 
 /** Scramble a 2-digit number before settling */
@@ -149,7 +150,9 @@ function Section({ id, num, title, children }) {
         >
           {scrambled}
         </motion.span>
-        <span className="card__title-text gradient-text glitch" data-text={title}>{title}</span>
+        <span className="card__title-text gradient-text glitch" data-text={title}>
+          <TextScramble text={title} active={inView} />
+        </span>
       </motion.h2>
       {/* Hologram shimmer */}
       <span className="card__holo" aria-hidden="true" />

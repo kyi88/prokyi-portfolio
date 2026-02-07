@@ -1,0 +1,49 @@
+.net-toast {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  backdrop-filter: blur(12px);
+  border: 1px solid;
+  pointer-events: none;
+}
+.net-toast--offline {
+  background: rgba(255, 45, 74, 0.12);
+  border-color: rgba(255, 45, 74, 0.4);
+  color: #ff6b8a;
+  box-shadow: 0 0 20px rgba(255, 45, 74, 0.15);
+}
+.net-toast--online {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: rgba(0, 255, 136, 0.35);
+  color: #00ff88;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.12);
+}
+.net-toast__led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.net-toast--offline .net-toast__led {
+  background: #ff2d4a;
+  box-shadow: 0 0 8px #ff2d4a;
+  animation: led-blink 0.8s infinite;
+}
+.net-toast--online .net-toast__led {
+  background: #00ff88;
+  box-shadow: 0 0 8px #00ff88;
+}
+@keyframes led-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}

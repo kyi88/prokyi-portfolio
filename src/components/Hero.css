@@ -173,6 +173,22 @@
   display: block;
   box-shadow: 0 0 50px var(--c-glow), 0 0 100px var(--c-glow2);
   animation: avatar-pulse 3s ease-in-out infinite;
+  transition: filter 0.3s;
+}
+.hero__avatar-wrap:hover .hero__avatar {
+  animation: avatar-pulse 3s ease-in-out infinite, avatar-glitch 0.3s steps(4) 1;
+}
+@keyframes avatar-glitch {
+  0%   { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 2px); filter: hue-rotate(90deg); }
+  25%  { clip-path: inset(60% 0 10% 0); transform: translate(3px, -1px); filter: hue-rotate(180deg); }
+  50%  { clip-path: inset(40% 0 30% 0); transform: translate(-2px, -2px); filter: hue-rotate(270deg); }
+  75%  { clip-path: inset(10% 0 70% 0); transform: translate(2px, 1px); filter: hue-rotate(0deg); }
+  100% { clip-path: none; transform: translate(0); filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__avatar-wrap:hover .hero__avatar {
+    animation: avatar-pulse 3s ease-in-out infinite;
+  }
 }
 @keyframes avatar-pulse {
   0%, 100% { box-shadow: 0 0 40px var(--c-glow), 0 0 80px var(--c-glow2); }
