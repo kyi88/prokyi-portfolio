@@ -34,6 +34,8 @@ const HELP_TEXT = [
   '  clamscan — Malware threat scanner',
   '  sniff    — Packet sniffer (Wireshark)',
   '  defrag   — Memory defragmenter',
+  '  neurallink — Neural link sync monitor',
+  '  darknet  — Tor circuit relay viewer',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -312,6 +314,14 @@ const COMMANDS = {
   defrag: () => {
     window.dispatchEvent(new CustomEvent('prokyi-defrag-toggle'));
     return ['💾 Memory Defragmenter opened. Press ▶ DEFRAG to optimize.'];
+  },
+  neurallink: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-neurallink-toggle'));
+    return ['🧠 Neural Link Sync Monitor activated.'];
+  },
+  darknet: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-darknet-toggle'));
+    return ['🧅 Darknet Relay — Tor Circuit viewer opened.'];
   },
   cursor: () => {
     const doc = document.documentElement;

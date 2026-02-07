@@ -1,0 +1,84 @@
+.neural-link {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(420px, 90vw);
+  background: rgba(0, 0, 0, 0.97);
+  border: 1px solid #f0f;
+  border-radius: 6px;
+  z-index: 9990;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.6rem;
+  color: #ccc;
+  padding: 10px 14px;
+  box-shadow: 0 0 30px rgba(255, 0, 255, 0.15);
+}
+
+.neural-link__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #f0f;
+  font-size: 0.65rem;
+  margin-bottom: 8px;
+}
+
+.neural-link__btn {
+  background: none;
+  border: 1px solid rgba(255, 0, 255, 0.3);
+  color: #f0f;
+  font-family: inherit;
+  font-size: 0.55rem;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+.neural-link__btn:hover { background: rgba(255, 0, 255, 0.12); }
+
+.neural-link__wave {
+  width: 100%;
+  height: 80px;
+  background: rgba(255, 0, 255, 0.03);
+  border: 1px solid rgba(255, 0, 255, 0.15);
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+.neural-link__sync {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0ff;
+  margin: 8px 0;
+  cursor: pointer;
+  user-select: none;
+  text-shadow: 0 0 12px rgba(0, 255, 255, 0.5);
+  transition: color 0.3s;
+}
+.neural-link__sync--berserk { color: #f00; text-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
+
+.neural-link__status {
+  text-align: center;
+  font-size: 0.55rem;
+  color: #888;
+  margin-bottom: 6px;
+}
+.neural-link__status--berserk { color: #f00; animation: nl-blink 0.3s infinite; }
+
+.neural-link__channels {
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.5rem;
+  color: #666;
+}
+.neural-link__ch { text-align: center; }
+.neural-link__ch-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 3px; }
+
+@keyframes nl-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@media (max-width: 768px) {
+  .neural-link { width: 95vw; }
+}

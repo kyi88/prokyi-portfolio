@@ -43,6 +43,8 @@ import PortScanner from './components/PortScanner';
 import MalwareQuarantine from './components/MalwareQuarantine';
 import PacketSniffer from './components/PacketSniffer';
 import MemoryDefrag from './components/MemoryDefrag';
+import NeuralLinkSync from './components/NeuralLinkSync';
+import DarknetRelay from './components/DarknetRelay';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -751,6 +753,8 @@ export default function App() {
       <MalwareQuarantine />
       <PacketSniffer />
       <MemoryDefrag />
+      <NeuralLinkSync />
+      <DarknetRelay />
       {kernelPanic && (
         <div className="kernel-panic" aria-live="assertive">
           <pre>{`KERNEL PANIC - NOT SYNCING: Attempted to kill init!
