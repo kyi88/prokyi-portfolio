@@ -53,6 +53,8 @@ import SteganographyLab from './components/SteganographyLab';
 import ZeroDayVault from './components/ZeroDayVault';
 import QuantumEntangle from './components/QuantumEntangle';
 import SynapticFirewall from './components/SynapticFirewall';
+import DeadDrop from './components/DeadDrop';
+import WetwareCompiler from './components/WetwareCompiler';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -771,6 +773,8 @@ export default function App() {
       <ZeroDayVault />
       <QuantumEntangle />
       <SynapticFirewall />
+      <DeadDrop />
+      <WetwareCompiler />
       {kernelPanic && (
         <div className="kernel-panic" aria-live="assertive">
           <pre>{`KERNEL PANIC - NOT SYNCING: Attempted to kill init!

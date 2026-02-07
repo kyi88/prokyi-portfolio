@@ -1,0 +1,231 @@
+.dead-drop {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9990;
+  background: linear-gradient(135deg, #0a0a12 60%, #1a0a20);
+  border: 1px solid #ff4444;
+  border-radius: 12px;
+  padding: 20px;
+  width: min(420px, 92vw);
+  max-height: 80vh;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  color: #e0e0e0;
+  box-shadow: 0 0 30px rgba(255, 68, 68, .25);
+}
+
+.dead-drop__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  font-size: .95rem;
+  color: #ff4444;
+  text-shadow: 0 0 6px rgba(255, 68, 68, .5);
+}
+
+.dead-drop__btn {
+  background: rgba(255, 68, 68, .15);
+  border: 1px solid #ff4444;
+  color: #ff4444;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: .8rem;
+  transition: background .2s;
+}
+
+.dead-drop__btn:hover {
+  background: rgba(255, 68, 68, .35);
+}
+
+.dead-drop__capsules {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.dead-drop__capsule {
+  background: rgba(255, 68, 68, .08);
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all .2s;
+  font-size: .75rem;
+  text-align: center;
+  min-width: 60px;
+}
+
+.dead-drop__capsule:hover {
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, .15);
+}
+
+.dead-drop__capsule--active {
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, .2);
+  box-shadow: 0 0 8px rgba(255, 68, 68, .3);
+}
+
+.dead-drop__capsule--decoded {
+  border-color: #00ff88;
+  color: #00ff88;
+}
+
+.dead-drop__cipher {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.dead-drop__ring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.dead-drop__ring-btn {
+  background: rgba(255, 68, 68, .1);
+  border: 1px solid #444;
+  color: #ff6666;
+  width: 32px;
+  height: 22px;
+  cursor: pointer;
+  font-size: .9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: background .15s;
+}
+
+.dead-drop__ring-btn:hover {
+  background: rgba(255, 68, 68, .3);
+}
+
+.dead-drop__ring-display {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ff4444;
+  background: rgba(0, 0, 0, .6);
+  border: 2px solid #ff4444;
+  border-radius: 8px;
+  text-shadow: 0 0 8px rgba(255, 68, 68, .7);
+}
+
+.dead-drop__progress {
+  height: 4px;
+  background: #1a1a2a;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.dead-drop__progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ff4444, #ff8844);
+  border-radius: 2px;
+  transition: width .3s;
+}
+
+.dead-drop__message {
+  background: rgba(0, 0, 0, .4);
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: .78rem;
+  line-height: 1.5;
+  min-height: 60px;
+  white-space: pre-wrap;
+}
+
+.dead-drop__message--decoded {
+  border-color: #00ff88;
+  color: #00ff88;
+}
+
+.dead-drop__sender {
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: rgba(255, 68, 68, .08);
+  border-left: 3px solid #ff4444;
+  font-size: .72rem;
+  color: #999;
+}
+
+.dead-drop__omega {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 0, 0, .95);
+  border-radius: 12px;
+  z-index: 10;
+  animation: omega-pulse .5s ease-in-out infinite alternate;
+}
+
+.dead-drop__omega h2 {
+  color: #ff0000;
+  font-size: 1.1rem;
+  text-shadow: 0 0 20px rgba(255, 0, 0, .8);
+  margin-bottom: 8px;
+}
+
+.dead-drop__omega p {
+  color: #ff6666;
+  font-size: .85rem;
+  text-align: center;
+  padding: 0 20px;
+}
+
+@keyframes omega-pulse {
+  from { box-shadow: inset 0 0 40px rgba(255, 0, 0, .2); }
+  to { box-shadow: inset 0 0 80px rgba(255, 0, 0, .4); }
+}
+
+.dead-drop__status {
+  text-align: center;
+  font-size: .7rem;
+  color: #666;
+  margin-top: 8px;
+}
+
+[data-theme="green"] .dead-drop {
+  border-color: #00ff41;
+  box-shadow: 0 0 30px rgba(0, 255, 65, .2);
+}
+
+[data-theme="green"] .dead-drop__header,
+[data-theme="green"] .dead-drop__ring-display {
+  color: #00ff41;
+  text-shadow: 0 0 6px rgba(0, 255, 65, .5);
+}
+
+[data-theme="green"] .dead-drop__btn {
+  border-color: #00ff41;
+  color: #00ff41;
+  background: rgba(0, 255, 65, .1);
+}
+
+[data-theme="green"] .dead-drop__ring-display {
+  border-color: #00ff41;
+}
+
+@media (max-width: 480px) {
+  .dead-drop { padding: 14px; width: 95vw; }
+  .dead-drop__ring-display { width: 34px; height: 34px; font-size: 1.1rem; }
+}

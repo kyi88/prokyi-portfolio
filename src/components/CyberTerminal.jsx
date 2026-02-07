@@ -44,6 +44,8 @@ const HELP_TEXT = [
   '  exploit  — Zero-day exploit database',
   '  quantum  — Quantum entanglement lab',
   '  firewall — Synaptic neural firewall',
+  '  deaddrop — Encrypted dead drop messages',
+  '  wetware  — Wetware bio-compiler',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -362,6 +364,14 @@ const COMMANDS = {
   firewall: () => {
     window.dispatchEvent(new CustomEvent('prokyi-firewall-toggle'));
     return ['🧠 Synaptic Firewall activated.'];
+  },
+  deaddrop: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-deaddrop-toggle'));
+    return ['📦 Dead Drop accessed. Decrypt the capsules.'];
+  },
+  wetware: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-wetware-toggle'));
+    return ['🧬 Wetware Compiler initialized. Build your genome.'];
   },
   cursor: () => {
     const doc = document.documentElement;
