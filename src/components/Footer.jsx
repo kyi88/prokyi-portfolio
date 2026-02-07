@@ -90,10 +90,11 @@ function LoadTime() {
       }
     };
     if (document.readyState === 'complete') {
-      measure();
+      setTimeout(measure, 0);
     } else {
-      window.addEventListener('load', measure);
-      return () => window.removeEventListener('load', measure);
+      const onLoad = () => setTimeout(measure, 0);
+      window.addEventListener('load', onLoad);
+      return () => window.removeEventListener('load', onLoad);
     }
   }, []);
   if (ms === null) return null;
@@ -127,14 +128,16 @@ export default function Footer() {
   useEffect(() => () => clearTimeout(eggTimerRef.current), []);
 
   const handleCopyClick = () => {
-    const next = eggClicks + 1;
-    setEggClicks(next);
-    if (next >= 5) {
-      setShowEgg(true);
-      setEggClicks(0);
-      clearTimeout(eggTimerRef.current);
-      eggTimerRef.current = setTimeout(() => setShowEgg(false), 4000);
-    }
+    setEggClicks(prev => {
+      const next = prev + 1;
+      if (next >= 5) {
+        setShowEgg(true);
+        clearTimeout(eggTimerRef.current);
+        eggTimerRef.current = setTimeout(() => setShowEgg(false), 4000);
+        return 0;
+      }
+      return next;
+    });
   };
 
   return (
@@ -160,6 +163,9 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.8 }}
           onClick={handleCopyClick}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCopyClick(); } }}
+          role="button"
+          tabIndex={0}
           style={{ cursor: 'default', userSelect: 'none' }}
         >
           &copy; 2026 ぷろきぃ (prokyi) &mdash; <span className="gradient-text">技術と創造の交差点</span>
@@ -202,7 +208,7 @@ export default function Footer() {
           <span>COMPONENTS: 21</span>
           <span>CHUNKS: 8</span>
           <span>EASTER EGGS: 10</span>
-          <span>LOOPS: 52</span>
+          <span>LOOPS: 53</span>
           <LoadTime />
           <Uptime />
         </motion.div>

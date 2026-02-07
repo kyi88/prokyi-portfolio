@@ -67,6 +67,7 @@ function Section({ id, num, title, children }) {
         if (elapsed > 15000) {
           setIsHot(true);
           clearInterval(iv);
+          observer.disconnect();
         }
       }
     }, 5000);

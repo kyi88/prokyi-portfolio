@@ -21,25 +21,6 @@ function ParticleTrail() {
     resize();
     window.addEventListener('resize', resize);
 
-    const onMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
-      for (let i = 0; i < 2; i++) {
-        particles.current.push({
-          x: mx, y: my,
-          vx: (Math.random() - 0.5) * 2,
-          vy: (Math.random() - 0.5) * 2,
-          life: 1,
-          size: Math.random() * 3 + 1,
-          hue: 190 + Math.random() * 60,
-        });
-      }
-      if (particles.current.length > 80) particles.current.splice(0, particles.current.length - 80);
-    };
-    // Listen on parent hero element so pointer-events:none on canvas doesn't block
-    heroEl.addEventListener('mousemove', onMove);
-
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const ps = particles.current;
@@ -56,11 +37,35 @@ function ParticleTrail() {
         ctx.fill();
       }
       ctx.globalAlpha = 1;
-      raf = requestAnimationFrame(draw);
+      if (particles.current.length > 0) {
+        raf = requestAnimationFrame(draw);
+      } else {
+        raf = null;
+      }
     };
-    raf = requestAnimationFrame(draw);
+    const startDraw = () => { if (!raf) raf = requestAnimationFrame(draw); };
+    const onMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      for (let i = 0; i < 3; i++) {
+        particles.current.push({
+          x, y,
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          life: 1,
+          size: 2 + Math.random() * 3,
+          hue: 195 + Math.random() * 60,
+        });
+      }
+      startDraw();
+      if (particles.current.length > 80) particles.current.splice(0, particles.current.length - 80);
+    };
+    // Listen on parent hero element so pointer-events:none on canvas doesn't block
+    heroEl.addEventListener('mousemove', onMove);
+
     return () => {
-      cancelAnimationFrame(raf);
+      if (raf) cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
       heroEl.removeEventListener('mousemove', onMove);
     };
@@ -94,12 +99,21 @@ const SUBTITLES = [
   '> Always Learning_',
 ];
 
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h >= 5 && h < 12) return '> SYSTEM_BOOT — おはよう、ハッカー';
+  if (h >= 12 && h < 17) return '> MISSION_ACTIVE — 探索中...';
+  if (h >= 17 && h < 21) return '> SUNSET_MODE — 夕暮れプロトコル';
+  return '> NIGHT_OWL_PROTOCOL — 同志よ';
+}
+
 export default function Hero() {
   const [count, setCount] = useState(0);
   const [typed, setTyped] = useState('');
   const [avatarClicks, setAvatarClicks] = useState(0);
   const [secretMsg, setSecretMsg] = useState(false);
   const [quote] = useState(() => CYBER_QUOTES[Math.floor(Math.random() * CYBER_QUOTES.length)]);
+  const [timeGreeting, setTimeGreeting] = useState(getGreeting);
   const secretTimerRef = useRef(null);
   const ref = useRef(null);
   const avatarRef = useRef(null);
@@ -207,6 +221,12 @@ export default function Hero() {
   // Cleanup secret timer
   useEffect(() => () => clearTimeout(secretTimerRef.current), []);
 
+  // Update time greeting every minute
+  useEffect(() => {
+    const iv = setInterval(() => setTimeGreeting(getGreeting()), 60000);
+    return () => clearInterval(iv);
+  }, []);
+
   return (
     <section className="hero" ref={ref} id="top" aria-label="自己紹介">
       {/* Particle trail canvas (desktop) */}
@@ -274,13 +294,7 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             aria-hidden="true"
           >
-            {(() => {
-              const h = new Date().getHours();
-              if (h >= 5 && h < 12) return '> SYSTEM_BOOT — おはよう、ハッカー';
-              if (h >= 12 && h < 17) return '> MISSION_ACTIVE — 探索中...';
-              if (h >= 17 && h < 21) return '> SUNSET_MODE — 夕暮れプロトコル';
-              return '> NIGHT_OWL_PROTOCOL — 同志よ';
-            })()}
+            {timeGreeting}
           </motion.p>
 
           <motion.p

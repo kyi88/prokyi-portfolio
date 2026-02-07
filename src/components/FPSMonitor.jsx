@@ -25,6 +25,8 @@ function FPSMonitor() {
   // FPS loop
   useEffect(() => {
     if (!visible) return;
+    framesRef.current = 0;
+    lastRef.current = performance.now();
     const tick = () => {
       framesRef.current++;
       const now = performance.now();
