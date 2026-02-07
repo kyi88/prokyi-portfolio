@@ -20,6 +20,10 @@ const CODE_LINES = [
 const CodeBlock = memo(function CodeBlock() {
   const [visibleLines, setVisibleLines] = useState(0);
   const ref = useRef(null);
+  const ivRef = useRef(null);
+
+  // Cleanup interval on unmount
+  useEffect(() => () => clearInterval(ivRef.current), []);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -27,10 +31,10 @@ const CodeBlock = memo(function CodeBlock() {
       if (e.isIntersecting) {
         obs.disconnect();
         let i = 0;
-        const iv = setInterval(() => {
+        ivRef.current = setInterval(() => {
           i++;
           setVisibleLines(i);
-          if (i >= CODE_LINES.length) clearInterval(iv);
+          if (i >= CODE_LINES.length) clearInterval(ivRef.current);
         }, 120);
       }
     }, { threshold: 0.3 });

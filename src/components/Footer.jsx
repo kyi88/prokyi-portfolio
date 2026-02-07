@@ -41,19 +41,17 @@ function QuoteRotator() {
 }
 
 /* ── Matrix trickle — falling chars in footer ── */
+const MATRIX_CHARS = 'ぷろきぃ01アイウエオ>_{}[]#$%&';
 function MatrixRain() {
-  const [columns, setColumns] = useState([]);
-  useEffect(() => {
-    const chars = 'ぷろきぃ01アイウエオ>_{}[]#$%&';
-    const cols = Array.from({ length: 18 }, (_, i) => ({
+  const [columns] = useState(() =>
+    Array.from({ length: 18 }, (_, i) => ({
       id: i,
       left: `${(i / 18) * 100}%`,
       delay: Math.random() * 4,
       dur: 3 + Math.random() * 4,
-      char: chars[Math.floor(Math.random() * chars.length)],
-    }));
-    setColumns(cols);
-  }, []);
+      char: MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)],
+    }))
+  );
 
   return (
     <div className="footer__matrix" aria-hidden="true">
@@ -120,8 +118,8 @@ function Uptime() {
 }
 
 /* ── Typewriter "Built with" message ── */
+const BUILT_WITH_TEXT = 'Built with ❤️ by prokyi';
 function BuiltWith() {
-  const text = 'Built with ❤️ by prokyi';
   const [typed, setTyped] = useState('');
   const [started, setStarted] = useState(false);
   const ref = useRef(null);
@@ -140,14 +138,14 @@ function BuiltWith() {
     let i = 0;
     const iv = setInterval(() => {
       i++;
-      setTyped(text.slice(0, i));
-      if (i >= text.length) clearInterval(iv);
+      setTyped(BUILT_WITH_TEXT.slice(0, i));
+      if (i >= BUILT_WITH_TEXT.length) clearInterval(iv);
     }, 60);
     return () => clearInterval(iv);
   }, [started]);
 
   return (
-    <p ref={ref} className="footer__built-with" aria-label={text}>
+    <p ref={ref} className="footer__built-with" aria-label={BUILT_WITH_TEXT}>
       {typed}<span className="footer__cursor" aria-hidden="true">|</span>
     </p>
   );
@@ -243,7 +241,7 @@ export default function Footer() {
           <span>COMPONENTS: 41</span>
           <span>CHUNKS: 8</span>
           <span>EASTER EGGS: 13</span>
-          <span>LOOPS: 78</span>
+          <span>LOOPS: 79</span>
           <LoadTime />
           <Uptime />
         </motion.div>

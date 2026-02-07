@@ -149,6 +149,8 @@ function Section({ id, num, title, children }) {
       style={{ transformPerspective: 1200 }}
       onMouseMove={handleMouseMove}
     >
+      {/* Hex grid pattern */}
+      <div className="card__hex" aria-hidden="true" />
       {/* Mouse proximity glow */}
       <span className="card__glow" aria-hidden="true" />
       {/* Terminal prompt */}
