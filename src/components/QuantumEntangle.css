@@ -1,0 +1,100 @@
+.quantum-entangle {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(380px, 92vw);
+  background: rgba(8, 8, 18, 0.97);
+  border: 1px solid var(--accent, #00e5ff);
+  border-radius: 6px;
+  z-index: 9990;
+  font-family: 'JetBrains Mono', 'Fira Mono', monospace;
+  font-size: 0.6rem;
+  color: #e0e0e0;
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.15);
+  overflow: hidden;
+}
+
+.quantum-entangle__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(138, 43, 226, 0.08);
+  border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+}
+
+.quantum-entangle__btn {
+  background: transparent;
+  border: 1px solid rgba(138, 43, 226, 0.4);
+  color: #b388ff;
+  padding: 2px 8px;
+  font-family: inherit;
+  font-size: 0.55rem;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.quantum-entangle__btn:hover {
+  background: rgba(138, 43, 226, 0.12);
+}
+
+.quantum-entangle__canvas {
+  display: block;
+  width: 100%;
+  height: 180px;
+  cursor: pointer;
+}
+
+.quantum-entangle__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  padding: 8px 12px;
+}
+
+.quantum-entangle__stat {
+  text-align: center;
+}
+
+.quantum-entangle__stat-label {
+  font-size: 0.4rem;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.quantum-entangle__stat-value {
+  font-size: 0.75rem;
+  color: #b388ff;
+  font-weight: bold;
+}
+
+.quantum-entangle__superposition {
+  background: rgba(138, 43, 226, 0.15);
+  border: 1px solid #b388ff;
+  border-radius: 4px;
+  padding: 8px;
+  text-align: center;
+  color: #b388ff;
+  font-weight: bold;
+  margin: 0 12px 8px;
+  animation: q-flash 0.3s infinite alternate;
+}
+
+@keyframes q-flash {
+  from { opacity: 1; }
+  to { opacity: 0.6; }
+}
+
+.quantum-entangle__status {
+  font-size: 0.45rem;
+  color: #555;
+  text-align: center;
+  padding: 0 12px 8px;
+}
+
+@media (max-width: 768px) {
+  .quantum-entangle {
+    width: 95vw;
+  }
+}

@@ -42,6 +42,8 @@ const HELP_TEXT = [
   '  arena    — AI Model battle arena',
   '  stegano  — Steganography lab',
   '  exploit  — Zero-day exploit database',
+  '  quantum  — Quantum entanglement lab',
+  '  firewall — Synaptic neural firewall',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -352,6 +354,14 @@ const COMMANDS = {
   exploit: () => {
     window.dispatchEvent(new CustomEvent('prokyi-exploit-toggle'));
     return ['🛡️ Zero-Day Exploit Database opened.'];
+  },
+  quantum: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-quantum-toggle'));
+    return ['⚛️ Quantum Entanglement Lab opened.'];
+  },
+  firewall: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-firewall-toggle'));
+    return ['🧠 Synaptic Firewall activated.'];
   },
   cursor: () => {
     const doc = document.documentElement;
