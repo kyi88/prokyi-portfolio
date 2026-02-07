@@ -17,10 +17,12 @@ function getCtx() {
 
 export default function useHoverSound(freq = 880, duration = 0.04, volume = 0.08) {
   const { muted } = useContext(SoundContext);
+  const mutedRef = useRef(muted);
+  mutedRef.current = muted;
   const lastPlay = useRef(0);
 
   const onMouseEnter = useCallback(() => {
-    if (muted) return;
+    if (mutedRef.current) return;
     // Throttle: at most once per 100ms
     const now = Date.now();
     if (now - lastPlay.current < 100) return;
@@ -38,10 +40,11 @@ export default function useHoverSound(freq = 880, duration = 0.04, volume = 0.08
       gain.connect(ctx.destination);
       osc.start(ctx.currentTime);
       osc.stop(ctx.currentTime + duration);
+      osc.onended = () => { osc.disconnect(); gain.disconnect(); };
     } catch {
       // Ignore audio errors (autoplay policy etc)
     }
-  }, [muted, freq, duration, volume]);
+  }, [freq, duration, volume]);
 
   return { onMouseEnter };
 }

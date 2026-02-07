@@ -9,12 +9,13 @@ import './ScrollPercentage.css';
 function ScrollPercentage() {
   const { scrollYProgress } = useScroll();
   const pct = useTransform(scrollYProgress, v => `${Math.round(v * 100)}%`);
+  const opacity = useTransform(scrollYProgress, [0, 0.02, 0.98, 1], [0, 1, 1, 0]);
 
   return (
     <motion.div
       className="scroll-pct"
       aria-hidden="true"
-      style={{ opacity: useTransform(scrollYProgress, [0, 0.02, 0.98, 1], [0, 1, 1, 0]) }}
+      style={{ opacity }}
     >
       <motion.span className="scroll-pct__value">{pct}</motion.span>
     </motion.div>

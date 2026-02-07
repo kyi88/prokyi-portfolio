@@ -8,6 +8,7 @@ import './ClickSpark.css';
 function ClickSpark() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timers = new Set();
 
     const onClick = (e) => {
       const count = 6 + Math.floor(Math.random() * 4);
@@ -25,14 +26,19 @@ function ClickSpark() {
           --dx:${dx}px;--dy:${dy}px;
         `;
         document.body.appendChild(spark);
-        spark.addEventListener('animationend', () => spark.remove());
-        // Fallback removal
-        setTimeout(() => spark.remove(), 700);
+        const cleanup = () => { spark.remove(); timers.delete(tid); };
+        spark.addEventListener('animationend', cleanup, { once: true });
+        const tid = setTimeout(cleanup, 700);
+        timers.add(tid);
       }
     };
 
     window.addEventListener('click', onClick);
-    return () => window.removeEventListener('click', onClick);
+    return () => {
+      window.removeEventListener('click', onClick);
+      timers.forEach(t => clearTimeout(t));
+      document.querySelectorAll('.click-spark').forEach(el => el.remove());
+    };
   }, []);
 
   return null;

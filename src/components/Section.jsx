@@ -106,13 +106,18 @@ function Section({ id, num, title, children }) {
     return () => { observer.disconnect(); clearInterval(iv); };
   }, []);
 
-  /* Mouse proximity glow tracking */
+  /* Mouse proximity glow tracking (RAF throttled) */
   const handleMouseMove = useCallback((e) => {
     const el = ref.current;
     if (!el) return;
-    const rect = el.getBoundingClientRect();
-    el.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);
-    el.style.setProperty('--glow-y', `${e.clientY - rect.top}px`);
+    if (el._rafGlow) return;
+    const cx = e.clientX, cy = e.clientY;
+    el._rafGlow = requestAnimationFrame(() => {
+      const rect = el.getBoundingClientRect();
+      el.style.setProperty('--glow-x', `${cx - rect.left}px`);
+      el.style.setProperty('--glow-y', `${cy - rect.top}px`);
+      el._rafGlow = null;
+    });
   }, []);
 
   useEffect(() => {

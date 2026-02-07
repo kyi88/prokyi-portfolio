@@ -9,14 +9,17 @@ const ZONES = [
   { label: 'LONDON', tz: 'Europe/London', flag: '🇬🇧' },
   { label: 'NEW YORK', tz: 'America/New_York', flag: '🇺🇸' },
 ];
+const ZONE_FORMATTERS = ZONES.map(z =>
+  new Intl.DateTimeFormat('en-GB', {
+    timeZone: z.tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+  })
+);
 function WorldClocks() {
   const [times, setTimes] = useState(() => ZONES.map(() => '--:--'));
   useEffect(() => {
     const update = () => {
-      setTimes(ZONES.map(z => {
-        const d = new Date();
-        return d.toLocaleTimeString('en-GB', { timeZone: z.tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-      }));
+      const now = new Date();
+      setTimes(ZONE_FORMATTERS.map(fmt => fmt.format(now)));
     };
     update();
     const iv = setInterval(update, 1000);

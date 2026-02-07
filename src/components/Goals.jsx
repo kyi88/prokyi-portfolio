@@ -64,7 +64,7 @@ export default function Goals() {
             layout
             initial={{ opacity: 0, y: 40, scale: 0.8, rotateY: 20 }}
             animate={inView ? { opacity: 1, y: 0, scale: 1, rotateY: 0 } : {}}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20, transition: { duration: 0.3, delay: 0 } }}
             transition={{ duration: 0.8, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
             whileHover={{
               y: -8,
