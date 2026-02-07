@@ -23,8 +23,8 @@
 /* Sound toggle button */
 .sound-toggle {
   position: fixed;
-  bottom: 90px;
-  right: 16px;
+  bottom: 76px;
+  right: 24px;
   z-index: 910;
   width: 36px;
   height: 36px;

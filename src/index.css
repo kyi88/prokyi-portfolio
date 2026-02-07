@@ -48,6 +48,39 @@
   --radius-sm: 10px;
 }
 
+/* ── Hacker Green theme ── */
+[data-theme="green"] {
+  --c-bg: #020a02;
+  --c-bg-alt: #061806;
+  --c-surface: rgba(6, 24, 6, 0.78);
+  --c-surface-solid: #061806;
+  --c-border: rgba(0, 255, 65, 0.15);
+  --c-border-hover: rgba(0, 255, 65, 0.4);
+
+  --c-text: #b8e6b8;
+  --c-text-dim: #4a7a4a;
+  --c-heading: #d0ffd0;
+
+  --c-accent: #00ff41;
+  --c-accent2: #39ff14;
+  --c-accent3: #50fa7b;
+
+  --c-orange: #e0a030;
+  --c-pink: #50fa7b;
+  --c-rose: #7dffb3;
+  --c-green: #00ff41;
+  --c-gold: #d4e600;
+  --c-lime: #39ff14;
+  --c-red: #ff6b6b;
+
+  --c-glow: rgba(0, 255, 65, 0.25);
+  --c-glow2: rgba(57, 255, 20, 0.15);
+  --c-glow-pink: rgba(80, 250, 123, 0.15);
+  --c-glow-purple: rgba(80, 250, 123, 0.15);
+  --c-glow-green: rgba(0, 255, 65, 0.2);
+  --c-glow-gold: rgba(212, 230, 0, 0.12);
+}
+
 html {
   scroll-behavior: smooth;
 }

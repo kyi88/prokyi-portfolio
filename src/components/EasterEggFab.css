@@ -1,7 +1,7 @@
 /* Easter Egg FAB */
 .ee-fab {
-  position: fixed; bottom: 22px; right: 22px; z-index: 9990;
-  width: 46px; height: 46px; border-radius: 50%;
+  position: fixed; bottom: 124px; right: 24px; z-index: 920;
+  width: 42px; height: 42px; border-radius: 50%;
   border: 1px solid rgba(79,172,254,.25);
   background: rgba(14,18,30,.85); backdrop-filter: blur(6px);
   font-size: 1.2rem; cursor: pointer;
@@ -12,7 +12,7 @@
 .ee-fab:hover { border-color: var(--c-accent, #4facfe); }
 
 .ee-menu {
-  position: fixed; bottom: 76px; right: 22px; z-index: 9990;
+  position: fixed; bottom: 174px; right: 24px; z-index: 920;
   background: rgba(14,18,30,.95); border: 1px solid rgba(79,172,254,.18);
   border-radius: 8px; padding: 6px; box-shadow: 0 8px 28px rgba(0,0,0,.5);
 }
