@@ -57,6 +57,8 @@ export default function TypingGame({ onClose }) {
   const [timeLeft, setTimeLeft] = useState(DURATION);
   const [mistakes, setMistakes] = useState(0);
   const [flash, setFlash] = useState(null);
+  const [bestScore, setBestScore] = useState(() => parseInt(localStorage.getItem('prokyi_typing_best') || '0', 10));
+  const [isNewRecord, setIsNewRecord] = useState(false);
   const inputRef = useRef(null);
 
   // Start
@@ -69,6 +71,7 @@ export default function TypingGame({ onClose }) {
     setMaxCombo(0);
     setTimeLeft(DURATION);
     setMistakes(0);
+    setIsNewRecord(false);
     setPhase('playing');
     sfx.start();
   }, []);
@@ -76,7 +79,11 @@ export default function TypingGame({ onClose }) {
   // Timer
   useEffect(() => {
     if (phase !== 'playing') return;
-    if (timeLeft <= 0) { setPhase('done'); sfx.done(); return; }
+    if (timeLeft <= 0) {
+      setPhase('done');
+      sfx.done();
+      return;
+    }
     const t = setTimeout(() => setTimeLeft(prev => prev - 1), 1000);
     return () => clearTimeout(t);
   }, [phase, timeLeft]);
@@ -140,6 +147,15 @@ export default function TypingGame({ onClose }) {
     ? Math.round((score / Math.max(DURATION - timeLeft, 1)) * 12)
     : 0;
 
+  // Save best score
+  useEffect(() => {
+    if (phase === 'done' && score > bestScore) {
+      setBestScore(score);
+      setIsNewRecord(true);
+      localStorage.setItem('prokyi_typing_best', String(score));
+    }
+  }, [phase, score]);
+
   return (
     <motion.div className="tg-overlay"
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -162,6 +178,9 @@ export default function TypingGame({ onClose }) {
               表示される単語をできるだけ速くタイプせよ。<br />
               制限時間 <strong>{DURATION}秒</strong>。コンボでスコア倍率UP。
             </p>
+            {bestScore > 0 && (
+              <p className="tg-ready__best">🏆 BEST: {bestScore}</p>
+            )}
             <button className="tg-start-btn" onClick={start}>
               &gt; START HACK_
             </button>
@@ -231,6 +250,19 @@ export default function TypingGame({ onClose }) {
             <div className="tg-result__grade">
               {score >= 200 ? '🏆 S RANK' : score >= 120 ? '🥇 A RANK' : score >= 60 ? '🥈 B RANK' : '🥉 C RANK'}
             </div>
+            {isNewRecord && (
+              <motion.p
+                className="tg-result__new-record"
+                initial={{ scale: 0, rotate: -10 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 15, delay: 0.3 }}
+              >
+                ⚡ NEW RECORD! ⚡
+              </motion.p>
+            )}
+            {bestScore > 0 && !isNewRecord && (
+              <p className="tg-result__best-ref">BEST: {bestScore}</p>
+            )}
             <div className="tg-result__actions">
               <button className="tg-start-btn" onClick={start}>&gt; RETRY_</button>
               <button className="tg-start-btn tg-start-btn--ghost" onClick={onClose}>&gt; EXIT_</button>

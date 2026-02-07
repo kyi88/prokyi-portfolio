@@ -59,6 +59,19 @@ body{
 
 ::selection{background:var(--c-accent);color:#000}
 
+/* ---------- Custom Scrollbar ---------- */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--c-bg)}
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg, var(--c-accent), var(--c-accent2));
+  border-radius:3px;
+}
+::-webkit-scrollbar-thumb:hover{
+  background:linear-gradient(180deg, var(--c-accent2), var(--c-accent));
+  box-shadow:0 0 8px var(--c-glow);
+}
+html{scrollbar-color:var(--c-accent) var(--c-bg);scrollbar-width:thin}
+
 /* ---------- Skip Link (a11y) ---------- */
 .skip-link{
   position:fixed;top:-100%;left:50%;transform:translateX(-50%);

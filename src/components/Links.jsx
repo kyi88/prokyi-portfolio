@@ -2,12 +2,59 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import './Links.css';
 
+const projects = [
+  {
+    name: 'prokyi-portfolio',
+    desc: 'このサイト — React 19 + Three.js + Framer Motionで構築したサイバーパンクポートフォリオ',
+    tech: ['React', 'Three.js', 'Framer Motion'],
+    url: 'https://github.com/kyi88/prokyi-portfolio',
+    color: '#4facfe',
+  },
+  {
+    name: 'zenbukko',
+    desc: 'N予備校のコース教材を一括ダウンロード＆Whisperで文字起こしするCLIツール',
+    tech: ['TypeScript', 'Node.js', 'Whisper'],
+    url: 'https://github.com/kyi88/zenbukko',
+    color: '#00f2fe',
+  },
+];
+
 export default function Links() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
 
   return (
-    <div className="link-row" ref={ref}>
+    <div ref={ref}>
+      {/* Project cards */}
+      <div className="project-cards">
+        <p className="project-cards__label">PROJECTS</p>
+        {projects.map((p, i) => (
+          <motion.a
+            key={p.name}
+            href={p.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="project-card"
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: i * 0.12 }}
+            whileHover={{ y: -4, borderColor: p.color, transition: { duration: 0.2 } }}
+            style={{ '--proj-color': p.color }}
+          >
+            <div className="project-card__header">
+              <span className="project-card__icon">📂</span>
+              <span className="project-card__name">{p.name}</span>
+            </div>
+            <p className="project-card__desc">{p.desc}</p>
+            <div className="project-card__tech">
+              {p.tech.map(t => <span key={t} className="project-card__tag">{t}</span>)}
+            </div>
+          </motion.a>
+        ))}
+      </div>
+
+      {/* Social links */}
+      <div className="link-row">
       <motion.a
         href="https://github.com/kyi88"
         className="link-btn link-btn--gh"
@@ -51,6 +98,7 @@ export default function Links() {
           <span className="link-btn__preview-desc">技術系ツイート・情報発信</span>
         </span>
       </motion.a>
+    </div>
     </div>
   );
 }
