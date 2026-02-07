@@ -16,6 +16,7 @@ import KeyboardGuide from './components/KeyboardGuide';
 import ScrollToTop from './components/ScrollToTop';
 import CommandPalette from './components/CommandPalette';
 import Minimap from './components/Minimap';
+import WelcomeBanner from './components/WelcomeBanner';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -497,6 +498,7 @@ export default function App() {
       <ScrollToTop />
       <CommandPalette />
       <Minimap />
+      <WelcomeBanner />
         </>
       )}
     </SoundContext.Provider>
