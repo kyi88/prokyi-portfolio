@@ -8,19 +8,19 @@ import './ThemePreview.css';
  */
 const ThemePreview = memo(function ThemePreview() {
   const [preview, setPreview] = useState(null);
+  const timerRef = useRef(null);
 
   useEffect(() => {
     const onChange = (e) => {
       const theme = e.detail;
       setPreview(theme === 'green' ? 'Hacker Green 🟢' : 'Cyber Blue 🔵');
-      const t = setTimeout(() => setPreview(null), 2000);
-      // Store timeout for cleanup
-      onChange._timer = t;
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setPreview(null), 2000);
     };
     window.addEventListener('prokyi-theme-sync', onChange);
     return () => {
       window.removeEventListener('prokyi-theme-sync', onChange);
-      clearTimeout(onChange._timer);
+      clearTimeout(timerRef.current);
     };
   }, []);
 

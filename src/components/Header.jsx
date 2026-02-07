@@ -25,6 +25,8 @@ export default function Header() {
   const viewedRef = useRef(new Set());
   const hoverSound = useHoverSound(1200, 0.03, 0.06);
 
+  const selfDispatchRef = useRef(false);
+
   // Apply theme with flash transition
   useEffect(() => {
     if (theme === 'green') {
@@ -34,12 +36,17 @@ export default function Header() {
     }
     localStorage.setItem('prokyi_theme', theme);
     // Notify other components (ThemePreview, MatrixRain, etc.)
+    selfDispatchRef.current = true;
     window.dispatchEvent(new CustomEvent('prokyi-theme-sync', { detail: theme }));
+    selfDispatchRef.current = false;
   }, [theme]);
 
   // Sync theme when changed externally (e.g. CyberTerminal "theme" command)
   useEffect(() => {
-    const onSync = (e) => setTheme(e.detail);
+    const onSync = (e) => {
+      if (selfDispatchRef.current) return; // ignore self-dispatched events
+      setTheme(e.detail);
+    };
     window.addEventListener('prokyi-theme-sync', onSync);
     return () => window.removeEventListener('prokyi-theme-sync', onSync);
   }, []);
