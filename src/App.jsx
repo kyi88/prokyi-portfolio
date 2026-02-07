@@ -30,6 +30,7 @@ const StatusScreen = lazy(() => import('./components/StatusScreen'));
 const EasterEggFab = lazy(() => import('./components/EasterEggFab'));
 const CyberTerminal = lazy(() => import('./components/CyberTerminal'));
 const KeyboardGuide = lazy(() => import('./components/KeyboardGuide'));
+const ProceduralBGM = lazy(() => import('./components/ProceduralBGM'));
 const CommandPalette = lazy(() => import('./components/CommandPalette'));
 const Minimap = lazy(() => import('./components/Minimap'));
 const WelcomeBanner = lazy(() => import('./components/WelcomeBanner'));
@@ -675,6 +676,9 @@ export default function App() {
       <SystemGlitch />
       <SystemAlerts />
       <NetworkStatus />
+
+      {/* Procedural generative BGM */}
+      <Suspense fallback={null}><ProceduralBGM /></Suspense>
 
       {/* Sound toggle */}
       <button
