@@ -207,6 +207,16 @@
   letter-spacing: 1.5px;
   text-shadow: 0 0 8px rgba(79, 172, 254, 0.3);
 }
+.hero__cursor {
+  display: inline-block;
+  color: var(--c-accent);
+  animation: cursor-blink 0.7s step-end infinite;
+  margin-left: 1px;
+}
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
 .hero__name {
   font-size: clamp(2rem, 5vw, 3.4rem);
   font-weight: 700;

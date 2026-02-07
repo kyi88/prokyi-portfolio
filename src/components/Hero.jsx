@@ -6,6 +6,7 @@ const BASE = import.meta.env.BASE_URL;
 
 export default function Hero() {
   const [count, setCount] = useState(0);
+  const [typed, setTyped] = useState('');
   const ref = useRef(null);
   const avatarRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -51,6 +52,18 @@ export default function Hero() {
       if (p < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
+  }, []);
+
+  // Typing animation
+  useEffect(() => {
+    const text = '> Hello, I\'m_';
+    let i = 0;
+    const iv = setInterval(() => {
+      setTyped(text.slice(0, i + 1));
+      i++;
+      if (i >= text.length) clearInterval(iv);
+    }, 80);
+    return () => clearInterval(iv);
   }, []);
 
   return (
@@ -109,7 +122,7 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            Hello, I'm
+            {typed}<span className="hero__cursor">|</span>
           </motion.p>
 
           <motion.h1

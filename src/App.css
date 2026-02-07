@@ -43,3 +43,59 @@
     padding: 40px 16px 24px;
   }
 }
+
+/* ═══════════════════════════
+   Boot Screen
+   ═══════════════════════════ */
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #020408;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.boot-screen__inner {
+  max-width: 500px;
+  width: 90%;
+}
+.boot-screen__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.boot-screen__bracket {
+  font-family: var(--font-mono, monospace);
+  font-size: 1.4rem;
+  color: var(--c-accent, #4facfe);
+  text-shadow: 0 0 10px rgba(79, 172, 254, 0.4);
+}
+.boot-screen__name {
+  font-family: var(--font-mono, monospace);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--c-heading, #e4edff);
+  letter-spacing: 2px;
+}
+.boot-screen__lines {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  line-height: 1.8;
+}
+.boot-screen__lines p {
+  margin: 0;
+}
+.boot-sys { color: #6e7a8a; }
+.boot-ok { color: #22d3a7; }
+.boot-init { color: #fbbf24; }
+.boot-screen__cursor {
+  display: inline-block;
+  color: var(--c-accent, #4facfe);
+  animation: boot-blink 0.6s step-end infinite;
+}
+@keyframes boot-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
