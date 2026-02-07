@@ -17,7 +17,8 @@ export default function KeyboardGuide() {
   useEffect(() => {
     const handler = (e) => {
       if (e.key === '?' && !e.ctrlKey && !e.metaKey) {
-        if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+        const tag = document.activeElement?.tagName;
+        if (['INPUT', 'TEXTAREA'].includes(tag) || document.activeElement?.isContentEditable) return;
         e.preventDefault();
         setOpen(prev => !prev);
       }

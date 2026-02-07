@@ -126,14 +126,16 @@ export default function Hero() {
     let cur = 0;
     const dur = 1400;
     const start = performance.now();
+    let raf;
     const tick = (now) => {
       const p = Math.min((now - start) / dur, 1);
       const eased = 1 - Math.pow(1 - p, 3);
       cur = Math.round(eased * target);
       setCount(cur);
-      if (p < 1) requestAnimationFrame(tick);
+      if (p < 1) raf = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   // Typing animation with rotating subtitles

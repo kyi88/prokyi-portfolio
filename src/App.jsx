@@ -189,6 +189,7 @@ function SystemAlerts() {
 }
 
 /* Skeleton placeholder for StatusScreen lazy load */
+const SKELETON_WIDTHS = [72, 85, 64, 91, 78];
 function StatusSkeleton() {
   return (
     <div className="status-skeleton" aria-label="読み込み中">
@@ -196,8 +197,8 @@ function StatusSkeleton() {
         {[1, 2, 3, 4].map(i => <div key={i} className="status-skeleton__tab" />)}
       </div>
       <div className="status-skeleton__body">
-        {[1, 2, 3, 4, 5].map(i => (
-          <div key={i} className="status-skeleton__row" style={{ width: `${60 + Math.random() * 30}%` }} />
+        {SKELETON_WIDTHS.map((w, i) => (
+          <div key={i} className="status-skeleton__row" style={{ width: `${w}%` }} />
         ))}
       </div>
     </div>
