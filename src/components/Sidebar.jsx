@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { motion, useInView } from 'framer-motion';
 import './Sidebar.css';
 
@@ -18,6 +18,81 @@ const skills = [
   { name: 'Docker',     lv: 35, color: '#00f2fe' },
   { name: 'AI / ML',    lv: 30, color: '#a855f7' },
 ];
+
+/* SVG Radar Chart */
+function SkillRadar({ data, inView }) {
+  const cx = 100, cy = 100, maxR = 75;
+  const n = data.length;
+  const angleStep = (Math.PI * 2) / n;
+
+  const getPoint = (i, pct) => {
+    const angle = angleStep * i - Math.PI / 2;
+    return [cx + Math.cos(angle) * maxR * (pct / 100), cy + Math.sin(angle) * maxR * (pct / 100)];
+  };
+
+  // Grid rings at 25, 50, 75, 100
+  const rings = [25, 50, 75, 100];
+  const gridPaths = rings.map(pct => {
+    const pts = Array.from({ length: n }, (_, i) => getPoint(i, pct));
+    return pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0]},${p[1]}`).join(' ') + ' Z';
+  });
+
+  // Data shape
+  const dataPoints = data.map((s, i) => getPoint(i, s.lv));
+  const dataPath = dataPoints.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0]},${p[1]}`).join(' ') + ' Z';
+
+  // Axis lines
+  const axes = Array.from({ length: n }, (_, i) => getPoint(i, 100));
+
+  return (
+    <svg viewBox="0 0 200 200" className="skill-radar" aria-label="スキルレーダーチャート">
+      {/* Grid */}
+      {gridPaths.map((d, i) => (
+        <path key={i} d={d} fill="none" stroke="rgba(79,172,254,0.12)" strokeWidth="0.5" />
+      ))}
+      {/* Axes */}
+      {axes.map((a, i) => (
+        <line key={i} x1={cx} y1={cy} x2={a[0]} y2={a[1]} stroke="rgba(79,172,254,0.08)" strokeWidth="0.5" />
+      ))}
+      {/* Data fill */}
+      <motion.path
+        d={dataPath}
+        fill="rgba(79,172,254,0.12)"
+        stroke="#4facfe"
+        strokeWidth="1.5"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={inView ? { opacity: 1, scale: 1 } : {}}
+        transition={{ duration: 0.8, delay: 1 }}
+        style={{ transformOrigin: `${cx}px ${cy}px` }}
+      />
+      {/* Data points + labels */}
+      {dataPoints.map((p, i) => (
+        <g key={i}>
+          <motion.circle
+            cx={p[0]} cy={p[1]} r="3"
+            fill={data[i].color}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ delay: 1.2 + i * 0.1 }}
+          />
+          {/* Label */}
+          <text
+            x={axes[i][0] + (axes[i][0] - cx) * 0.2}
+            y={axes[i][1] + (axes[i][1] - cy) * 0.2}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill={data[i].color}
+            fontSize="6.5"
+            fontFamily="var(--font-mono)"
+            opacity={0.8}
+          >
+            {data[i].name}
+          </text>
+        </g>
+      ))}
+    </svg>
+  );
+}
 
 export default function Sidebar() {
   const ref = useRef(null);
@@ -95,6 +170,7 @@ export default function Sidebar() {
         whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
       >
         <h3 className="side-card__title">スキル</h3>
+        <SkillRadar data={skills} inView={inView} />
         <ul className="skill-list">
           {skills.map((s, i) => (
             <li key={s.name}>

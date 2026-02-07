@@ -201,3 +201,11 @@
 @media (max-width: 640px) {
   .layout__side { grid-template-columns: 1fr; }
 }
+
+/* Radar chart */
+.skill-radar {
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto 12px;
+  display: block;
+}

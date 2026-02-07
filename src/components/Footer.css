@@ -77,3 +77,6 @@
   color: var(--c-text-dim);
   text-transform: uppercase;
 }
+.footer__load-time {
+  color: var(--c-green);
+}

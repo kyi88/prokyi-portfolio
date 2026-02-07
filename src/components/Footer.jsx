@@ -39,6 +39,29 @@ function LiveClock() {
   return <span>{time}</span>;
 }
 
+/* ── Page load time ── */
+function LoadTime() {
+  const [ms, setMs] = useState(null);
+  useEffect(() => {
+    const measure = () => {
+      const nav = performance.getEntriesByType('navigation')[0];
+      if (nav) {
+        setMs(Math.round(nav.loadEventEnd - nav.startTime));
+      } else {
+        setMs(Math.round(performance.now()));
+      }
+    };
+    if (document.readyState === 'complete') {
+      measure();
+    } else {
+      window.addEventListener('load', measure);
+      return () => window.removeEventListener('load', measure);
+    }
+  }, []);
+  if (ms === null) return null;
+  return <span className="footer__load-time">LOAD: {ms}ms</span>;
+}
+
 export default function Footer() {
   return (
     <motion.footer
@@ -88,6 +111,7 @@ export default function Footer() {
           <span>CHUNKS: 8</span>
           <span>EASTER EGGS: 5</span>
           <span>LOOPS: 14</span>
+          <LoadTime />
         </motion.div>
       </div>
     </motion.footer>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import './Header.css';
 
@@ -15,6 +15,8 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState('');
+  const [viewedCount, setViewedCount] = useState(0);
+  const viewedRef = useRef(new Set());
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
@@ -24,11 +26,16 @@ export default function Header() {
 
       const sections = document.querySelectorAll('section[id]');
       const y = window.scrollY + 140;
+      const seen = new Set(viewedRef.current);
       for (const s of sections) {
         if (y >= s.offsetTop && y < s.offsetTop + s.offsetHeight) {
           setActive(s.id);
-          break;
+          seen.add(s.id);
         }
+      }
+      if (seen.size !== viewedRef.current.size) {
+        viewedRef.current = seen;
+        setViewedCount(seen.size);
       }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -54,6 +61,19 @@ export default function Header() {
           <span className="header__logo-mark" aria-hidden="true">&lt;/&gt;</span>
           <span className="header__logo-text">prokyi</span>
         </a>
+
+        {viewedCount > 0 && (
+          <motion.span
+            className="header__viewed"
+            key={viewedCount}
+            initial={{ scale: 1.4, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+            aria-label={`${viewedCount}/${navItems.length}セクション閲覧済み`}
+          >
+            {viewedCount}/{navItems.length}
+          </motion.span>
+        )}
 
         <nav className={`header__nav ${menuOpen ? 'is-open' : ''}`}>
           {navItems.map((item) => (

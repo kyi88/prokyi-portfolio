@@ -65,6 +65,17 @@
   font-size: 1.1rem;
   letter-spacing: 0.5px;
 }
+.header__viewed {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--c-accent);
+  background: rgba(79, 172, 254, 0.08);
+  border: 1px solid rgba(79, 172, 254, 0.2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 1px;
+  margin-left: -4px;
+}
 .header__nav {
   display: flex;
   gap: 6px;
