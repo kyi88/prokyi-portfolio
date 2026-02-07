@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import './Section.css';
 
 /** Scramble a 2-digit number before settling */
@@ -32,6 +32,13 @@ export default function Section({ id, num, title, children }) {
   const scrambled = useScrambleNum(num, inView);
   const [showBanner, setShowBanner] = useState(false);
 
+  /* Section scroll progress */
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  });
+  const progressWidth = useTransform(scrollYProgress, [0, 0.3, 0.8, 1], ['0%', '20%', '90%', '100%']);
+
   /* Mouse proximity glow tracking */
   const handleMouseMove = useCallback((e) => {
     const el = ref.current;
@@ -63,6 +70,8 @@ export default function Section({ id, num, title, children }) {
     >
       {/* Mouse proximity glow */}
       <span className="card__glow" aria-hidden="true" />
+      {/* Section read progress */}
+      <motion.div className="card__read-progress" style={{ width: progressWidth }} aria-hidden="true" />
       {/* Connection banner */}
       <AnimatePresence>
         {showBanner && (

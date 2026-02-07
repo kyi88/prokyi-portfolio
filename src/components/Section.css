@@ -32,6 +32,18 @@
   opacity: 1;
 }
 
+/* Section read progress micro-bar */
+.card__read-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-accent2));
+  border-radius: 0 2px 2px 0;
+  z-index: 3;
+  box-shadow: 0 0 8px var(--c-accent);
+}
+
 /* Connection banner */
 .card__connect-banner {
   position: absolute;

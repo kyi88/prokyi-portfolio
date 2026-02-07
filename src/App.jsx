@@ -122,6 +122,59 @@ function useSectionSFX(mutedRef) {
   }, []);
 }
 
+/* System alert toasts — random cyber notifications */
+function SystemAlerts() {
+  const [alerts, setAlerts] = useState([]);
+  const msgs = [
+    '🔒 Firewall integrity: 98.7%',
+    '📡 Neural link: stable',
+    '⚡ Power cell: charging',
+    '🛡️ Intrusion attempt blocked',
+    '📊 Memory usage: optimal',
+    '🔧 Self-repair subroutine active',
+    '🌐 Network latency: 2ms',
+    '🎯 Threat level: minimal',
+  ];
+
+  useEffect(() => {
+    const spawn = () => {
+      const id = Date.now();
+      const msg = msgs[Math.floor(Math.random() * msgs.length)];
+      setAlerts(prev => [...prev, { id, msg }]);
+      setTimeout(() => {
+        setAlerts(prev => prev.filter(a => a.id !== id));
+      }, 4000);
+    };
+    // First one after 15-30s, then every 30-60s
+    let timeout = setTimeout(() => {
+      spawn();
+      const iv = setInterval(() => spawn(), 30000 + Math.random() * 30000);
+      timeout = iv;
+    }, 15000 + Math.random() * 15000);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return (
+    <div className="system-alerts" aria-live="polite">
+      <AnimatePresence>
+        {alerts.map(a => (
+          <motion.div
+            key={a.id}
+            className="system-alert"
+            initial={{ opacity: 0, x: 80, scale: 0.8 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 80, scale: 0.8 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+          >
+            <span className="system-alert__prefix">SYS</span>
+            {a.msg}
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 /* Skeleton placeholder for StatusScreen lazy load */
 function StatusSkeleton() {
   return (
@@ -380,6 +433,7 @@ export default function App() {
       <ParallaxFog />
       <CRTOverlay />
       <SystemGlitch />
+      <SystemAlerts />
 
       {/* Sound toggle */}
       <button

@@ -102,6 +102,16 @@
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
   animation: bar-shimmer 2.5s ease-in-out infinite;
 }
+/* Random pulse on status bars */
+.status-bar__fill {
+  animation: status-pulse 3s ease-in-out infinite;
+}
+@keyframes status-pulse {
+  0%, 100% { filter: brightness(1); }
+  30% { filter: brightness(1.4); }
+  50% { filter: brightness(0.85); }
+  70% { filter: brightness(1.2); }
+}
 
 .news-list {
   list-style: none;
