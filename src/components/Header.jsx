@@ -31,6 +31,13 @@ export default function Header() {
     localStorage.setItem('prokyi_theme', theme);
   }, [theme]);
 
+  // Sync theme when changed externally (e.g. CyberTerminal "theme" command)
+  useEffect(() => {
+    const onSync = (e) => setTheme(e.detail);
+    window.addEventListener('prokyi-theme-sync', onSync);
+    return () => window.removeEventListener('prokyi-theme-sync', onSync);
+  }, []);
+
   const toggleTheme = () => {
     // Flash effect on toggle
     const flash = document.createElement('div');

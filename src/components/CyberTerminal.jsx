@@ -138,10 +138,12 @@ const COMMANDS = {
     if (current === 'green') {
       document.documentElement.removeAttribute('data-theme');
       localStorage.setItem('prokyi_theme', 'cyber');
+      window.dispatchEvent(new CustomEvent('prokyi-theme-sync', { detail: 'cyber' }));
       return ['[THEME] Switched to 🔵 Cyber Blue'];
     } else {
       document.documentElement.setAttribute('data-theme', 'green');
       localStorage.setItem('prokyi_theme', 'green');
+      window.dispatchEvent(new CustomEvent('prokyi-theme-sync', { detail: 'green' }));
       return ['[THEME] Switched to 🟢 Hacker Green'];
     }
   },
@@ -154,7 +156,7 @@ const COMMANDS = {
       '🎧 prokyi の愛用ヘッドホンは Soundcore Space One Pro。',
       '📱 prokyi は Galaxy S25+ と Pixel 9 の二刀流。',
       '🖥️ prokyi の自作PCは Ryzen 7 5700X + RTX 4060。',
-      '⚡ このサイトは16ループの改善を経て今の形になった。',
+      '⚡ このサイトは34以上のループ改善を経て今の形になった。',
       '👁️ prokyi の視力は 0.1 — メガネ必須。',
       '🥛 乳糖不耐性: 牛乳を飲むと大変なことになる。',
     ];

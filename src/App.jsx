@@ -147,12 +147,15 @@ function SystemAlerts() {
       }, 4000);
     };
     // First one after 15-30s, then every 30-60s
-    let timeout = setTimeout(() => {
+    let iv = null;
+    const timeout = setTimeout(() => {
       spawn();
-      const iv = setInterval(() => spawn(), 30000 + Math.random() * 30000);
-      timeout = iv;
+      iv = setInterval(() => spawn(), 30000 + Math.random() * 30000);
     }, 15000 + Math.random() * 15000);
-    return () => clearTimeout(timeout);
+    return () => {
+      clearTimeout(timeout);
+      if (iv) clearInterval(iv);
+    };
   }, []);
 
   return (
