@@ -8,6 +8,28 @@
   position: relative;
   overflow: hidden;
   transition: border-color 0.4s, box-shadow 0.4s, background 0.4s;
+  --glow-x: 50%;
+  --glow-y: 50%;
+}
+
+/* Mouse proximity glow */
+.card__glow {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: radial-gradient(
+    320px circle at var(--glow-x) var(--glow-y),
+    rgba(79, 172, 254, 0.08),
+    rgba(0, 242, 254, 0.04) 40%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 1;
+}
+.card:hover .card__glow {
+  opacity: 1;
 }
 
 /* Connection banner */

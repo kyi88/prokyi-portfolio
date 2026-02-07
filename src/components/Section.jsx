@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import './Section.css';
 
@@ -32,6 +32,15 @@ export default function Section({ id, num, title, children }) {
   const scrambled = useScrambleNum(num, inView);
   const [showBanner, setShowBanner] = useState(false);
 
+  /* Mouse proximity glow tracking */
+  const handleMouseMove = useCallback((e) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);
+    el.style.setProperty('--glow-y', `${e.clientY - rect.top}px`);
+  }, []);
+
   useEffect(() => {
     if (inView) {
       setShowBanner(true);
@@ -50,7 +59,10 @@ export default function Section({ id, num, title, children }) {
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ scale: 1.01, transition: { duration: 0.3 } }}
       style={{ transformPerspective: 1200 }}
+      onMouseMove={handleMouseMove}
     >
+      {/* Mouse proximity glow */}
+      <span className="card__glow" aria-hidden="true" />
       {/* Connection banner */}
       <AnimatePresence>
         {showBanner && (

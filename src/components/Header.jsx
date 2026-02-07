@@ -38,6 +38,36 @@ export default function Header() {
     document.body.appendChild(flash);
     requestAnimationFrame(() => { flash.style.opacity = '0'; });
     setTimeout(() => flash.remove(), 500);
+
+    // Sparkle particles burst from toggle button
+    const btn = document.querySelector('.header__theme-btn');
+    if (btn) {
+      const rect = btn.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      for (let i = 0; i < 12; i++) {
+        const p = document.createElement('div');
+        const angle = (Math.PI * 2 * i) / 12 + (Math.random() - 0.5) * 0.5;
+        const dist = 40 + Math.random() * 60;
+        const dx = Math.cos(angle) * dist;
+        const dy = Math.sin(angle) * dist;
+        const size = 3 + Math.random() * 4;
+        p.style.cssText = `
+          position:fixed;left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;
+          border-radius:50%;pointer-events:none;z-index:99991;
+          background:var(--c-accent);box-shadow:0 0 6px var(--c-accent);
+          transition:all 0.6s cubic-bezier(0.22,1,0.36,1);opacity:1;
+          transform:translate(-50%,-50%) scale(1);
+        `;
+        document.body.appendChild(p);
+        requestAnimationFrame(() => {
+          p.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0)`;
+          p.style.opacity = '0';
+        });
+        setTimeout(() => p.remove(), 700);
+      }
+    }
+
     setTheme(prev => prev === 'cyber' ? 'green' : 'cyber');
   };
 

@@ -19,6 +19,27 @@ const skills = [
   { name: 'AI / ML',    lv: 30, color: '#a855f7' },
 ];
 
+/* Animated counting number */
+function useCountUp(target, active, duration = 1200, delay = 600) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!active) return;
+    const t0 = performance.now() + delay;
+    let raf;
+    const step = (now) => {
+      const elapsed = Math.max(0, now - t0);
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out quad
+      const eased = 1 - (1 - progress) * (1 - progress);
+      setVal(Math.round(eased * target));
+      if (progress < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [active, target, duration, delay]);
+  return val;
+}
+
 /* SVG Radar Chart */
 function SkillRadar({ data, inView }) {
   const cx = 100, cy = 100, maxR = 75;
@@ -127,6 +148,28 @@ function SkillRadar({ data, inView }) {
   );
 }
 
+/* Skill list item with count-up animation */
+function SkillListItem({ skill, index, inView }) {
+  const count = useCountUp(skill.lv, inView, 1200, 600 + index * 100);
+  return (
+    <li>
+      <div className="skill-list__head">
+        <span className="skill-list__name">{skill.name}</span>
+        <span className="skill-list__lv" style={{ color: skill.color }}>{count}%</span>
+      </div>
+      <div className="skill-list__bar">
+        <motion.div
+          className="skill-list__fill"
+          style={{ background: `linear-gradient(90deg, ${skill.color}, ${skill.color}88)` }}
+          initial={{ width: 0 }}
+          animate={inView ? { width: `${skill.lv}%` } : {}}
+          transition={{ duration: 1.2, delay: 0.6 + index * 0.1 }}
+        />
+      </div>
+    </li>
+  );
+}
+
 export default function Sidebar() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
@@ -224,21 +267,7 @@ export default function Sidebar() {
         <SkillRadar data={skills} inView={inView} />
         <ul className="skill-list">
           {skills.map((s, i) => (
-            <li key={s.name}>
-              <div className="skill-list__head">
-                <span className="skill-list__name">{s.name}</span>
-                <span className="skill-list__lv" style={{ color: s.color }}>{s.lv}%</span>
-              </div>
-              <div className="skill-list__bar">
-                <motion.div
-                  className="skill-list__fill"
-                  style={{ background: `linear-gradient(90deg, ${s.color}, ${s.color}88)` }}
-                  initial={{ width: 0 }}
-                  animate={inView ? { width: `${s.lv}%` } : {}}
-                  transition={{ duration: 1.2, delay: 0.6 + i * 0.1 }}
-                />
-              </div>
-            </li>
+            <SkillListItem key={s.name} skill={s} index={i} inView={inView} />
           ))}
         </ul>
       </motion.div>
