@@ -34,6 +34,7 @@ import ScanLine from './components/ScanLine';
 import Confetti from './components/Confetti';
 import ThemePreview from './components/ThemePreview';
 import IntrusionAlert from './components/IntrusionAlert';
+import PhantomCursor from './components/PhantomCursor';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -414,6 +415,42 @@ export default function App() {
     return () => window.removeEventListener('prokyi-confetti', handler);
   }, []);
 
+  // Kernel Panic easter egg (triggered when user tries to kill PID 1 in ProcessMonitor)
+  const [kernelPanic, setKernelPanic] = useState(false);
+  useEffect(() => {
+    const handler = () => {
+      setKernelPanic(true);
+      setTimeout(() => setKernelPanic(false), 2500);
+    };
+    window.addEventListener('prokyi-kernel-panic', handler);
+    return () => window.removeEventListener('prokyi-kernel-panic', handler);
+  }, []);
+
+  // ProcessMonitor kill/start events
+  const [procAlive, setProcAlive] = useState({
+    matrixrain: true,
+    scanline: true,
+    parallaxstars: true,
+    clickspark: true,
+    datastream: true,
+  });
+  useEffect(() => {
+    const handlers = {};
+    const keys = Object.keys(procAlive);
+    keys.forEach((key) => {
+      const eventName = `prokyi-process-${key}`;
+      handlers[key] = (e) => {
+        setProcAlive((prev) => ({ ...prev, [key]: e.detail.alive }));
+      };
+      window.addEventListener(eventName, handlers[key]);
+    });
+    return () => {
+      keys.forEach((key) => {
+        window.removeEventListener(`prokyi-process-${key}`, handlers[key]);
+      });
+    };
+  }, []);
+
   // Custom cursor tracking with trail
   useEffect(() => {
     if (booting) return;
@@ -672,12 +709,27 @@ export default function App() {
       <ScrollBurst />
       <FPSMonitor />
       <AchievementBadges />
-      <DataStream />
-      <MatrixRain />
-      <ClickSpark />
+      {procAlive.datastream && <DataStream />}
+      {procAlive.matrixrain && <MatrixRain />}
+      {procAlive.clickspark && <ClickSpark />}
       <ScrollPercentage />
-      <ScanLine />
+      {procAlive.scanline && <ScanLine />}
       <IntrusionAlert />
+      <PhantomCursor />
+      {kernelPanic && (
+        <div className="kernel-panic" aria-live="assertive">
+          <pre>{`KERNEL PANIC - NOT SYNCING: Attempted to kill init!
+Pid: 1, comm: CyberBG
+Call Trace:
+  <TASK>
+  do_exit+0x9d2/0xb00
+  do_group_exit+0x33/0xa0
+  __x64_sys_exit_group+0x14/0x20
+  
+--- SYSTEM HALTED ---
+REBOOTING IN 2s...`}</pre>
+        </div>
+      )}
       {showConfetti && <Confetti />}
       {milestoneMsg && (
         <div className="milestone-toast" aria-live="polite">

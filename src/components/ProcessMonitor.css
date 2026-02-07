@@ -1,0 +1,92 @@
+.process-monitor {
+  font-family: var(--ff-mono, 'JetBrains Mono', monospace);
+  font-size: 0.55rem;
+  color: var(--c-text-dim, #888);
+  margin-top: 8px;
+}
+
+.process-monitor__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 4px 0;
+  user-select: none;
+  color: var(--c-accent, #00e5ff);
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  border: none;
+  background: none;
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+}
+
+.process-monitor__header:hover {
+  color: #fff;
+}
+
+.process-monitor__toggle {
+  display: inline-block;
+  transition: transform 0.2s;
+  font-size: 0.5rem;
+}
+
+.process-monitor__toggle--open {
+  transform: rotate(90deg);
+}
+
+.process-monitor__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 4px;
+}
+
+.process-monitor__table th {
+  text-align: left;
+  color: var(--c-accent, #00e5ff);
+  font-weight: 600;
+  padding: 2px 4px;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+  font-size: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.process-monitor__table td {
+  padding: 2px 4px;
+  white-space: nowrap;
+}
+
+.process-monitor__row--killed td {
+  color: rgba(255, 100, 100, 0.5);
+  text-decoration: line-through;
+}
+
+.process-monitor__status--running {
+  color: #00e676;
+}
+
+.process-monitor__status--killed {
+  color: #ff1744;
+}
+
+.process-monitor__kill-btn {
+  background: none;
+  border: 1px solid rgba(255, 23, 68, 0.4);
+  color: #ff1744;
+  font-family: inherit;
+  font-size: 0.45rem;
+  padding: 1px 4px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+
+.process-monitor__kill-btn:hover {
+  background: rgba(255, 23, 68, 0.2);
+}
+
+.process-monitor__kill-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}

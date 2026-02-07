@@ -24,6 +24,7 @@ const HELP_TEXT = [
   '  cursor   — Toggle custom cursor',
   '  decrypt  — Decrypt animation on text',
   '  security-log — View intrusion log',
+  '  phantom  — Toggle ghost cursor',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -227,6 +228,24 @@ const COMMANDS = {
     window.dispatchEvent(new CustomEvent('prokyi-crt-toggle'));
     return ['📺 CRT scanline overlay toggled.'];
   },
+  phantom: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-phantom-toggle'));
+    return ['👻 Phantom cursor toggled.'];
+  },
+  ps: () => [
+    '[PROCESS TABLE]',
+    '  PID  NAME            CPU%  MEM    STATUS',
+    '  ───  ──────────────  ────  ─────  ──────',
+    '  1    CyberBG         2.1   2048K  RUN',
+    '  2    Vite/React      0.8   4096K  RUN',
+    '  1001 MatrixRain      1.3   128K   RUN',
+    '  1002 ScanLine        0.2   32K    RUN',
+    '  1003 ParallaxStars   0.9   64K    RUN',
+    '  1004 ClickSpark      0.1   16K    RUN',
+    '  1005 DataStream      0.4   48K    RUN',
+    '',
+    '  Use ProcessMonitor in sidebar to kill/start processes.',
+  ],
   cursor: () => {
     const doc = document.documentElement;
     const current = doc.style.cursor;

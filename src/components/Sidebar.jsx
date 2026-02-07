@@ -3,6 +3,7 @@ import { motion, useInView, AnimatePresence } from 'framer-motion';
 import GlowCard from './GlowCard';
 import NetworkGraph from './NetworkGraph';
 import BatteryIndicator from './BatteryIndicator';
+import ProcessMonitor from './ProcessMonitor';
 import './Sidebar.css';
 
 const RANDOM_FACTS = [
@@ -350,6 +351,7 @@ export default function Sidebar() {
         </div>
         <WorldClocks />
         <BatteryIndicator />
+        <ProcessMonitor />
       </motion.div>
       </GlowCard>
 
