@@ -17,24 +17,32 @@ function Breadcrumbs() {
   const elCacheRef = useRef(null);
 
   useEffect(() => {
+    let rafId = null;
     const onScroll = () => {
-      setScrolled(window.scrollY > 400);
-      if (!elCacheRef.current) {
-        elCacheRef.current = SECTIONS.map(s => document.getElementById(s.id));
-      }
-      const y = window.scrollY + window.innerHeight * 0.3;
-      let found = null;
-      for (let i = 0; i < SECTIONS.length; i++) {
-        const el = elCacheRef.current[i];
-        if (el && y >= el.offsetTop && y < el.offsetTop + el.offsetHeight) {
-          found = SECTIONS[i].id;
-          break;
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        setScrolled(window.scrollY > 400);
+        if (!elCacheRef.current) {
+          elCacheRef.current = SECTIONS.map(s => document.getElementById(s.id));
         }
-      }
-      setActive(found);
+        const y = window.scrollY + window.innerHeight * 0.3;
+        let found = null;
+        for (let i = 0; i < SECTIONS.length; i++) {
+          const el = elCacheRef.current[i];
+          if (el && y >= el.offsetTop && y < el.offsetTop + el.offsetHeight) {
+            found = SECTIONS[i].id;
+            break;
+          }
+        }
+        setActive(found);
+      });
     };
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const handleClick = (id) => {

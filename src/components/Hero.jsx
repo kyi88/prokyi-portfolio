@@ -24,18 +24,21 @@ function ParticleTrail() {
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const ps = particles.current;
-      for (let i = ps.length - 1; i >= 0; i--) {
+      let alive = 0;
+      for (let i = 0; i < ps.length; i++) {
         const p = ps[i];
         p.x += p.vx;
         p.y += p.vy;
         p.life -= 0.025;
-        if (p.life <= 0) { ps.splice(i, 1); continue; }
+        if (p.life <= 0) continue;
+        ps[alive++] = p;
         ctx.globalAlpha = p.life * 0.7;
         ctx.fillStyle = `hsl(${p.hue}, 85%, 65%)`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
         ctx.fill();
       }
+      ps.length = alive;
       ctx.globalAlpha = 1;
       if (particles.current.length > 0) {
         raf = requestAnimationFrame(draw);

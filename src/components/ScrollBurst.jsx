@@ -40,22 +40,22 @@ function ScrollBurst() {
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = particles.length - 1; i >= 0; i--) {
+      let alive = 0;
+      for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
         p.vy += 0.06; // gravity
         p.life -= p.decay;
-        if (p.life <= 0) {
-          particles.splice(i, 1);
-          continue;
-        }
+        if (p.life <= 0) continue;
+        particles[alive++] = p;
         ctx.globalAlpha = p.life;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.fill();
       }
+      particles.length = alive;
       ctx.globalAlpha = 1;
       if (particles.length > 0) {
         raf = requestAnimationFrame(draw);

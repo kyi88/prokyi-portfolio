@@ -31,7 +31,8 @@ export default function Minimap() {
 
   const elCacheRef = useRef(null);
   useEffect(() => {
-    const onScroll = () => {
+    let rafId = null;
+    const handler = () => {
       setVisible(window.scrollY > 400);
       if (!elCacheRef.current) {
         elCacheRef.current = sections.map(s => document.getElementById(s.id));
@@ -45,9 +46,16 @@ export default function Minimap() {
         }
       }
     };
+    const onScroll = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => { rafId = null; handler(); });
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
+    handler();
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const handleClick = (id) => {

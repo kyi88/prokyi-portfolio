@@ -13,17 +13,32 @@ function CyberGrid() {
     let mx = -1000, my = -1000;
     const SPACING = 30;
     const RADIUS = 120;
+    let needsDraw = true;
+
+    // Cache accent color — update on resize (theme change triggers re-render)
+    let accentColor = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe';
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      accentColor = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe';
+      scheduleDraw();
     };
     resize();
 
-    const onMove = (e) => { mx = e.clientX; my = e.clientY; };
-    const onLeave = () => { mx = -1000; my = -1000; };
+    const onMove = (e) => { mx = e.clientX; my = e.clientY; scheduleDraw(); };
+    const onLeave = () => { mx = -1000; my = -1000; scheduleDraw(); };
+
+    // Only schedule RAF when actually needed — stop loop when idle
+    const scheduleDraw = () => {
+      needsDraw = true;
+      if (!raf) raf = requestAnimationFrame(draw);
+    };
 
     const draw = () => {
+      raf = null;
+      if (!needsDraw) return; // stop loop when idle
+      needsDraw = false;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const cols = Math.ceil(canvas.width / SPACING);
       const rows = Math.ceil(canvas.height / SPACING);
@@ -41,13 +56,13 @@ function CyberGrid() {
             const size = 1 + proximity * 2.5;
             const alpha = 0.03 + proximity * 0.3;
             ctx.globalAlpha = alpha;
-            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe';
+            ctx.fillStyle = accentColor;
             ctx.beginPath();
             ctx.arc(x, y, size, 0, Math.PI * 2);
             ctx.fill();
           } else {
             ctx.globalAlpha = 0.03;
-            ctx.fillStyle = '#4facfe';
+            ctx.fillStyle = accentColor;
             ctx.beginPath();
             ctx.arc(x, y, 1, 0, Math.PI * 2);
             ctx.fill();
@@ -55,16 +70,26 @@ function CyberGrid() {
         }
       }
       ctx.globalAlpha = 1;
-      raf = requestAnimationFrame(draw);
     };
+
+    // Listen for theme changes to update accent color
+    const observer = new MutationObserver(() => {
+      const newColor = getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim() || '#4facfe';
+      if (newColor !== accentColor) {
+        accentColor = newColor;
+        scheduleDraw();
+      }
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
     window.addEventListener('resize', resize);
     window.addEventListener('mousemove', onMove, { passive: true });
     window.addEventListener('mouseleave', onLeave);
-    raf = requestAnimationFrame(draw);
+    scheduleDraw();
 
     return () => {
       if (raf) cancelAnimationFrame(raf);
+      observer.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseleave', onLeave);
