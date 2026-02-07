@@ -1,5 +1,5 @@
 import { useCallback, useRef, useContext } from 'react';
-import { SoundContext } from '../App';
+import { SoundContext } from '../contexts/SoundContext';
 
 /**
  * useHoverSound — plays a tiny blip on hover via Web Audio API.

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SoundContext } from '../App';
+import { SoundContext } from '../contexts/SoundContext';
 import './TypingGame.css';
 
 /* ── Sound effects via Web Audio API — singleton AudioContext ── */

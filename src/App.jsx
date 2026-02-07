@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useMemo, lazy, Suspense, createContext, useContext } from 'react';
+import { useEffect, useState, useRef, useMemo, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -56,14 +56,11 @@ import SynapticFirewall from './components/SynapticFirewall';
 import DeadDrop from './components/DeadDrop';
 import WetwareCompiler from './components/WetwareCompiler';
 import MissionComplete from './components/MissionComplete';
+import { SoundContext } from './contexts/SoundContext';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
 const StatusScreen = lazy(() => import('./components/StatusScreen'));
-
-/* Sound context — global mute toggle */
-export const SoundContext = createContext({ muted: false });
-export function useSoundMuted() { return useContext(SoundContext).muted; }
 
 /* CRT Scanline overlay — cyberpunk monitor aesthetic */
 function CRTOverlay() {
