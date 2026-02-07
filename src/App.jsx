@@ -86,9 +86,11 @@ function BootScreen({ onDone }) {
     const asciiTimer = setTimeout(() => setShowAscii(false), 600);
     const iv = setInterval(() => {
       if (i < bootLines.length) {
-        setLines(prev => [...prev, bootLines[i]]);
-        playBeep(freqs[i] || 600);
+        const line = bootLines[i];
+        const freq = freqs[i] || 600;
         i++;
+        setLines(prev => [...prev, line]);
+        playBeep(freq);
       } else {
         clearInterval(iv);
         setTimeout(onDone, 400);
@@ -131,7 +133,7 @@ function BootScreen({ onDone }) {
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.2 }}
-              className={line.includes('[OK]') ? 'boot-ok' : line.includes('[INIT]') ? 'boot-init' : 'boot-sys'}
+              className={line?.includes('[OK]') ? 'boot-ok' : line?.includes('[INIT]') ? 'boot-init' : 'boot-sys'}
             >
               {line}
             </motion.p>
