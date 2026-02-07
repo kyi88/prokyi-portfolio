@@ -49,6 +49,8 @@ import BioChipImplant from './components/BioChipImplant';
 import HackingMinigame from './components/HackingMinigame';
 import CryptoMiner from './components/CryptoMiner';
 import AIModelArena from './components/AIModelArena';
+import SteganographyLab from './components/SteganographyLab';
+import ZeroDayVault from './components/ZeroDayVault';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -763,6 +765,8 @@ export default function App() {
       <HackingMinigame />
       <CryptoMiner />
       <AIModelArena />
+      <SteganographyLab />
+      <ZeroDayVault />
       {kernelPanic && (
         <div className="kernel-panic" aria-live="assertive">
           <pre>{`KERNEL PANIC - NOT SYNCING: Attempted to kill init!

@@ -40,6 +40,8 @@ const HELP_TEXT = [
   '  hackgame — Password cracker minigame',
   '  cryptominer — $PROKYI crypto miner',
   '  arena    — AI Model battle arena',
+  '  stegano  — Steganography lab',
+  '  exploit  — Zero-day exploit database',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -342,6 +344,14 @@ const COMMANDS = {
   arena: () => {
     window.dispatchEvent(new CustomEvent('prokyi-arena-toggle'));
     return ['⚔️ AI Model Arena opened. Fight!'];
+  },
+  stegano: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-stegano-toggle'));
+    return ['🔒 Steganography Lab opened.'];
+  },
+  exploit: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-exploit-toggle'));
+    return ['🛡️ Zero-Day Exploit Database opened.'];
   },
   cursor: () => {
     const doc = document.documentElement;
