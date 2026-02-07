@@ -147,6 +147,19 @@
 .link-btn:hover::before { opacity: 1; }
 .link-btn:hover::after { opacity: 0.5; }
 
+/* Click ripple */
+.link-btn__ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(0);
+  animation: ripple-expand 0.5s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes ripple-expand {
+  to { transform: scale(4); opacity: 0; }
+}
+
 .link-btn--gh {
   background: rgba(255, 255, 255, 0.06);
   color: #fff;

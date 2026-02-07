@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
+import ProgressiveImage from './ProgressiveImage';
 import './Hero.css';
 
 const BASE = import.meta.env.BASE_URL;
@@ -248,7 +249,7 @@ export default function Hero() {
           <div className="hero__avatar-ring" aria-hidden="true" />
           <div className="hero__avatar-ring hero__avatar-ring--2" aria-hidden="true" />
           <div className="hero__avatar-ring hero__avatar-ring--3" aria-hidden="true" />
-          <img
+          <ProgressiveImage
             src={`${BASE}avatar.jpg`}
             alt="prokyi のアバター"
             className="hero__avatar"
