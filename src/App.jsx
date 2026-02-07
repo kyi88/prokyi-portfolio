@@ -25,6 +25,8 @@ import ScrollBurst from './components/ScrollBurst';
 import FPSMonitor from './components/FPSMonitor';
 import CyberGrid from './components/CyberGrid';
 import PageProgress from './components/PageProgress';
+import AchievementBadges from './components/AchievementBadges';
+import DataStream from './components/DataStream';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -618,6 +620,8 @@ export default function App() {
       <ScrollVelocity />
       <ScrollBurst />
       <FPSMonitor />
+      <AchievementBadges />
+      <DataStream />
         </>
       )}
     </SoundContext.Provider>
