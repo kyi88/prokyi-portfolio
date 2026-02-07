@@ -124,16 +124,47 @@ export default function Hero() {
     requestAnimationFrame(tick);
   }, []);
 
-  // Typing animation
+  // Typing animation with rotating subtitles
+  const subtitles = [
+    '> Hello, I\'m_',
+    '> AI Engineer Candidate_',
+    '> Linux Enthusiast_',
+    '> Cyberdeck Builder_',
+    '> Always Learning_',
+  ];
+  const subtitleIdx = useRef(0);
+
   useEffect(() => {
-    const text = '> Hello, I\'m_';
     let i = 0;
-    const iv = setInterval(() => {
-      setTyped(text.slice(0, i + 1));
-      i++;
-      if (i >= text.length) clearInterval(iv);
-    }, 80);
-    return () => clearInterval(iv);
+    let deleting = false;
+    let currentText = subtitles[0];
+    let timeout;
+
+    const tick = () => {
+      if (!deleting) {
+        setTyped(currentText.slice(0, i + 1));
+        i++;
+        if (i >= currentText.length) {
+          // Pause before deleting
+          timeout = setTimeout(() => { deleting = true; tick(); }, 2500);
+          return;
+        }
+        timeout = setTimeout(tick, 80);
+      } else {
+        i--;
+        setTyped(currentText.slice(0, i));
+        if (i <= 2) {
+          deleting = false;
+          subtitleIdx.current = (subtitleIdx.current + 1) % subtitles.length;
+          currentText = subtitles[subtitleIdx.current];
+          timeout = setTimeout(tick, 300);
+          return;
+        }
+        timeout = setTimeout(tick, 40);
+      }
+    };
+    tick();
+    return () => clearTimeout(timeout);
   }, []);
 
   // Secret: click avatar 7 times

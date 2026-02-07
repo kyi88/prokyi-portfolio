@@ -10,6 +10,9 @@ const HELP_TEXT = [
   '  skills   — Skill levels',
   '  gadgets  — Inventory list',
   '  goals    — Current objectives',
+  '  projects — Project list',
+  '  uptime   — Session uptime',
+  '  random   — Random cyber fact',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -84,6 +87,39 @@ const COMMANDS = {
     return Array.from({ length: 8 }, () =>
       Array.from({ length: 40 }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
     );
+  },
+  projects: () => [
+    '[PROJECTS]',
+    '  ► prokyi-portfolio  — This cyberdeck portfolio (React + Three.js)',
+    '  ► zenbukko          — Automated course downloader & transcriber',
+    '  ► home-lab          — Self-hosted server infrastructure',
+    '  ► ...more in development',
+  ],
+  uptime: () => {
+    const ms = Math.round(performance.now());
+    const sec = Math.floor(ms / 1000);
+    const min = Math.floor(sec / 60);
+    const hrs = Math.floor(min / 60);
+    return [
+      `[SESSION UPTIME]`,
+      `  ${hrs}h ${min % 60}m ${sec % 60}s (${ms.toLocaleString()}ms)`,
+      `  Page opened: ${new Date(Date.now() - ms).toLocaleTimeString('ja-JP')}`,
+    ];
+  },
+  random: () => {
+    const facts = [
+      '💡 このポートフォリオには6つのイースターエッグが隠されている。',
+      '🎮 コナミコマンドを入力するとレトロモードが発動する。',
+      '⌨️ バックティック(`)でこのターミナルが開く。',
+      '🍣 prokyi は寿司屋のキッチンで働いた経験がある。',
+      '🎧 prokyi の愛用ヘッドホンは Soundcore Space One Pro。',
+      '📱 prokyi は Galaxy S25+ と Pixel 9 の二刀流。',
+      '🖥️ prokyi の自作PCは Ryzen 7 5700X + RTX 4060。',
+      '⚡ このサイトは16ループの改善を経て今の形になった。',
+      '👁️ prokyi の視力は 0.1 — メガネ必須。',
+      '🥛 乳糖不耐性: 牛乳を飲むと大変なことになる。',
+    ];
+    return [`[RANDOM FACT]`, `  ${facts[Math.floor(Math.random() * facts.length)]}`];
   },
 };
 
