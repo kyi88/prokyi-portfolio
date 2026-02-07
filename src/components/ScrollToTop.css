@@ -1,0 +1,31 @@
+.scroll-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 5000;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(79, 172, 254, 0.3);
+  border-radius: 50%;
+  background: rgba(5, 7, 14, 0.85);
+  backdrop-filter: blur(12px);
+  color: var(--c-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 20px var(--c-glow);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.scroll-top:hover {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 30px var(--c-glow), 0 0 60px rgba(79, 172, 254, 0.1);
+}
+@media (max-width: 640px) {
+  .scroll-top {
+    bottom: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+  }
+}

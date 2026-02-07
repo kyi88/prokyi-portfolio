@@ -29,6 +29,16 @@ function MatrixRain() {
   );
 }
 
+/* ── Live clock ── */
+function LiveClock() {
+  const [time, setTime] = useState(new Date().toLocaleString('ja-JP'));
+  useEffect(() => {
+    const iv = setInterval(() => setTime(new Date().toLocaleString('ja-JP')), 1000);
+    return () => clearInterval(iv);
+  }, []);
+  return <span>{time}</span>;
+}
+
 export default function Footer() {
   return (
     <motion.footer
@@ -56,7 +66,7 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          Last updated: 2026/02/07
+          Last updated: 2026/02/07 &mdash; <LiveClock />
         </motion.p>
         <motion.p
           className="footer__system"

@@ -12,6 +12,8 @@ import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
 import EasterEggFab from './components/EasterEggFab';
 import CyberTerminal from './components/CyberTerminal';
+import KeyboardGuide from './components/KeyboardGuide';
+import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -251,6 +253,8 @@ export default function App() {
       </div>
       <EasterEggFab />
       <CyberTerminal />
+      <KeyboardGuide />
+      <ScrollToTop />
         </>
       )}
     </>
