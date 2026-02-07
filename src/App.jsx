@@ -30,6 +30,7 @@ import DataStream from './components/DataStream';
 import MatrixRain from './components/MatrixRain';
 import ClickSpark from './components/ClickSpark';
 import ScrollPercentage from './components/ScrollPercentage';
+import ScanLine from './components/ScanLine';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -648,6 +649,7 @@ export default function App() {
       <MatrixRain />
       <ClickSpark />
       <ScrollPercentage />
+      <ScanLine />
         </>
       )}
     </SoundContext.Provider>

@@ -1,0 +1,61 @@
+.scanline-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+/* Horizontal scan lines */
+.scanline-overlay__lines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+}
+
+/* Animated noise grain */
+.scanline-overlay__noise {
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  animation: scanline-noise 0.2s steps(4) infinite;
+}
+
+/* Subtle screen flicker */
+.scanline-overlay__flicker {
+  position: absolute;
+  inset: 0;
+  animation: scanline-flicker 3s infinite;
+}
+
+@keyframes scanline-noise {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-5%, -5%); }
+  50%  { transform: translate(5%, 3%); }
+  75%  { transform: translate(-3%, 7%); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes scanline-flicker {
+  0%, 100% { opacity: 0; }
+  3%       { opacity: 0.03; background: rgba(255,255,255,0.02); }
+  6%       { opacity: 0; }
+  50%      { opacity: 0; }
+  52%      { opacity: 0.02; background: rgba(255,255,255,0.01); }
+  54%      { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scanline-overlay__noise,
+  .scanline-overlay__flicker {
+    animation: none;
+  }
+}

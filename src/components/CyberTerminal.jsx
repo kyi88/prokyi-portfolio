@@ -19,6 +19,7 @@ const HELP_TEXT = [
   '  neofetch — System info',
   '  ping     — Ping the matrix',
   '  fortune  — Random fortune cookie',
+  '  crt      — Toggle CRT scanline overlay',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -217,6 +218,10 @@ const COMMANDS = {
       '🥠 完璧なコードは存在しない。しかし完璧を目指す過程に意味がある',
     ];
     return [fortunes[Math.floor(Math.random() * fortunes.length)]];
+  },
+  crt: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-crt-toggle'));
+    return ['📺 CRT scanline overlay toggled.'];
   },
 };
 

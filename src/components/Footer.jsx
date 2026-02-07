@@ -119,6 +119,40 @@ function Uptime() {
   return <span className="footer__uptime">UPTIME: {uptime}</span>;
 }
 
+/* ── Typewriter "Built with" message ── */
+function BuiltWith() {
+  const text = 'Built with ❤️ by prokyi';
+  const [typed, setTyped] = useState('');
+  const [started, setStarted] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setStarted(true); obs.disconnect(); }
+    }, { threshold: 0.5 });
+    obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
+    let i = 0;
+    const iv = setInterval(() => {
+      i++;
+      setTyped(text.slice(0, i));
+      if (i >= text.length) clearInterval(iv);
+    }, 60);
+    return () => clearInterval(iv);
+  }, [started]);
+
+  return (
+    <p ref={ref} className="footer__built-with" aria-label={text}>
+      {typed}<span className="footer__cursor" aria-hidden="true">|</span>
+    </p>
+  );
+}
+
 export default function Footer() {
   const [eggClicks, setEggClicks] = useState(0);
   const eggTimerRef = useRef(null);
@@ -198,6 +232,7 @@ export default function Footer() {
         >
           SYSTEM: React 19 + Vite 6 + Three.js + Framer Motion
         </motion.p>
+        <BuiltWith />
         <motion.div
           className="footer__stats"
           initial={{ opacity: 0 }}
@@ -205,10 +240,10 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ delay: 0.9, duration: 0.8 }}
         >
-          <span>COMPONENTS: 39</span>
+          <span>COMPONENTS: 40</span>
           <span>CHUNKS: 8</span>
-          <span>EASTER EGGS: 12</span>
-          <span>LOOPS: 76</span>
+          <span>EASTER EGGS: 13</span>
+          <span>LOOPS: 77</span>
           <LoadTime />
           <Uptime />
         </motion.div>

@@ -109,6 +109,21 @@
   letter-spacing: 0.5px;
 }
 
+.footer__built-with {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--c-accent);
+  opacity: 0.5;
+  margin-top: 8px;
+  letter-spacing: 0.04em;
+}
+.footer__cursor {
+  animation: footer-blink 0.7s step-end infinite;
+}
+@keyframes footer-blink {
+  50% { opacity: 0; }
+}
+
 /* Footer mobile */
 @media (max-width: 640px) {
   .footer { padding: 40px 16px 16px; }
