@@ -13,6 +13,7 @@ const shortcuts = [
   { keys: ['Ctrl+Shift+D'], desc: 'コアダンプHexビューア' },
   { keys: ['Ctrl+Shift+N'], desc: 'ポートスキャナー' },
   { keys: ['Ctrl+Shift+Q'], desc: 'マルウェアスキャナー' },
+  { keys: ['Ctrl+Shift+W'], desc: 'パケットスニッファー' },
   { keys: ['Ctrl+Shift+S'], desc: 'CRTスキャンライン切替' },
   { keys: ['↑↑↓↓←→←→BA'], desc: 'レトロモード(5秒)' },
   { keys: ['?'], desc: 'このヘルプを表示' },

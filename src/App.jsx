@@ -41,6 +41,8 @@ import CoreDump from './components/CoreDump';
 import SignalInterceptor from './components/SignalInterceptor';
 import PortScanner from './components/PortScanner';
 import MalwareQuarantine from './components/MalwareQuarantine';
+import PacketSniffer from './components/PacketSniffer';
+import MemoryDefrag from './components/MemoryDefrag';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -746,6 +748,8 @@ export default function App() {
       <SignalInterceptor />
       <PortScanner />
       <MalwareQuarantine />
+      <PacketSniffer />
+      <MemoryDefrag />
       {kernelPanic && (
         <div className="kernel-panic" aria-live="assertive">
           <pre>{`KERNEL PANIC - NOT SYNCING: Attempted to kill init!

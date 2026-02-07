@@ -32,6 +32,8 @@ const HELP_TEXT = [
   '  tune     — Toggle radio tuner (S key)',
   '  nmap     — Port scan prokyi.local',
   '  clamscan — Malware threat scanner',
+  '  sniff    — Packet sniffer (Wireshark)',
+  '  defrag   — Memory defragmenter',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -302,6 +304,14 @@ const COMMANDS = {
   quarantine: () => {
     window.dispatchEvent(new CustomEvent('prokyi-quarantine-toggle'));
     return ['🛡️ ClamAV Malware Scanner activated.'];
+  },
+  sniff: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-sniff-toggle'));
+    return ['🦈 Packet Sniffer activated. Capturing on eth0...'];
+  },
+  defrag: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-defrag-toggle'));
+    return ['💾 Memory Defragmenter opened. Press ▶ DEFRAG to optimize.'];
   },
   cursor: () => {
     const doc = document.documentElement;
