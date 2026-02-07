@@ -27,11 +27,30 @@ function BootScreen({ onDone }) {
     '[INIT] Rendering viewport ...',
   ];
 
+  // Subtle boot beep via Web Audio API
+  const playBeep = (freq = 440, dur = 0.04) => {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.value = 0.03;
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+      osc.stop(ctx.currentTime + dur + 0.01);
+    } catch (_) {}
+  };
+
   useEffect(() => {
     let i = 0;
+    const freqs = [520, 600, 600, 600, 700, 880];
     const iv = setInterval(() => {
       if (i < bootLines.length) {
         setLines(prev => [...prev, bootLines[i]]);
+        playBeep(freqs[i] || 600);
         i++;
       } else {
         clearInterval(iv);

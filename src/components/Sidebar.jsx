@@ -10,6 +10,15 @@ const statusItems = [
   { k: 'LV', v: '19', bar: 19, color: '#4facfe' },
 ];
 
+const skills = [
+  { name: 'Python',     lv: 55, color: '#fbbf24' },
+  { name: 'JavaScript', lv: 45, color: '#f59e0b' },
+  { name: 'React',      lv: 40, color: '#4facfe' },
+  { name: 'Linux',      lv: 50, color: '#22d3a7' },
+  { name: 'Docker',     lv: 35, color: '#00f2fe' },
+  { name: 'AI / ML',    lv: 30, color: '#a855f7' },
+];
+
 export default function Sidebar() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
@@ -72,6 +81,36 @@ export default function Sidebar() {
             <li key={date + text}>
               <time>{date}</time>
               <span>{text}</span>
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+
+      {/* Skills */}
+      <motion.div
+        className="side-card"
+        initial={{ opacity: 0, x: 60, scale: 0.9 }}
+        animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
+        transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+      >
+        <h3 className="side-card__title">スキル</h3>
+        <ul className="skill-list">
+          {skills.map((s, i) => (
+            <li key={s.name}>
+              <div className="skill-list__head">
+                <span className="skill-list__name">{s.name}</span>
+                <span className="skill-list__lv" style={{ color: s.color }}>{s.lv}%</span>
+              </div>
+              <div className="skill-list__bar">
+                <motion.div
+                  className="skill-list__fill"
+                  style={{ background: `linear-gradient(90deg, ${s.color}, ${s.color}88)` }}
+                  initial={{ width: 0 }}
+                  animate={inView ? { width: `${s.lv}%` } : {}}
+                  transition={{ duration: 1.2, delay: 0.6 + i * 0.1 }}
+                />
+              </div>
             </li>
           ))}
         </ul>

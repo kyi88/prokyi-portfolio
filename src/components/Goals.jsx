@@ -3,10 +3,10 @@ import { motion, useInView } from 'framer-motion';
 import './Goals.css';
 
 const goals = [
-  { icon: '🤖', name: 'LLM', desc: '大規模言語モデルの開発環境構築と、特定用途へのファインチューニング' },
-  { icon: '🖥️', name: '自宅サーバー', desc: 'セキュリティを考慮したサーバー構築と運用、Webサービス公開' },
-  { icon: '🎬', name: '動画編集', desc: 'クリエイティブなコンテンツ制作' },
-  { icon: '🎨', name: '3Dモデリング', desc: 'ビジュアルコンテンツの創造' },
+  { icon: '🤖', name: 'LLM', desc: '大規模言語モデルの開発環境構築と、特定用途へのファインチューニング', progress: 20 },
+  { icon: '🖥️', name: '自宅サーバー', desc: 'セキュリティを考慮したサーバー構築と運用、Webサービス公開', progress: 15 },
+  { icon: '🎬', name: '動画編集', desc: 'クリエイティブなコンテンツ制作', progress: 10 },
+  { icon: '🎨', name: '3Dモデリング', desc: 'ビジュアルコンテンツの創造', progress: 5 },
 ];
 
 export default function Goals() {
@@ -51,6 +51,21 @@ export default function Goals() {
             </motion.div>
             <h3 className="goal__name">{g.name}</h3>
             <p className="goal__desc">{g.desc}</p>
+            <div className="goal__progress">
+              <div className="goal__progress-label">
+                <span>進捗</span>
+                <span>{g.progress}%</span>
+              </div>
+              <div className="goal__progress-bar">
+                <motion.div
+                  className="goal__progress-fill"
+                  style={{ background: `var(--goal-color, var(--c-accent))` }}
+                  initial={{ width: 0 }}
+                  animate={inView ? { width: `${g.progress}%` } : {}}
+                  transition={{ duration: 1.2, delay: 0.5 + i * 0.15 }}
+                />
+              </div>
+            </div>
           </motion.article>
         ))}
       </div>
