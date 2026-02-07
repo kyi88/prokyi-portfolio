@@ -1,0 +1,17 @@
+/* ── Page Progress Bar ── */
+.page-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-accent2, #00f2fe));
+  transform-origin: left;
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 0 8px var(--c-accent), 0 0 16px rgba(79, 172, 254, 0.3);
+}
+
+[data-theme="green"] .page-progress {
+  box-shadow: 0 0 8px var(--c-accent), 0 0 16px rgba(34, 211, 167, 0.3);
+}

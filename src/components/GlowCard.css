@@ -1,0 +1,38 @@
+/* ── GlowCard ── */
+.glow-card {
+  position: relative;
+  overflow: hidden;
+  --gx: 50%;
+  --gy: 50%;
+  --glow-opacity: 0;
+}
+
+.glow-card__spot {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: var(--glow-opacity);
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    300px circle at var(--gx) var(--gy),
+    rgba(79, 172, 254, 0.12),
+    transparent 70%
+  );
+}
+
+[data-theme="green"] .glow-card__spot {
+  background: radial-gradient(
+    300px circle at var(--gx) var(--gy),
+    rgba(34, 211, 167, 0.12),
+    transparent 70%
+  );
+}
+
+.glow-card:hover {
+  border-color: var(--c-accent) !important;
+}
+
+@media (pointer: coarse) {
+  .glow-card__spot { display: none; }
+}
