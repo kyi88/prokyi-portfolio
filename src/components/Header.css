@@ -76,6 +76,26 @@
   letter-spacing: 1px;
   margin-left: -4px;
 }
+
+/* Theme toggle */
+.header__theme-btn {
+  background: none;
+  border: 1px solid var(--c-border);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  flex-shrink: 0;
+}
+.header__theme-btn:hover {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 12px var(--c-glow);
+}
 .header__nav {
   display: flex;
   gap: 6px;

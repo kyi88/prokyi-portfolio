@@ -16,9 +16,22 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState('');
   const [viewedCount, setViewedCount] = useState(0);
+  const [theme, setTheme] = useState(() => localStorage.getItem('prokyi_theme') || 'cyber');
   const viewedRef = useRef(new Set());
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  // Apply theme
+  useEffect(() => {
+    if (theme === 'green') {
+      document.documentElement.setAttribute('data-theme', 'green');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    localStorage.setItem('prokyi_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'cyber' ? 'green' : 'cyber');
 
   useEffect(() => {
     const onScroll = () => {
@@ -74,6 +87,22 @@ export default function Header() {
             {viewedCount}/{navItems.length}
           </motion.span>
         )}
+
+        <button
+          className="header__theme-btn"
+          aria-label={`テーマ切替: ${theme === 'cyber' ? 'Cyber Blue' : 'Hacker Green'}`}
+          onClick={toggleTheme}
+          title={theme === 'cyber' ? '🟢 Hacker Green' : '🔵 Cyber Blue'}
+        >
+          <motion.span
+            key={theme}
+            initial={{ rotate: -180, scale: 0 }}
+            animate={{ rotate: 0, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+          >
+            {theme === 'cyber' ? '🔵' : '🟢'}
+          </motion.span>
+        </button>
 
         <nav className={`header__nav ${menuOpen ? 'is-open' : ''}`}>
           {navItems.map((item) => (

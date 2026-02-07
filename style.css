@@ -30,6 +30,22 @@
   --header-h:64px;
 }
 
+/* Hacker Green theme */
+[data-theme="green"]{
+  --c-bg:#020a02;
+  --c-surface:rgba(6,24,6,.78);
+  --c-surface-solid:#061806;
+  --c-border:rgba(0,255,65,.15);
+  --c-border-hover:rgba(0,255,65,.4);
+  --c-text:#b8e6b8;
+  --c-text-dim:#4a7a4a;
+  --c-heading:#d0ffd0;
+  --c-accent:#00ff41;
+  --c-accent2:#39ff14;
+  --c-glow:rgba(0,255,65,.25);
+  --c-glow2:rgba(57,255,20,.15);
+}
+
 html{scroll-behavior:smooth;scroll-padding-top:var(--header-h)}
 body{
   font-family:var(--font-body);

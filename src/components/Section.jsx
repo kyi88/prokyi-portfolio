@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import './Section.css';
 
 /** Scramble a 2-digit number before settling */
@@ -30,18 +30,42 @@ export default function Section({ id, num, title, children }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const scrambled = useScrambleNum(num, inView);
+  const [showBanner, setShowBanner] = useState(false);
+
+  useEffect(() => {
+    if (inView) {
+      setShowBanner(true);
+      const t = setTimeout(() => setShowBanner(false), 1800);
+      return () => clearTimeout(t);
+    }
+  }, [inView]);
 
   return (
     <motion.section
       id={id}
       ref={ref}
-      className="card"
+      className="card section"
       initial={{ opacity: 0, y: 60, scale: 0.92, rotateX: 8 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1, rotateX: 0 } : {}}
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ scale: 1.01, transition: { duration: 0.3 } }}
       style={{ transformPerspective: 1200 }}
     >
+      {/* Connection banner */}
+      <AnimatePresence>
+        {showBanner && (
+          <motion.div
+            className="card__connect-banner"
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            aria-hidden="true"
+          >
+            ▸ LINK_{num} ESTABLISHED
+          </motion.div>
+        )}
+      </AnimatePresence>
       <motion.h2
         className="card__title gradient-text"
         initial={{ opacity: 0, x: -30 }}

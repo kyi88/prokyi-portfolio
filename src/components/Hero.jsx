@@ -292,23 +292,38 @@ export default function Hero() {
             <span className="hero__counter-num">{count.toLocaleString()}</span>
           </motion.div>
 
-          {/* XP Progress bar */}
+          {/* XP Progress Ring */}
           <motion.div
-            className="hero__xp"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.7 }}
+            className="hero__xp-ring-wrap"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 1.7, type: 'spring' }}
           >
-            <span className="hero__xp-label">LV.{XP_LEVEL}</span>
-            <div className="hero__xp-bar">
-              <motion.div
-                className="hero__xp-fill"
-                initial={{ width: 0 }}
-                animate={{ width: `${(XP_CURRENT / XP_MAX) * 100}%` }}
-                transition={{ duration: 1.5, delay: 2.0, ease: [0.22, 1, 0.36, 1] }}
+            <svg className="hero__xp-ring" viewBox="0 0 80 80" width="80" height="80">
+              <circle cx="40" cy="40" r="34" fill="none" stroke="var(--c-border)" strokeWidth="4" opacity="0.3" />
+              <motion.circle
+                cx="40" cy="40" r="34"
+                fill="none"
+                stroke="url(#xp-grad)"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeDasharray={`${2 * Math.PI * 34}`}
+                initial={{ strokeDashoffset: 2 * Math.PI * 34 }}
+                animate={{ strokeDashoffset: 2 * Math.PI * 34 * (1 - XP_CURRENT / XP_MAX) }}
+                transition={{ duration: 2.0, delay: 2.0, ease: [0.22, 1, 0.36, 1] }}
+                transform="rotate(-90 40 40)"
               />
+              <defs>
+                <linearGradient id="xp-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="var(--c-accent)" />
+                  <stop offset="100%" stopColor="var(--c-accent2)" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div className="hero__xp-ring-text">
+              <span className="hero__xp-ring-level">LV.{XP_LEVEL}</span>
+              <span className="hero__xp-ring-val">{XP_CURRENT}/{XP_MAX}</span>
             </div>
-            <span className="hero__xp-text">{XP_CURRENT}/{XP_MAX} XP</span>
           </motion.div>
 
           {/* Status LEDs */}
