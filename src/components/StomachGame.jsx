@@ -39,19 +39,25 @@ export default function StomachGame({ onClose }) {
   useEffect(() => {
     if (over) return;
     const iv = setInterval(() => {
+      let hitList = [];
       setItems(p => {
         const next = [];
         for (const it of p) {
           const ny = it.y + it.speed;
           if (ny >= 100) {
-            if (!it.hazard) { /* missed safe = no penalty */ }
-            else { /* hazard fell through = hit */ setHp(h => h - 1); addFlash(it.x, '💀'); }
+            if (it.hazard) hitList.push(it.x);
           } else {
             next.push({ ...it, y: ny });
           }
         }
         return next;
       });
+      // Side effects outside updater
+      for (const x of hitList) {
+        setHp(h => h - 1);
+        addFlash(x, '💀');
+      }
+      hitList = [];
     }, 50);
     return () => clearInterval(iv);
   }, [over]);

@@ -44,5 +44,6 @@
 }
 
 @media (max-width: 640px) {
+  .welcome-banner { top: 56px; }
   .welcome-banner__text { font-size: 0.6rem; }
 }

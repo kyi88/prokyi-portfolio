@@ -63,7 +63,10 @@ function Section({ id, num, title, children }) {
     const iv = setInterval(() => {
       if (lastEntry) {
         const elapsed = totalTime + (Date.now() - lastEntry);
-        if (elapsed > 15000) setIsHot(true);
+        if (elapsed > 15000) {
+          setIsHot(true);
+          clearInterval(iv);
+        }
       }
     }, 5000);
     return () => { observer.disconnect(); clearInterval(iv); };

@@ -177,12 +177,9 @@ function StatusValue({ item, inView }) {
   return <span>{numMatch ? count : item.v}</span>;
 }
 
-export default function Sidebar() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-40px' });
+/* Session timer — own component to avoid re-rendering the whole Sidebar */
+function SessionTimer() {
   const [session, setSession] = useState('0:00');
-
-  // Session timer
   useEffect(() => {
     const start = Date.now();
     const iv = setInterval(() => {
@@ -192,6 +189,12 @@ export default function Sidebar() {
     }, 1000);
     return () => clearInterval(iv);
   }, []);
+  return <span className="side-card__meta-item">SESSION {session}</span>;
+}
+
+export default function Sidebar() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
 
   const dayLabel = ['日','月','火','水','木','金','土'][new Date().getDay()];
 
@@ -207,7 +210,7 @@ export default function Sidebar() {
         <h3 className="side-card__title">ステータス</h3>
         <div className="side-card__meta">
           <span className="side-card__meta-item">{dayLabel}曜日</span>
-          <span className="side-card__meta-item">SESSION {session}</span>
+          <SessionTimer />
         </div>
         <ul className="status-list">
           {statusItems.map((item) => (

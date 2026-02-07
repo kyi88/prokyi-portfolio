@@ -56,9 +56,11 @@ export default function CommandPalette() {
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
+      if (filtered.length === 0) return;
       setActiveIdx(prev => (prev + 1) % filtered.length);
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
+      if (filtered.length === 0) return;
       setActiveIdx(prev => (prev - 1 + filtered.length) % filtered.length);
     } else if (e.key === 'Enter' && filtered.length > 0) {
       handleSelect(filtered[activeIdx].target);

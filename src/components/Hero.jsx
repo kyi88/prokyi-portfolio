@@ -8,11 +8,12 @@ const BASE = import.meta.env.BASE_URL;
 function ParticleTrail() {
   const canvasRef = useRef(null);
   const particles = useRef([]);
-  const mouse = useRef({ x: -100, y: -100 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const heroEl = canvas.parentElement;
+    if (!heroEl) return;
     const ctx = canvas.getContext('2d');
     let raf;
     const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
@@ -21,12 +22,11 @@ function ParticleTrail() {
 
     const onMove = (e) => {
       const rect = canvas.getBoundingClientRect();
-      mouse.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-      // Spawn particles
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
       for (let i = 0; i < 2; i++) {
         particles.current.push({
-          x: mouse.current.x,
-          y: mouse.current.y,
+          x: mx, y: my,
           vx: (Math.random() - 0.5) * 2,
           vy: (Math.random() - 0.5) * 2,
           life: 1,
@@ -36,7 +36,8 @@ function ParticleTrail() {
       }
       if (particles.current.length > 80) particles.current.splice(0, particles.current.length - 80);
     };
-    canvas.addEventListener('mousemove', onMove);
+    // Listen on parent hero element so pointer-events:none on canvas doesn't block
+    heroEl.addEventListener('mousemove', onMove);
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -60,7 +61,7 @@ function ParticleTrail() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
-      canvas.removeEventListener('mousemove', onMove);
+      heroEl.removeEventListener('mousemove', onMove);
     };
   }, []);
 

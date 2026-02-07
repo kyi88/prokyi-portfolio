@@ -437,7 +437,7 @@ export default function App() {
       link.href = canvas.toDataURL('image/png');
       frame++;
     };
-    const start = () => { if (!iv) iv = setInterval(draw, 100); };
+    const start = () => { if (!iv) iv = setInterval(draw, 500); };
     const stop = () => { if (iv) { clearInterval(iv); iv = null; } };
     const onVisibility = () => { document.hidden ? stop() : start(); };
     document.addEventListener('visibilitychange', onVisibility);

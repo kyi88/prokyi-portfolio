@@ -42,6 +42,9 @@ export default function KeyboardGuide() {
         >
           <motion.div
             className="kb-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="キーボードショートカット"
             initial={{ scale: 0.85, y: 30 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.85, y: 30 }}
