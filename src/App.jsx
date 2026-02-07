@@ -32,6 +32,7 @@ import ClickSpark from './components/ClickSpark';
 import ScrollPercentage from './components/ScrollPercentage';
 import ScanLine from './components/ScanLine';
 import Confetti from './components/Confetti';
+import ThemePreview from './components/ThemePreview';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -671,6 +672,7 @@ export default function App() {
           {milestoneMsg}
         </div>
       )}
+      <ThemePreview />
         </>
       )}
     </SoundContext.Provider>

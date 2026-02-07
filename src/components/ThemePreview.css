@@ -1,0 +1,23 @@
+.theme-preview {
+  position: fixed;
+  top: 64px;
+  right: 24px;
+  z-index: 99990;
+  padding: 8px 18px;
+  border-radius: 8px;
+  background: rgba(10, 10, 30, 0.95);
+  border: 1px solid var(--c-accent);
+  color: var(--c-accent);
+  font-family: var(--ff-mono, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  box-shadow: 0 0 14px rgba(var(--c-accent-rgb, 79, 172, 254), 0.25);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+.theme-preview__label {
+  opacity: 0.5;
+  font-size: 0.6rem;
+  margin-right: 4px;
+}

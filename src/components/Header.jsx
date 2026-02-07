@@ -33,6 +33,8 @@ export default function Header() {
       document.documentElement.removeAttribute('data-theme');
     }
     localStorage.setItem('prokyi_theme', theme);
+    // Notify other components (ThemePreview, MatrixRain, etc.)
+    window.dispatchEvent(new CustomEvent('prokyi-theme-sync', { detail: theme }));
   }, [theme]);
 
   // Sync theme when changed externally (e.g. CyberTerminal "theme" command)

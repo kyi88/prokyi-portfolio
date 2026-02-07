@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import GlowCard from './GlowCard';
 import NetworkGraph from './NetworkGraph';
+import BatteryIndicator from './BatteryIndicator';
 import './Sidebar.css';
 
 const RANDOM_FACTS = [
@@ -348,6 +349,7 @@ export default function Sidebar() {
           <span>🔥 STREAK: {streak} {streak >= 3 ? '日連続!' : '日'}</span>
         </div>
         <WorldClocks />
+        <BatteryIndicator />
       </motion.div>
       </GlowCard>
 

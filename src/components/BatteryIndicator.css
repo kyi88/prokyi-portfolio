@@ -1,0 +1,37 @@
+.battery-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--ff-mono, 'JetBrains Mono', monospace);
+  font-size: 0.6rem;
+  color: var(--c-text-dim, #888);
+}
+
+.battery-indicator__shell {
+  position: relative;
+  width: 24px;
+  height: 12px;
+  border: 1px solid var(--c-text-dim, #555);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.battery-indicator__cap {
+  position: absolute;
+  right: -4px;
+  top: 3px;
+  width: 3px;
+  height: 6px;
+  background: var(--c-text-dim, #555);
+  border-radius: 0 1px 1px 0;
+}
+
+.battery-indicator__fill {
+  height: 100%;
+  border-radius: 1px;
+  transition: width 0.5s ease, background 0.5s;
+}
+
+.battery-indicator__text {
+  letter-spacing: 0.04em;
+}
