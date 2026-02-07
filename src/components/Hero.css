@@ -248,6 +248,20 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: gradient-flow 6s ease-in-out infinite;
+  position: relative;
+  display: inline-block;
+}
+/* Chrome aberration on hover */
+.hero__name-jp:hover {
+  animation: gradient-flow 6s ease-in-out infinite, name-rgb-glitch 0.4s ease-out 1;
+}
+@keyframes name-rgb-glitch {
+  0% { text-shadow: none; filter: none; }
+  20% { text-shadow: -2px 0 #ff0000, 2px 0 #00ffff; filter: blur(0.5px); }
+  40% { text-shadow: 1px 0 #ff0000, -1px 0 #00ffff; filter: none; }
+  60% { text-shadow: -1px 0 #ff00ff, 1px 0 #00ff00; filter: blur(0.3px); }
+  80% { text-shadow: 2px 0 #ff0000, -2px 0 #0000ff; filter: none; }
+  100% { text-shadow: none; filter: none; }
 }
 @keyframes gradient-flow {
   0% { background-position: 0% 50%; }

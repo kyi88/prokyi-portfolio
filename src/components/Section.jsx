@@ -31,6 +31,7 @@ function Section({ id, num, title, children }) {
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const scrambled = useScrambleNum(num, inView);
   const [showBanner, setShowBanner] = useState(false);
+  const [isHot, setIsHot] = useState(false);
 
   /* Section scroll progress */
   const { scrollYProgress } = useScroll({
@@ -38,6 +39,35 @@ function Section({ id, num, title, children }) {
     offset: ['start end', 'end start'],
   });
   const progressWidth = useTransform(scrollYProgress, [0, 0.3, 0.8, 1], ['0%', '20%', '90%', '100%']);
+
+  /* Track viewport dwell time — show HOT badge after 15s visible */
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let totalTime = 0;
+    let lastEntry = null;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          lastEntry = Date.now();
+        } else if (lastEntry) {
+          totalTime += Date.now() - lastEntry;
+          lastEntry = null;
+          if (totalTime > 15000) setIsHot(true);
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    // Check periodically while visible
+    const iv = setInterval(() => {
+      if (lastEntry) {
+        const elapsed = totalTime + (Date.now() - lastEntry);
+        if (elapsed > 15000) setIsHot(true);
+      }
+    }, 5000);
+    return () => { observer.disconnect(); clearInterval(iv); };
+  }, []);
 
   /* Mouse proximity glow tracking */
   const handleMouseMove = useCallback((e) => {
@@ -72,6 +102,20 @@ function Section({ id, num, title, children }) {
       <span className="card__glow" aria-hidden="true" />
       {/* Section read progress */}
       <motion.div className="card__read-progress" style={{ width: progressWidth }} aria-hidden="true" />
+      {/* HOT badge — appears after 15s dwell time */}
+      <AnimatePresence>
+        {isHot && (
+          <motion.span
+            className="card__hot-badge"
+            initial={{ scale: 0, rotate: -20 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+            aria-label="人気セクション"
+          >
+            🔥 HOT
+          </motion.span>
+        )}
+      </AnimatePresence>
       {/* Connection banner */}
       <AnimatePresence>
         {showBanner && (

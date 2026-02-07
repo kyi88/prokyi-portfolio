@@ -12,6 +12,7 @@ const HELP_TEXT = [
   '  gadgets  — Inventory list',
   '  goals    — Current objectives',
   '  projects — Project list',
+  '  theme    — Toggle color theme',
   '  uptime   — Session uptime',
   '  random   — Random cyber fact',
   '  secret   — ???',
@@ -131,6 +132,18 @@ const COMMANDS = {
       `  ${hrs}h ${min % 60}m ${sec % 60}s (${ms.toLocaleString()}ms)`,
       `  Page opened: ${new Date(Date.now() - ms).toLocaleTimeString('ja-JP')}`,
     ];
+  },
+  theme: () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    if (current === 'green') {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('prokyi_theme', 'cyber');
+      return ['[THEME] Switched to 🔵 Cyber Blue'];
+    } else {
+      document.documentElement.setAttribute('data-theme', 'green');
+      localStorage.setItem('prokyi_theme', 'green');
+      return ['[THEME] Switched to 🟢 Hacker Green'];
+    }
   },
   random: () => {
     const facts = [

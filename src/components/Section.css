@@ -44,6 +44,29 @@
   box-shadow: 0 0 8px var(--c-accent);
 }
 
+/* HOT badge */
+.card__hot-badge {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #ff6b35;
+  background: rgba(255, 107, 53, 0.08);
+  border: 1px solid rgba(255, 107, 53, 0.25);
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  z-index: 3;
+  text-shadow: 0 0 6px rgba(255, 107, 53, 0.4);
+  animation: hot-glow 2s ease-in-out infinite;
+}
+@keyframes hot-glow {
+  0%, 100% { box-shadow: 0 0 4px rgba(255, 107, 53, 0.2); }
+  50% { box-shadow: 0 0 12px rgba(255, 107, 53, 0.4); }
+}
+
 /* Connection banner */
 .card__connect-banner {
   position: absolute;
