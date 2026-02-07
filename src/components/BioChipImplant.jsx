@@ -29,10 +29,17 @@ function BioChipImplant() {
   const jbTimer = useRef(null);
 
   useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape' && open) setOpen(false);
+    };
     const handler = () => setOpen((p) => !p);
+    window.addEventListener('keydown', onKey);
     window.addEventListener('prokyi-biochip-toggle', handler);
-    return () => window.removeEventListener('prokyi-biochip-toggle', handler);
-  }, []);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('prokyi-biochip-toggle', handler);
+    };
+  }, [open]);
 
   // Vital sign drift
   useEffect(() => {
@@ -70,9 +77,9 @@ function BioChipImplant() {
   const slots = jailbreak ? JAILBREAK_SLOTS : NORMAL_SLOTS;
 
   return (
-    <motion.div className="biochip" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.15 }} role="dialog" aria-label="BioChip Implant HUD">
+    <motion.div className="biochip" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.15 }} role="dialog" aria-label="BioChip Implant HUD" aria-modal="true">
       <div className="biochip__header">
-        <span onClick={handleJailbreakClick} role="button" tabIndex={0} style={{ cursor: 'pointer' }}>
+        <span onClick={handleJailbreakClick} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleJailbreakClick(); } }} role="button" tabIndex={0} style={{ cursor: 'pointer' }}>
           🧬 BIOCHIP IMPLANT — HUD
         </span>
         <button className="biochip__btn" onClick={() => setOpen(false)} aria-label="Close">✕</button>

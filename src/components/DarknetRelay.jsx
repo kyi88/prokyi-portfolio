@@ -25,12 +25,19 @@ function DarknetRelay() {
   const exitTimer = useRef(null);
   const alertTimer = useRef(null);
 
-  // Toggle
+  // Toggle + Escape
   useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape' && open) setOpen(false);
+    };
     const handler = () => setOpen((p) => !p);
+    window.addEventListener('keydown', onKey);
     window.addEventListener('prokyi-darknet-toggle', handler);
-    return () => window.removeEventListener('prokyi-darknet-toggle', handler);
-  }, []);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('prokyi-darknet-toggle', handler);
+    };
+  }, [open]);
 
   // Packet counter
   useEffect(() => {
@@ -91,6 +98,7 @@ function DarknetRelay() {
       transition={{ duration: 0.15 }}
       role="dialog"
       aria-label="Darknet Relay"
+      aria-modal="true"
     >
       <div className="darknet-relay__header">
         <span>🧅 DARKNET RELAY — TOR CIRCUIT</span>
@@ -106,6 +114,7 @@ function DarknetRelay() {
             <div
               className={`darknet-relay__node darknet-relay__node--${node.type}${alert ? ' darknet-relay__node--alert' : ''}`}
               onClick={() => handleNodeClick(i)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleNodeClick(i); } }}
               role="button"
               tabIndex={0}
               aria-label={`${node.label} node`}

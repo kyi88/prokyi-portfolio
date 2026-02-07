@@ -20,12 +20,19 @@ function NeuralLinkSync() {
   const clickTimer = useRef(null);
   const berserkTimer = useRef(null);
 
-  // Toggle
+  // Toggle + Escape
   useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape' && open) setOpen(false);
+    };
     const handler = () => setOpen((p) => !p);
+    window.addEventListener('keydown', onKey);
     window.addEventListener('prokyi-neurallink-toggle', handler);
-    return () => window.removeEventListener('prokyi-neurallink-toggle', handler);
-  }, []);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('prokyi-neurallink-toggle', handler);
+    };
+  }, [open]);
 
   // Sync rate drift
   useEffect(() => {
@@ -130,6 +137,7 @@ function NeuralLinkSync() {
       transition={{ duration: 0.15 }}
       role="dialog"
       aria-label="Neural Link Sync Monitor"
+      aria-modal="true"
     >
       <div className="neural-link__header">
         <span>🧠 NEURAL LINK v3.1</span>
@@ -139,6 +147,7 @@ function NeuralLinkSync() {
       <div
         className={`neural-link__sync${berserk ? ' neural-link__sync--berserk' : ''}`}
         onClick={handleSyncClick}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSyncClick(); } }}
         role="button"
         tabIndex={0}
         aria-label={`Sync rate ${syncRate.toFixed(1)}%`}

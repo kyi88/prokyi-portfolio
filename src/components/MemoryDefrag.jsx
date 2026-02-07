@@ -49,12 +49,19 @@ function MemoryDefrag() {
   const timerRef = useRef(null);
   const targetRef = useRef([]);
 
-  // Toggle: event
+  // Toggle + Escape
   useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape' && open) setOpen(false);
+    };
     const handler = () => setOpen((p) => !p);
+    window.addEventListener('keydown', onKey);
     window.addEventListener('prokyi-defrag-toggle', handler);
-    return () => window.removeEventListener('prokyi-defrag-toggle', handler);
-  }, []);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('prokyi-defrag-toggle', handler);
+    };
+  }, [open]);
 
   // Cleanup
   useEffect(() => () => clearInterval(timerRef.current), []);
@@ -106,6 +113,7 @@ function MemoryDefrag() {
       transition={{ duration: 0.15 }}
       role="dialog"
       aria-label="Memory Defragmenter"
+      aria-modal="true"
     >
       <div className="memory-defrag__header">
         <span>💾 DEFRAG /dev/sda1</span>

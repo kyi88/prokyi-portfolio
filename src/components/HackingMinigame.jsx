@@ -17,10 +17,17 @@ function HackingMinigame() {
   const logRef = useRef(null);
 
   useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape' && open) setOpen(false);
+    };
     const handler = () => setOpen((p) => !p);
+    window.addEventListener('keydown', onKey);
     window.addEventListener('prokyi-hackgame-toggle', handler);
-    return () => window.removeEventListener('prokyi-hackgame-toggle', handler);
-  }, []);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('prokyi-hackgame-toggle', handler);
+    };
+  }, [open]);
 
   useEffect(() => () => clearInterval(timerRef.current), []);
 
@@ -82,7 +89,7 @@ function HackingMinigame() {
   const progress = solved.filter(Boolean).length / TARGET.length * 100;
 
   return (
-    <motion.div className="hacking-game" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.15 }} role="dialog" aria-label="Hacking Minigame">
+    <motion.div className="hacking-game" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.15 }} role="dialog" aria-label="Hacking Minigame" aria-modal="true">
       <div className="hacking-game__header">
         <span>🔓 PASSWORD CRACKER v1.0</span>
         <div style={{ display: 'flex', gap: 6 }}>

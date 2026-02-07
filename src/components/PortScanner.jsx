@@ -25,13 +25,10 @@ function PortScanner() {
   const timerRef = useRef(null);
   const bodyRef = useRef(null);
 
-  // Toggle: Ctrl+Shift+N or event
+  // Toggle: event only (removed Ctrl+Shift+N — conflicts with browser incognito)
   useEffect(() => {
     const onKey = (e) => {
-      if (e.ctrlKey && e.shiftKey && (e.key === 'n' || e.key === 'N')) {
-        e.preventDefault();
-        setOpen((p) => !p);
-      }
+      if (e.key === 'Escape' && open) setOpen(false);
     };
     const onEvent = () => setOpen((p) => !p);
     window.addEventListener('keydown', onKey);
@@ -40,7 +37,7 @@ function PortScanner() {
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('prokyi-portscan-toggle', onEvent);
     };
-  }, []);
+  }, [open]);
 
   // Auto-scroll to bottom
   useEffect(() => {

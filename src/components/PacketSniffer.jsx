@@ -24,9 +24,10 @@ function PacketSniffer() {
   const pausedRef = useRef(false);
   pausedRef.current = paused;
 
-  // Toggle: Ctrl+Shift+W or event
+  // Toggle: Ctrl+Alt+Shift+P or event
   useEffect(() => {
     const onKey = (e) => {
+      if (e.key === 'Escape' && open) { setOpen(false); return; }
       if (e.ctrlKey && e.shiftKey && (e.key === 'p' || e.key === 'P') && e.altKey) {
         e.preventDefault();
         setOpen((p) => !p);
@@ -39,7 +40,7 @@ function PacketSniffer() {
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('prokyi-sniff-toggle', onEvent);
     };
-  }, []);
+  }, [open]);
 
   // Capture events
   useEffect(() => {
@@ -52,7 +53,7 @@ function PacketSniffer() {
       if (type === 'click') {
         const tag = e.target?.tagName || '?';
         payload = `Target: <${tag.toLowerCase()}> pos(${e.clientX},${e.clientY})`;
-      } else if (type === 'scroll') {
+      } else if (type === 'wheel') {
         payload = `scrollY=${Math.round(window.scrollY)} delta=${e.deltaY || 0}`;
       } else if (type === 'mousemove') {
         payload = `pos(${e.clientX},${e.clientY}) CRC:${randHex(2)}`;
@@ -113,6 +114,9 @@ function PacketSniffer() {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.15 }}
+      role="dialog"
+      aria-label="Packet Sniffer"
+      aria-modal="true"
     >
       <div className="packet-sniffer__header">
         <span>🦈 PACKET SNIFFER — eth0 promisc</span>
