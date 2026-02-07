@@ -25,6 +25,8 @@ const HELP_TEXT = [
   '  decrypt  — Decrypt animation on text',
   '  security-log — View intrusion log',
   '  phantom  — Toggle ghost cursor',
+  '  ghost    — Toggle UV scan mode',
+  '  surveillance — View camera grid',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -232,6 +234,22 @@ const COMMANDS = {
     window.dispatchEvent(new CustomEvent('prokyi-phantom-toggle'));
     return ['👻 Phantom cursor toggled.'];
   },
+  ghost: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-ghost-toggle'));
+    return ['👻 Ghost Protocol UV scan toggled. Press G to toggle manually.'];
+  },
+  surveillance: () => [
+    '┌────────────────────────────────┐',
+    '│  SURVEILLANCE GRID — 6 FEEDS  │',
+    '├────────┬────────┬─────────────┤',
+    '│ CAM-01 │ CAM-02 │ CAM-03      │',
+    '│PROFILE │CAREER  │ GOALS       │',
+    '├────────┼────────┼─────────────┤',
+    '│ CAM-04 │ CAM-05 │ CAM-06      │',
+    '│STATUS  │GADGETS │ LINKS       │',
+    '└────────┴────────┴─────────────┘',
+    '  All feeds ONLINE. Drag the PiP widget to reposition.',
+  ],
   ps: () => [
     '[PROCESS TABLE]',
     '  PID  NAME            CPU%  MEM    STATUS',

@@ -35,6 +35,8 @@ import Confetti from './components/Confetti';
 import ThemePreview from './components/ThemePreview';
 import IntrusionAlert from './components/IntrusionAlert';
 import PhantomCursor from './components/PhantomCursor';
+import SurveillanceFeed from './components/SurveillanceFeed';
+import GhostProtocol from './components/GhostProtocol';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -725,6 +727,8 @@ export default function App() {
       {procAlive.scanline && <ScanLine />}
       <IntrusionAlert />
       <PhantomCursor />
+      <SurveillanceFeed />
+      <GhostProtocol />
       {kernelPanic && (
         <div className="kernel-panic" aria-live="assertive">
           <pre>{`KERNEL PANIC - NOT SYNCING: Attempted to kill init!

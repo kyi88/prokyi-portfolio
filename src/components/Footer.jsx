@@ -238,13 +238,16 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ delay: 0.9, duration: 0.8 }}
         >
-          <span>COMPONENTS: 48</span>
+          <span>COMPONENTS: 50</span>
           <span>CHUNKS: 8</span>
-          <span>EASTER EGGS: 15</span>
-          <span>LOOPS: 85</span>
+          <span>EASTER EGGS: 16</span>
+          <span>LOOPS: 86</span>
           <LoadTime />
           <Uptime />
         </motion.div>
+        <span className="ghost-text" data-ghost-id="ghost-footer" aria-hidden="true">
+          このサイトの最初のコミットは1行のHTML
+        </span>
       </div>
     </motion.footer>
   );

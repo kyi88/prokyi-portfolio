@@ -127,6 +127,9 @@ export default function Links() {
         </span>
       </motion.a>
     </div>
+      <span className="ghost-text" data-ghost-id="ghost-links" aria-hidden="true">
+        リポジトリ名の「kyi88」は名前の略+誕生日
+      </span>
     </div>
   );
 }

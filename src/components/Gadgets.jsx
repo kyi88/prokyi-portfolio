@@ -317,6 +317,9 @@ export default function Gadgets() {
           ))}
         </motion.div>
       </AnimatePresence>
+      <span className="ghost-text" data-ghost-id="ghost-gadgets" aria-hidden="true">
+        一番長く使っているデバイスはiPhone 13 Pro Max
+      </span>
     </div>
   );
 }

@@ -104,6 +104,9 @@ function Profile() {
 
       <SkillOrbs />
       <CodeBlock />
+      <span className="ghost-text" data-ghost-id="ghost-profile" aria-hidden="true">
+        初めてのPCは小学3年生の誕生日プレゼントだった
+      </span>
     </div>
   );
 }

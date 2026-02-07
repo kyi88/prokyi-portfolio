@@ -132,6 +132,9 @@ export default function Career() {
           </motion.div>
         ))}
       </div>
+      <span className="ghost-text" data-ghost-id="ghost-career" aria-hidden="true">
+        寿司屋のキッチンでの経験がデバッグの忍耐力を鍛えた
+      </span>
     </div>
   );
 }

@@ -109,6 +109,9 @@ export default function Goals() {
         ))}
         </AnimatePresence>
       </div>
+      <span className="ghost-text" data-ghost-id="ghost-goals" aria-hidden="true">
+        夢のゴールはAI搭載の自作OS
+      </span>
     </div>
   );
 }
