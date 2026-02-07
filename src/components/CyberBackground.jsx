@@ -1,6 +1,30 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+
+/* ── Responsive particle count ── */
+function useParticleCount() {
+  const [count, setCount] = useState(() => {
+    if (typeof window === 'undefined') return 300;
+    const w = window.innerWidth;
+    if (w < 480) return 0;       // disable on very small screens
+    if (w < 768) return 120;
+    if (w < 1024) return 200;
+    return 400;
+  });
+  useEffect(() => {
+    const onResize = () => {
+      const w = window.innerWidth;
+      if (w < 480) setCount(0);
+      else if (w < 768) setCount(120);
+      else if (w < 1024) setCount(200);
+      else setCount(400);
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+  return count;
+}
 
 /* ── Floating particles with mouse-following ── */
 function Particles({ count = 500 }) {
@@ -73,6 +97,10 @@ function GridFloor() {
 }
 
 export default function CyberBackground() {
+  const count = useParticleCount();
+
+  if (count === 0) return null; // skip rendering on very small screens
+
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }} aria-hidden="true">
       <Canvas
@@ -81,7 +109,7 @@ export default function CyberBackground() {
         gl={{ antialias: false, alpha: true, powerPreference: 'low-power' }}
         style={{ background: 'transparent' }}
       >
-        <Particles count={400} />
+        <Particles count={count} />
         <GridFloor />
       </Canvas>
     </div>

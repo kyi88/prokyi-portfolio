@@ -1,0 +1,246 @@
+/* ═══════════════════════════
+   Typing Game — HACK_TYPING
+   ═══════════════════════════ */
+.tg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(2, 4, 8, 0.92);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.tg-panel {
+  background: var(--c-bg-alt, #0a0e1a);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 520px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 0 60px rgba(79, 172, 254, 0.1), 0 0 120px rgba(167, 139, 250, 0.05);
+}
+.tg-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--c-text-dim);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.tg-close:hover { color: var(--c-red); }
+
+.tg-title {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  color: var(--c-accent);
+  margin-bottom: 20px;
+  text-shadow: 0 0 12px rgba(79, 172, 254, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tg-title__icon { font-size: 1.3rem; }
+
+/* ── Ready Screen ── */
+.tg-ready__desc {
+  font-size: 0.85rem;
+  color: var(--c-text);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+.tg-start-btn {
+  font-family: var(--font-mono);
+  padding: 10px 24px;
+  background: linear-gradient(135deg, var(--c-accent), var(--c-accent2));
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.tg-start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(79, 172, 254, 0.3);
+}
+.tg-start-btn--ghost {
+  background: transparent;
+  border: 1px solid var(--c-border);
+  color: var(--c-text-dim);
+}
+.tg-start-btn--ghost:hover { border-color: var(--c-accent); color: var(--c-accent); }
+
+/* ── Game Screen ── */
+.tg-game { transition: background 0.15s; border-radius: 8px; padding: 4px; }
+.tg-game--flash-ok { background: rgba(34, 211, 167, 0.08); }
+.tg-game--flash-err { background: rgba(239, 68, 68, 0.08); }
+
+/* HUD */
+.tg-hud {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.tg-hud__item { flex: 1; text-align: center; }
+.tg-hud__label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--c-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 2px;
+}
+.tg-hud__val {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--c-heading);
+}
+.tg-hud__val--danger {
+  color: var(--c-red);
+  animation: hud-danger 0.5s ease infinite;
+}
+@keyframes hud-danger {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.tg-hud__val--combo { color: var(--c-gold); }
+
+/* Time bar */
+.tg-time-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.tg-time-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-accent2));
+  border-radius: 2px;
+  transition: background 0.3s;
+}
+
+/* Current word */
+.tg-word {
+  text-align: center;
+  margin-bottom: 16px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.tg-char {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--c-text-dim);
+  transition: color 0.1s;
+}
+.tg-char--ok { color: var(--c-green); text-shadow: 0 0 8px var(--c-glow-green); }
+.tg-char--err { color: var(--c-red); text-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
+.tg-char--cursor {
+  color: var(--c-heading);
+  border-bottom: 2px solid var(--c-accent);
+  animation: char-blink 0.8s step-end infinite;
+}
+@keyframes char-blink {
+  50% { border-color: transparent; }
+}
+
+/* Input */
+.tg-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(79, 172, 254, 0.04);
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  color: var(--c-heading);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  text-align: center;
+}
+.tg-input:focus { border-color: var(--c-accent); box-shadow: 0 0 12px rgba(79,172,254,0.15); }
+.tg-input::placeholder { color: var(--c-text-dim); opacity: 0.5; }
+
+/* Next words */
+.tg-next {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+.tg-next__word {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--c-text-dim);
+  opacity: 0.4;
+  letter-spacing: 0.5px;
+}
+
+/* ── Result Screen ── */
+.tg-result { text-align: center; }
+.tg-result__title {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--c-green);
+  text-shadow: 0 0 20px var(--c-glow-green);
+  margin-bottom: 20px;
+}
+.tg-result__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.tg-result__stats > div {
+  padding: 12px;
+  background: rgba(79, 172, 254, 0.04);
+  border-radius: 8px;
+  border: 1px solid var(--c-border);
+}
+.tg-result__stats span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--c-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.tg-result__stats strong {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  color: var(--c-heading);
+}
+.tg-result__grade {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: var(--c-gold);
+  text-shadow: 0 0 16px var(--c-glow-gold);
+}
+.tg-result__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .tg-panel { padding: 20px; }
+  .tg-char { font-size: 1.4rem; }
+  .tg-hud__val { font-size: 1.2rem; }
+}

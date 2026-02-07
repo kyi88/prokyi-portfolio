@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 16px 18px;
+  padding: 16px 18px 16px 48px;
   border-radius: var(--radius-sm);
   background: rgba(79, 172, 254, 0.035);
   border: 1px solid rgba(79, 172, 254, 0.07);
@@ -15,6 +15,43 @@
   position: relative;
   overflow: hidden;
 }
+/* Icon */
+.profile-grid__icon {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-size: 1.15rem;
+  filter: saturate(0.7);
+  transition: filter 0.3s, transform 0.3s;
+}
+.profile-grid__item:hover .profile-grid__icon {
+  filter: saturate(1);
+  transform: scale(1.2) rotate(-5deg);
+}
+/* Scanline sweep on hover */
+.profile-grid__scanline {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(79, 172, 254, 0.06) 50%,
+    transparent 100%
+  );
+  background-size: 100% 200%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.profile-grid__item:hover .profile-grid__scanline {
+  opacity: 1;
+  animation: profile-scan 1.5s linear infinite;
+}
+@keyframes profile-scan {
+  0% { background-position: 0 -100%; }
+  100% { background-position: 0 200%; }
+}
+/* Top accent bar */
 .profile-grid__item::after {
   content: '';
   position: absolute;
@@ -45,6 +82,7 @@
   color: var(--item-color, var(--c-accent));
   text-transform: uppercase;
   letter-spacing: 0.8px;
+  font-family: var(--font-mono);
 }
 .profile-grid__item dd {
   font-size: 0.95rem;

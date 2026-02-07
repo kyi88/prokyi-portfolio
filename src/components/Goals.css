@@ -49,6 +49,21 @@
   justify-content: center;
   margin-bottom: 16px;
   font-size: 1.4rem;
+  position: relative;
+}
+/* Pulse ring on hover */
+.goal:hover .goal__icon-wrap::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 16px;
+  border: 2px solid var(--goal-color, var(--c-accent));
+  opacity: 0;
+  animation: icon-ring 1.2s ease-out infinite;
+}
+@keyframes icon-ring {
+  0% { opacity: 0.6; transform: scale(0.9); }
+  100% { opacity: 0; transform: scale(1.4); }
 }
 .goal:nth-child(1) .goal__icon-wrap { background: rgba(79, 172, 254, 0.1); }
 .goal:nth-child(2) .goal__icon-wrap { background: rgba(34, 211, 167, 0.1); }

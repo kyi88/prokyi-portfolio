@@ -3,11 +3,11 @@ import { useRef } from 'react';
 import './Profile.css';
 
 const items = [
-  { label: '名前', value: 'ぷろきぃ (prokyi)' },
-  { label: '所在地', value: '千葉県' },
-  { label: '趣味', value: 'インターネット / 技術動向の調査' },
-  { label: '資格', value: '実用英語技能検定 (英検) 2級' },
-  { label: '現在', value: 'ZEN大学 在学中' },
+  { label: '名前', value: 'ぷろきぃ (prokyi)', icon: '👤' },
+  { label: '所在地', value: '千葉県', icon: '📍' },
+  { label: '趣味', value: 'インターネット / 技術動向の調査', icon: '🔍' },
+  { label: '資格', value: '実用英語技能検定 (英検) 2級', icon: '📜' },
+  { label: '現在', value: 'ZEN大学 在学中', icon: '🎓' },
 ];
 
 const stagger = {
@@ -44,8 +44,10 @@ export default function Profile() {
           variants={itemVariant(i)}
           whileHover={{ scale: 1.03, x: 6, transition: { duration: 0.2 } }}
         >
+          <span className="profile-grid__icon" aria-hidden="true">{d.icon}</span>
           <dt>{d.label}</dt>
           <dd>{d.value}</dd>
+          <div className="profile-grid__scanline" aria-hidden="true" />
         </motion.div>
       ))}
     </motion.dl>
