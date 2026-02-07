@@ -15,6 +15,19 @@ export default function Minimap() {
   const [active, setActive] = useState('');
   const [hovered, setHovered] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
+  // Keyboard shortcut "M" to toggle
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+      if (e.key === 'm' || e.key === 'M') {
+        setHidden(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -40,7 +53,7 @@ export default function Minimap() {
 
   return (
     <AnimatePresence>
-      {visible && (
+      {visible && !hidden && (
         <motion.nav
           className="minimap"
           initial={{ opacity: 0, x: 20 }}

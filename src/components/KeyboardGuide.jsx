@@ -5,6 +5,7 @@ import './KeyboardGuide.css';
 const shortcuts = [
   { keys: ['Ctrl+K'], desc: 'クイックジャンプパレット' },
   { keys: ['`'], desc: 'サイバーターミナルを開く' },
+  { keys: ['M'], desc: 'ミニマップ表示切替' },
   { keys: ['↑↑↓↓←→←→BA'], desc: 'レトロモード(5秒)' },
   { keys: ['?'], desc: 'このヘルプを表示' },
   { keys: ['Esc'], desc: '閉じる' },

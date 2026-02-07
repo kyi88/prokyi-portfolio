@@ -1,6 +1,27 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import './Profile.css';
+
+/* Typewriter hook — reveals text character by character */
+function useTypewriter(text, active, speed = 35, delay = 400) {
+  const [displayed, setDisplayed] = useState('');
+  useEffect(() => {
+    if (!active) return;
+    let i = 0;
+    const timeout = setTimeout(() => {
+      const iv = setInterval(() => {
+        i++;
+        setDisplayed(text.slice(0, i));
+        if (i >= text.length) clearInterval(iv);
+      }, speed);
+      return () => clearInterval(iv);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [active, text, speed, delay]);
+  return displayed;
+}
+
+const BIO_TEXT = '独学でWeb技術を学び続けるエンジニア志望。サイバーパンクな世界観と最新テクノロジーに惹かれ、日々コードを書いています。';
 
 const items = [
   { label: '名前', value: 'ぷろきぃ (prokyi)', icon: '👤', tip: 'ネットの名前です' },
@@ -28,15 +49,27 @@ const itemVariant = (i) => ({
 export default function Profile() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
+  const bioText = useTypewriter(BIO_TEXT, inView);
 
   return (
-    <motion.dl
-      className="profile-grid"
-      ref={ref}
-      variants={stagger}
-      initial="hidden"
-      animate={inView ? 'show' : 'hidden'}
-    >
+    <div ref={ref}>
+      {/* Typewriter bio */}
+      <motion.p
+        className="profile-bio"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.4 }}
+      >
+        {bioText}
+        <span className="profile-bio__cursor" aria-hidden="true">|</span>
+      </motion.p>
+
+      <motion.dl
+        className="profile-grid"
+        variants={stagger}
+        initial="hidden"
+        animate={inView ? 'show' : 'hidden'}
+      >
       {items.map((d, i) => (
         <motion.div
           key={d.label}
@@ -60,5 +93,6 @@ export default function Profile() {
         </motion.div>
       ))}
     </motion.dl>
+    </div>
   );
 }
