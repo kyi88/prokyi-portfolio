@@ -131,8 +131,9 @@
   border: 1px solid var(--c-border);
   position: relative;
   overflow: hidden;
-  transition: border-color 0.4s, box-shadow 0.4s;
+  transition: border-color 0.4s, box-shadow 0.4s, transform 0.15s ease-out;
   cursor: default;
+  will-change: transform;
 }
 .gadget-card::before {
   content: '';

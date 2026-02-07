@@ -1,6 +1,21 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import './Gadgets.css';
+
+/* 3D tilt on hover */
+function useTilt() {
+  const onMouseMove = useCallback((e) => {
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    el.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.03)`;
+  }, []);
+  const onMouseLeave = useCallback((e) => {
+    e.currentTarget.style.transform = '';
+  }, []);
+  return { onMouseMove, onMouseLeave };
+}
 
 const categories = [
   {
@@ -140,6 +155,7 @@ export default function Gadgets() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
   const [filter, setFilter] = useState(allId);
+  const tilt = useTilt();
 
   const visible = filter === allId
     ? categories
@@ -223,12 +239,9 @@ export default function Gadgets() {
                       delay: ci * 0.12 + di * 0.08,
                       ease: [0.22, 1, 0.36, 1],
                     }}
-                    whileHover={{
-                      y: -8,
-                      scale: 1.03,
-                      transition: { duration: 0.25 },
-                    }}
                     whileTap={{ scale: 0.98 }}
+                    onMouseMove={tilt.onMouseMove}
+                    onMouseLeave={tilt.onMouseLeave}
                   >
                     <div className="gadget-card__header">
                       <span className="gadget-card__dot" />

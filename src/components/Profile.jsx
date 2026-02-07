@@ -3,11 +3,11 @@ import { useRef } from 'react';
 import './Profile.css';
 
 const items = [
-  { label: '名前', value: 'ぷろきぃ (prokyi)', icon: '👤' },
-  { label: '所在地', value: '千葉県', icon: '📍' },
-  { label: '趣味', value: 'インターネット / 技術動向の調査', icon: '🔍' },
-  { label: '資格', value: '実用英語技能検定 (英検) 2級', icon: '📜' },
-  { label: '現在', value: 'ZEN大学 在学中', icon: '🎓' },
+  { label: '名前', value: 'ぷろきぃ (prokyi)', icon: '👤', tip: 'ネットの名前です' },
+  { label: '所在地', value: '千葉県', icon: '📍', tip: '関東エリア在住' },
+  { label: '趣味', value: 'インターネット / 技術動向の調査', icon: '🔍', tip: '常に最新技術をチェック' },
+  { label: '資格', value: '実用英語技能検定 (英検) 2級', icon: '📜', tip: '英語でドキュメント読めます' },
+  { label: '現在', value: 'ZEN大学 在学中', icon: '🎓', tip: 'オンライン大学で学習中' },
 ];
 
 const stagger = {
@@ -47,6 +47,7 @@ export default function Profile() {
           <span className="profile-grid__icon" aria-hidden="true">{d.icon}</span>
           <dt>{d.label}</dt>
           <dd>{d.value}</dd>
+          {d.tip && <span className="profile-grid__tip" aria-label={d.tip}>{d.tip}</span>}
           <div className="profile-grid__scanline" aria-hidden="true" />
         </motion.div>
       ))}

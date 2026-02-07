@@ -17,8 +17,25 @@ import './App.css';
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
 const StatusScreen = lazy(() => import('./components/StatusScreen'));
 
+/* Skeleton placeholder for StatusScreen lazy load */
+function StatusSkeleton() {
+  return (
+    <div className="status-skeleton" aria-label="読み込み中">
+      <div className="status-skeleton__tabs">
+        {[1, 2, 3, 4].map(i => <div key={i} className="status-skeleton__tab" />)}
+      </div>
+      <div className="status-skeleton__body">
+        {[1, 2, 3, 4, 5].map(i => (
+          <div key={i} className="status-skeleton__row" style={{ width: `${60 + Math.random() * 30}%` }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function BootScreen({ onDone }) {
   const [lines, setLines] = useState([]);
+  const [showAscii, setShowAscii] = useState(true);
   const bootLines = [
     '[BOOT] Initializing prokyi.sys ...',
     '[OK]   Neural interface connected',
@@ -48,6 +65,8 @@ function BootScreen({ onDone }) {
   useEffect(() => {
     let i = 0;
     const freqs = [520, 600, 600, 600, 700, 880];
+    // Hide ASCII art after first boot line
+    const asciiTimer = setTimeout(() => setShowAscii(false), 600);
     const iv = setInterval(() => {
       if (i < bootLines.length) {
         setLines(prev => [...prev, bootLines[i]]);
@@ -58,8 +77,16 @@ function BootScreen({ onDone }) {
         setTimeout(onDone, 400);
       }
     }, 180);
-    return () => clearInterval(iv);
+    return () => { clearInterval(iv); clearTimeout(asciiTimer); };
   }, []);
+
+  const asciiArt = `
+ ██████╗ ██████╗  ██████╗ ██╗  ██╗██╗   ██╗██╗
+ ██╔══██╗██╔══██╗██╔═══██╗██║ ██╔╝╚██╗ ██╔╝██║
+ ██████╔╝██████╔╝██║   ██║█████╔╝  ╚████╔╝ ██║
+ ██╔═══╝ ██╔══██╗██║   ██║██╔═██╗   ╚██╔╝  ██║
+ ██║     ██║  ██║╚██████╔╝██║  ██╗   ██║   ██║
+ ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝`;
 
   return (
     <motion.div
@@ -68,6 +95,15 @@ function BootScreen({ onDone }) {
       transition={{ duration: 0.5 }}
     >
       <div className="boot-screen__inner">
+        {/* ASCII art header */}
+        <motion.pre
+          className="boot-screen__ascii"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showAscii ? 1 : 0.15 }}
+          transition={{ duration: 0.6 }}
+          aria-hidden="true"
+        >{asciiArt}</motion.pre>
+
         <div className="boot-screen__logo">
           <span className="boot-screen__bracket">&lt;/&gt;</span>
           <span className="boot-screen__name">prokyi</span>
@@ -194,7 +230,7 @@ export default function App() {
               </Section>
               <div className="section-divider" aria-hidden="true" />
               <Section id="status" num="04" title="プレイヤーステータス">
-                <Suspense fallback={<div style={{textAlign:'center',padding:'40px',fontFamily:'var(--font-mono)',color:'var(--c-text-dim)',fontSize:'0.8rem'}}>Loading status...</div>}>
+                <Suspense fallback={<StatusSkeleton />}>
                   <StatusScreen />
                 </Suspense>
               </Section>
