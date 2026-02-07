@@ -29,8 +29,9 @@ function SurveillanceFeed() {
   const isDragging = useRef(false);
   const startPos = useRef({ x: 0, y: 0 });
 
-  // Auto-cycle cameras
+  // Auto-cycle cameras — only run on non-mobile
   useEffect(() => {
+    if (window.matchMedia('(max-width: 768px)').matches) return;
     cycleRef.current = setInterval(() => {
       setNoise(true);
       clearTimeout(noiseRef.current);
@@ -43,8 +44,9 @@ function SurveillanceFeed() {
     };
   }, []);
 
-  // Timestamp update
+  // Timestamp update — only run on non-mobile
   useEffect(() => {
+    if (window.matchMedia('(max-width: 768px)').matches) return;
     const update = () => setTime(new Date().toLocaleTimeString('ja-JP'));
     update();
     const iv = setInterval(update, 1000);

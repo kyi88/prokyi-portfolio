@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, memo } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import ProgressiveImage from './ProgressiveImage';
 import ParallaxStars from './ParallaxStars';
@@ -113,7 +113,7 @@ function getGreeting() {
   return '> NIGHT_OWL_PROTOCOL — 同志よ';
 }
 
-export default function Hero() {
+function Hero() {
   const [count, setCount] = useState(0);
   const [typed, setTyped] = useState('');
   const [avatarClicks, setAvatarClicks] = useState(0);
@@ -489,3 +489,5 @@ export default function Hero() {
     </section>
   );
 }
+
+export default memo(Hero);

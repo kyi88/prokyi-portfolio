@@ -62,14 +62,19 @@ function AchievementBadges() {
 
   // Scroll to bottom detection
   useEffect(() => {
+    let rafId = null;
     const onScroll = () => {
-      const scrollBottom = window.scrollY + window.innerHeight;
-      if (scrollBottom >= document.documentElement.scrollHeight - 50) {
-        unlock('scroll_bottom');
-      }
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const scrollBottom = window.scrollY + window.innerHeight;
+        if (scrollBottom >= document.documentElement.scrollHeight - 50) {
+          unlock('scroll_bottom');
+        }
+      });
     };
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(rafId); };
   }, []);
 
   // Theme switch detection

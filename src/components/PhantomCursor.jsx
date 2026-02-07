@@ -94,6 +94,10 @@ function PhantomCursor() {
 
     let frameCount = 0;
     function animate() {
+      if (document.hidden) {
+        rafRef.current = requestAnimationFrame(animate);
+        return;
+      }
       const pos = posRef.current;
       const target = targetRef.current;
       const speed = 0.008;

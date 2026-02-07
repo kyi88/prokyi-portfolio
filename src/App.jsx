@@ -615,35 +615,29 @@ export default function App() {
     const draw = () => {
       ctx.clearRect(0, 0, 32, 32);
       // Outer ring
-      const hue = (frame * 2) % 360;
+      const hue = (frame * 6) % 360;
       ctx.beginPath();
       ctx.arc(16, 16, 14, 0, Math.PI * 2);
       ctx.strokeStyle = `hsl(${hue}, 85%, 60%)`;
       ctx.lineWidth = 2;
       ctx.stroke();
       // Inner pulsing dot
-      const r = 5 + Math.sin(frame * 0.1) * 2;
+      const r = 5 + Math.sin(frame * 0.3) * 2;
       ctx.beginPath();
       ctx.arc(16, 16, r, 0, Math.PI * 2);
       ctx.fillStyle = `hsl(${(hue + 120) % 360}, 90%, 65%)`;
       ctx.fill();
       // Rotating tick
-      const angle = (frame * 0.05) % (Math.PI * 2);
+      const angle = (frame * 0.15) % (Math.PI * 2);
       ctx.beginPath();
       ctx.arc(16, 16, 11, angle, angle + 1.2);
       ctx.strokeStyle = `hsla(${(hue + 60) % 360}, 80%, 50%, 0.6)`;
       ctx.lineWidth = 1.5;
       ctx.stroke();
-      canvas.toBlob((blob) => {
-        if (!blob) return;
-        const url = URL.createObjectURL(blob);
-        if (link._prevBlobUrl) URL.revokeObjectURL(link._prevBlobUrl);
-        link.href = url;
-        link._prevBlobUrl = url;
-      }, 'image/png');
+      link.href = canvas.toDataURL('image/png');
       frame++;
     };
-    const start = () => { if (!iv) iv = setInterval(draw, 1000); };
+    const start = () => { if (!iv) iv = setInterval(draw, 3000); };
     const stop = () => { if (iv) { clearInterval(iv); iv = null; } };
     const onVisibility = () => { document.hidden ? stop() : start(); };
     document.addEventListener('visibilitychange', onVisibility);
@@ -652,7 +646,6 @@ export default function App() {
     return () => {
       stop();
       document.removeEventListener('visibilitychange', onVisibility);
-      if (link._prevBlobUrl) URL.revokeObjectURL(link._prevBlobUrl);
     };
   }, []);
 

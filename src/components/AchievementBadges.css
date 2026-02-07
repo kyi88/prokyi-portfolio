@@ -3,7 +3,7 @@
 /* Trophy button */
 .achievement-btn {
   position: fixed;
-  bottom: 176px;
+  bottom: 180px;
   right: 24px;
   width: 40px;
   height: 40px;
@@ -73,7 +73,7 @@
 /* Panel */
 .achievement-panel {
   position: fixed;
-  bottom: 220px;
+  bottom: 228px;
   right: 24px;
   width: 260px;
   background: var(--c-card);
@@ -143,10 +143,33 @@
   .achievement-panel {
     right: 12px;
     width: 240px;
+    bottom: 216px;
+  }
+  .achievement-btn {
+    bottom: 168px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 480px) {
+  .achievement-panel {
+    right: 8px;
+    width: 220px;
     bottom: 200px;
   }
   .achievement-btn {
-    bottom: 164px;
-    right: 16px;
+    bottom: 152px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    font-size: 0.85rem;
+  }
+  .achievement-toast {
+    right: 12px;
+    top: 60px;
+    padding: 8px 14px;
+    gap: 8px;
   }
 }

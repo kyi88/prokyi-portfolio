@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, memo } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import GlowCard from './GlowCard';
 import NetworkGraph from './NetworkGraph';
@@ -300,7 +300,7 @@ function RandomFact() {
   );
 }
 
-export default function Sidebar() {
+function Sidebar() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
   const dayLabel = ['日','月','火','水','木','金','土'][new Date().getDay()];
@@ -410,3 +410,5 @@ export default function Sidebar() {
     </aside>
   );
 }
+
+export default memo(Sidebar);

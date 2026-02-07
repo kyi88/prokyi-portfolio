@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ShareButton from './ShareButton';
 import GlitchText from './GlitchText';
@@ -15,7 +15,7 @@ const navItems = [
   { href: '#links', label: 'Links' },
 ];
 
-export default function Header() {
+function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState('');
@@ -102,32 +102,37 @@ export default function Header() {
   const sectionsRef = useRef(null);
 
   useEffect(() => {
+    let rafId = null;
     const onScroll = () => {
-      setScrolled(window.scrollY > 60);
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        setScrolled(window.scrollY > 60);
 
-      // Cache section elements on first scroll
-      if (!sectionsRef.current) {
-        sectionsRef.current = Array.from(document.querySelectorAll('section[id]'));
-      }
-      const y = window.scrollY + 140;
-      const seen = viewedRef.current;
-      let changed = false;
-      for (const s of sectionsRef.current) {
-        if (y >= s.offsetTop && y < s.offsetTop + s.offsetHeight) {
-          setActive(s.id);
-          if (!seen.has(s.id)) {
-            seen.add(s.id);
-            changed = true;
+        // Cache section elements on first scroll
+        if (!sectionsRef.current) {
+          sectionsRef.current = Array.from(document.querySelectorAll('section[id]'));
+        }
+        const y = window.scrollY + 140;
+        const seen = viewedRef.current;
+        let changed = false;
+        for (const s of sectionsRef.current) {
+          if (y >= s.offsetTop && y < s.offsetTop + s.offsetHeight) {
+            setActive(s.id);
+            if (!seen.has(s.id)) {
+              seen.add(s.id);
+              changed = true;
+            }
           }
         }
-      }
-      if (changed) {
-        setViewedCount(seen.size);
-        setViewedSections(new Set(seen));
-      }
+        if (changed) {
+          setViewedCount(seen.size);
+          setViewedSections(new Set(seen));
+        }
+      });
     };
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(rafId); };
   }, []);
 
   // Close mobile menu on Escape key or outside click
@@ -247,3 +252,5 @@ export default function Header() {
     </motion.header>
   );
 }
+
+export default memo(Header);
