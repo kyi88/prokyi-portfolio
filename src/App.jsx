@@ -27,6 +27,7 @@ import CyberGrid from './components/CyberGrid';
 import PageProgress from './components/PageProgress';
 import AchievementBadges from './components/AchievementBadges';
 import DataStream from './components/DataStream';
+import MatrixRain from './components/MatrixRain';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -622,6 +623,7 @@ export default function App() {
       <FPSMonitor />
       <AchievementBadges />
       <DataStream />
+      <MatrixRain />
         </>
       )}
     </SoundContext.Provider>

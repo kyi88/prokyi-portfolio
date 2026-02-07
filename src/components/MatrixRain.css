@@ -1,0 +1,33 @@
+/* ── Matrix Rain Overlay ── */
+.matrix-rain {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none;
+}
+
+.matrix-rain__canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.matrix-rain__hint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--c-accent);
+  opacity: 0.5;
+  padding: 6px 16px;
+  border: 1px solid rgba(79, 172, 254, 0.2);
+  border-radius: 4px;
+  background: rgba(6, 8, 15, 0.7);
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .matrix-rain { display: none; }
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ShareButton from './ShareButton';
 import './Header.css';
 
@@ -19,8 +19,6 @@ export default function Header() {
   const [viewedCount, setViewedCount] = useState(0);
   const [theme, setTheme] = useState(() => localStorage.getItem('prokyi_theme') || 'cyber');
   const viewedRef = useRef(new Set());
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   // Apply theme with flash transition
   useEffect(() => {
@@ -225,13 +223,6 @@ export default function Header() {
           <span /><span /><span />
         </button>
       </div>
-
-      {/* Scroll progress bar */}
-      <motion.div
-        className="header__progress"
-        style={{ scaleX, transformOrigin: '0%' }}
-        aria-hidden="true"
-      />
     </motion.header>
   );
 }
