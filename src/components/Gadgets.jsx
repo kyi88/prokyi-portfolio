@@ -2,17 +2,20 @@ import { useRef, useState, useCallback } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import './Gadgets.css';
 
-/* 3D tilt on hover */
+/* 3D tilt on hover — uses CSS custom properties to avoid conflicting with Framer Motion transform */
 function useTilt() {
   const onMouseMove = useCallback((e) => {
     const el = e.currentTarget;
     const rect = el.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.03)`;
+    el.style.setProperty('--tilt-x', `${-y * 10}deg`);
+    el.style.setProperty('--tilt-y', `${x * 10}deg`);
   }, []);
   const onMouseLeave = useCallback((e) => {
-    e.currentTarget.style.transform = '';
+    const el = e.currentTarget;
+    el.style.setProperty('--tilt-x', '0deg');
+    el.style.setProperty('--tilt-y', '0deg');
   }, []);
   return { onMouseMove, onMouseLeave };
 }

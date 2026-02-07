@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import StomachGame from './StomachGame';
 import TypingGame from './TypingGame';
@@ -11,6 +11,7 @@ export default function EasterEggFab() {
   const [game, setGame] = useState(null); // null | 'stomach' | 'typing'
   const [konami, setKonami] = useState(false);
   const [konamiIdx, setKonamiIdx] = useState(0);
+  const konamiTimerRef = useRef(null);
 
   // Konami code listener
   useEffect(() => {
@@ -22,7 +23,8 @@ export default function EasterEggFab() {
           setKonami(true);
           setKonamiIdx(0);
           document.documentElement.classList.add('retro-mode');
-          setTimeout(() => {
+          clearTimeout(konamiTimerRef.current);
+          konamiTimerRef.current = setTimeout(() => {
             document.documentElement.classList.remove('retro-mode');
             setKonami(false);
           }, 5000);
@@ -36,6 +38,12 @@ export default function EasterEggFab() {
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [konamiIdx]);
+
+  // Cleanup konami timer on unmount
+  useEffect(() => () => {
+    clearTimeout(konamiTimerRef.current);
+    document.documentElement.classList.remove('retro-mode');
+  }, []);
 
   return (
     <>

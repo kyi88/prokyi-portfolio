@@ -171,6 +171,8 @@
 
 /* Device card */
 .gadget-card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
   padding: 20px;
   border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.02);
@@ -178,6 +180,7 @@
   position: relative;
   overflow: hidden;
   transition: border-color 0.4s, box-shadow 0.4s, transform 0.15s ease-out;
+  transform: perspective(600px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
   cursor: default;
   will-change: transform;
 }
@@ -203,7 +206,7 @@
   border-color: var(--card-color, var(--c-accent));
   box-shadow:
     0 8px 30px rgba(0, 0, 0, 0.3),
-    0 0 40px color-mix(in srgb, var(--card-color, var(--c-accent)) 15%, transparent);
+    0 0 40px rgba(79, 172, 254, 0.12);
 }
 
 /* Card glow effect */

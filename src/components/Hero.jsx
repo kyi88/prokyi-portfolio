@@ -83,12 +83,21 @@ const CYBER_QUOTES = [
   '"Debugging is twice as hard as writing code." — Brian Kernighan',
 ];
 
+const SUBTITLES = [
+  '> Hello, I\'m_',
+  '> AI Engineer Candidate_',
+  '> Linux Enthusiast_',
+  '> Cyberdeck Builder_',
+  '> Always Learning_',
+];
+
 export default function Hero() {
   const [count, setCount] = useState(0);
   const [typed, setTyped] = useState('');
   const [avatarClicks, setAvatarClicks] = useState(0);
   const [secretMsg, setSecretMsg] = useState(false);
   const [quote] = useState(() => CYBER_QUOTES[Math.floor(Math.random() * CYBER_QUOTES.length)]);
+  const secretTimerRef = useRef(null);
   const ref = useRef(null);
   const avatarRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -139,19 +148,12 @@ export default function Hero() {
   }, []);
 
   // Typing animation with rotating subtitles
-  const subtitles = [
-    '> Hello, I\'m_',
-    '> AI Engineer Candidate_',
-    '> Linux Enthusiast_',
-    '> Cyberdeck Builder_',
-    '> Always Learning_',
-  ];
   const subtitleIdx = useRef(0);
 
   useEffect(() => {
     let i = 0;
     let deleting = false;
-    let currentText = subtitles[0];
+    let currentText = SUBTITLES[0];
     let timeout;
 
     const tick = () => {
@@ -169,8 +171,8 @@ export default function Hero() {
         setTyped(currentText.slice(0, i));
         if (i <= 2) {
           deleting = false;
-          subtitleIdx.current = (subtitleIdx.current + 1) % subtitles.length;
-          currentText = subtitles[subtitleIdx.current];
+          subtitleIdx.current = (subtitleIdx.current + 1) % SUBTITLES.length;
+          currentText = SUBTITLES[subtitleIdx.current];
           timeout = setTimeout(tick, 300);
           return;
         }
@@ -188,9 +190,13 @@ export default function Hero() {
     if (next >= 7) {
       setSecretMsg(true);
       setAvatarClicks(0);
-      setTimeout(() => setSecretMsg(false), 4000);
+      clearTimeout(secretTimerRef.current);
+      secretTimerRef.current = setTimeout(() => setSecretMsg(false), 4000);
     }
   };
+
+  // Cleanup secret timer
+  useEffect(() => () => clearTimeout(secretTimerRef.current), []);
 
   return (
     <section className="hero" ref={ref} id="top" aria-label="自己紹介">
@@ -240,6 +246,8 @@ export default function Hero() {
             className="hero__avatar"
             width="200"
             height="200"
+            loading="eager"
+            fetchpriority="high"
             onClick={handleAvatarClick}
           />
         </motion.div>
