@@ -365,12 +365,13 @@ export default function App() {
   useEffect(() => {
     if (booting) return;
     if (window.matchMedia('(pointer: coarse)').matches) return;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.documentElement.style.cursor = 'none';
     const dot = document.getElementById('cyber-cursor');
     if (!dot) return;
 
-    // Create trail dots
-    const TRAIL_COUNT = 5;
+    // Create trail dots (skip trail if reduced motion)
+    const TRAIL_COUNT = reducedMotion ? 0 : 5;
     const trailDots = [];
     for (let i = 0; i < TRAIL_COUNT; i++) {
       const d = document.createElement('div');
@@ -394,15 +395,23 @@ export default function App() {
 
     const updateTrail = () => {
       let prevX = mx, prevY = my;
+      let totalDelta = 0;
       for (let i = 0; i < TRAIL_COUNT; i++) {
         const t = trailDots[i];
-        t.x += (prevX - t.x) * 0.35;
-        t.y += (prevY - t.y) * 0.35;
+        const dx = prevX - t.x;
+        const dy = prevY - t.y;
+        t.x += dx * 0.35;
+        t.y += dy * 0.35;
+        totalDelta += Math.abs(dx) + Math.abs(dy);
         t.el.style.transform = `translate(${t.x - 3}px, ${t.y - 3}px)`;
         prevX = t.x;
         prevY = t.y;
       }
-      raf = requestAnimationFrame(updateTrail);
+      if (totalDelta > 0.1) {
+        raf = requestAnimationFrame(updateTrail);
+      } else {
+        raf = null;
+      }
     };
 
     window.addEventListener('mousemove', move, { passive: true });

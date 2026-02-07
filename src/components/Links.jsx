@@ -82,7 +82,7 @@ export default function Links() {
         initial={{ opacity: 0, x: -60, scale: 0.7, rotate: -10 }}
         animate={inView ? { opacity: 1, x: 0, scale: 1, rotate: 0 } : {}}
         transition={{ duration: 0.8, delay: 0, type: 'spring', stiffness: 100 }}
-        whileHover={{ y: -6, scale: 1.06, boxShadow: '0 12px 30px rgba(255,255,255,0.1)', transition: { duration: 0.2 } }}
+        whileHover={{ scale: 1.06, boxShadow: '0 12px 30px rgba(255,255,255,0.1)', transition: { duration: 0.2 } }}
         whileTap={{ scale: 0.95 }}
         onClick={onRipple}
         onMouseMove={magGH.onMouseMove}
@@ -109,7 +109,7 @@ export default function Links() {
         initial={{ opacity: 0, x: 60, scale: 0.7, rotate: 10 }}
         animate={inView ? { opacity: 1, x: 0, scale: 1, rotate: 0 } : {}}
         transition={{ duration: 0.8, delay: 0.15, type: 'spring', stiffness: 100 }}
-        whileHover={{ y: -6, scale: 1.06, boxShadow: '0 12px 30px rgba(79,172,254,0.2)', transition: { duration: 0.2 } }}
+        whileHover={{ scale: 1.06, boxShadow: '0 12px 30px rgba(79,172,254,0.2)', transition: { duration: 0.2 } }}
         whileTap={{ scale: 0.95 }}
         onClick={onRipple}
         onMouseMove={magX.onMouseMove}
