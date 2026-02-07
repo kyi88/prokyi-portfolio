@@ -76,11 +76,13 @@
   bottom: 228px;
   right: 24px;
   width: 260px;
-  background: var(--c-card);
+  background: rgba(10, 12, 24, 0.97);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border: 1px solid var(--c-border);
   border-radius: 10px;
   z-index: 950;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
   overflow: hidden;
 }
 
