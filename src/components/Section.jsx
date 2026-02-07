@@ -1,10 +1,35 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import './Section.css';
+
+/** Scramble a 2-digit number before settling */
+function useScrambleNum(target, active) {
+  const [display, setDisplay] = useState(target);
+  useEffect(() => {
+    if (!active) return;
+    const chars = '0123456789ABCDEF';
+    let frame = 0;
+    const total = 10;
+    const iv = setInterval(() => {
+      if (frame >= total) {
+        setDisplay(target);
+        clearInterval(iv);
+        return;
+      }
+      const a = chars[Math.floor(Math.random() * chars.length)];
+      const b = chars[Math.floor(Math.random() * chars.length)];
+      setDisplay(a + b);
+      frame++;
+    }, 50);
+    return () => clearInterval(iv);
+  }, [active, target]);
+  return display;
+}
 
 export default function Section({ id, num, title, children }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  const scrambled = useScrambleNum(num, inView);
 
   return (
     <motion.section
@@ -30,9 +55,9 @@ export default function Section({ id, num, title, children }) {
           animate={inView ? { scale: 1, rotate: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3, type: 'spring', stiffness: 200 }}
         >
-          {num}
+          {scrambled}
         </motion.span>
-        {title}
+        <span className="card__title-text glitch" data-text={title}>{title}</span>
       </motion.h2>
       {/* Cyber corner accents */}
       <span className="card__corner card__corner--tl" aria-hidden="true" />

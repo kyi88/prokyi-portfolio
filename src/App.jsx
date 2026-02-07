@@ -11,6 +11,7 @@ import Links from './components/Links';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
 import EasterEggFab from './components/EasterEggFab';
+import CyberTerminal from './components/CyberTerminal';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -116,6 +117,49 @@ export default function App() {
     };
   }, []);
 
+  // Animated favicon
+  useEffect(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+    let frame = 0;
+    const draw = () => {
+      ctx.clearRect(0, 0, 32, 32);
+      // Outer ring
+      const hue = (frame * 2) % 360;
+      ctx.beginPath();
+      ctx.arc(16, 16, 14, 0, Math.PI * 2);
+      ctx.strokeStyle = `hsl(${hue}, 85%, 60%)`;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      // Inner pulsing dot
+      const r = 5 + Math.sin(frame * 0.1) * 2;
+      ctx.beginPath();
+      ctx.arc(16, 16, r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsl(${(hue + 120) % 360}, 90%, 65%)`;
+      ctx.fill();
+      // Rotating tick
+      const angle = (frame * 0.05) % (Math.PI * 2);
+      ctx.beginPath();
+      ctx.arc(16, 16, 11, angle, angle + 1.2);
+      ctx.strokeStyle = `hsla(${(hue + 60) % 360}, 80%, 50%, 0.6)`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      link.href = canvas.toDataURL('image/png');
+      frame++;
+    };
+    const iv = setInterval(draw, 100);
+    draw();
+    return () => clearInterval(iv);
+  }, []);
+
   return (
     <>
       {/* Custom cursor dot (desktop only) */}
@@ -165,6 +209,7 @@ export default function App() {
         <Footer />
       </div>
       <EasterEggFab />
+      <CyberTerminal />
         </>
       )}
     </>
