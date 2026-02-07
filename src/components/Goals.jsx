@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import { motion, useInView } from 'framer-motion';
 import './Goals.css';
 
@@ -12,6 +12,15 @@ const goals = [
 export default function Goals() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
+
+  const handleSpotlight = useCallback((e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty('--spot-x', `${x}px`);
+    card.style.setProperty('--spot-y', `${y}px`);
+  }, []);
 
   return (
     <div ref={ref}>
@@ -38,6 +47,7 @@ export default function Goals() {
               transition: { duration: 0.3 },
             }}
             style={{ transformPerspective: 800 }}
+            onMouseMove={handleSpotlight}
           >
             <motion.div
               className="goal__icon-wrap"

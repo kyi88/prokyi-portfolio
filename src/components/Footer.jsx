@@ -71,6 +71,11 @@ export default function Footer() {
       viewport={{ once: true }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
+      {/* Wave separator */}
+      <svg className="footer__wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,40 C320,10 420,60 720,30 C1020,0 1200,50 1440,20 L1440,60 L0,60 Z" fill="rgba(79,172,254,0.04)" />
+        <path d="M0,50 C360,20 540,55 900,35 C1100,25 1300,55 1440,30 L1440,60 L0,60 Z" fill="rgba(0,242,254,0.03)" />
+      </svg>
       <MatrixRain />
       <div className="footer__inner">
         <motion.p
@@ -110,7 +115,7 @@ export default function Footer() {
           <span>COMPONENTS: 18</span>
           <span>CHUNKS: 8</span>
           <span>EASTER EGGS: 5</span>
-          <span>LOOPS: 14</span>
+          <span>LOOPS: 18</span>
           <LoadTime />
         </motion.div>
       </div>
