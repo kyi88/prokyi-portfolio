@@ -231,10 +231,18 @@ export default function Hero() {
     return () => clearInterval(iv);
   }, []);
 
+  // ProcessMonitor kill/start for ParallaxStars
+  const [starsAlive, setStarsAlive] = useState(true);
+  useEffect(() => {
+    const handler = (e) => setStarsAlive(e.detail.alive);
+    window.addEventListener('prokyi-process-parallaxstars', handler);
+    return () => window.removeEventListener('prokyi-process-parallaxstars', handler);
+  }, []);
+
   return (
     <section className="hero" ref={ref} id="top" aria-label="自己紹介">
       {/* Parallax star field */}
-      <ParallaxStars />
+      {starsAlive && <ParallaxStars />}
 
       {/* Particle trail canvas (desktop) */}
       <ParticleTrail />

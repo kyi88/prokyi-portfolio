@@ -5,7 +5,7 @@ const REDUCED_MOTION =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const IDLE_TIMEOUT = 40000; // 40s
+const IDLE_TIMEOUT = 60000; // 60s (IntrusionAlert fires at 45s, this fires later)
 
 /** Waypoints the phantom visits (section IDs or viewport coords) */
 const SECTION_IDS = ['profile', 'career', 'goals', 'status', 'gadgets', 'links'];
@@ -43,12 +43,10 @@ function PhantomCursor() {
 
   const resetIdleTimer = useCallback(() => {
     if (manualToggle.current) return;
-    if (active) {
-      setActive(false);
-    }
+    setActive(false);
     clearTimeout(idleTimerRef.current);
     idleTimerRef.current = setTimeout(() => setActive(true), IDLE_TIMEOUT);
-  }, [active]);
+  }, []);
 
   // Idle detection
   useEffect(() => {

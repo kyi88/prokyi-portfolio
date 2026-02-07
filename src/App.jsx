@@ -406,31 +406,40 @@ export default function App() {
   }, [booting]);
 
   // External confetti trigger (e.g. IntrusionAlert brute-force countermeasure)
+  const confettiTimerRef = useRef(null);
   useEffect(() => {
     const handler = () => {
       setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 4000);
+      clearTimeout(confettiTimerRef.current);
+      confettiTimerRef.current = setTimeout(() => setShowConfetti(false), 4000);
     };
     window.addEventListener('prokyi-confetti', handler);
-    return () => window.removeEventListener('prokyi-confetti', handler);
+    return () => {
+      window.removeEventListener('prokyi-confetti', handler);
+      clearTimeout(confettiTimerRef.current);
+    };
   }, []);
 
   // Kernel Panic easter egg (triggered when user tries to kill PID 1 in ProcessMonitor)
   const [kernelPanic, setKernelPanic] = useState(false);
+  const kpTimerRef = useRef(null);
   useEffect(() => {
     const handler = () => {
       setKernelPanic(true);
-      setTimeout(() => setKernelPanic(false), 2500);
+      clearTimeout(kpTimerRef.current);
+      kpTimerRef.current = setTimeout(() => setKernelPanic(false), 2500);
     };
     window.addEventListener('prokyi-kernel-panic', handler);
-    return () => window.removeEventListener('prokyi-kernel-panic', handler);
+    return () => {
+      window.removeEventListener('prokyi-kernel-panic', handler);
+      clearTimeout(kpTimerRef.current);
+    };
   }, []);
 
   // ProcessMonitor kill/start events
   const [procAlive, setProcAlive] = useState({
     matrixrain: true,
     scanline: true,
-    parallaxstars: true,
     clickspark: true,
     datastream: true,
   });

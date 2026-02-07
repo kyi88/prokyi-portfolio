@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, memo } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import './ParallaxStars.css';
 
 /**
@@ -11,14 +11,6 @@ const SIZES = [1, 1.8, 2.5];
 
 const ParallaxStars = memo(function ParallaxStars() {
   const canvasRef = useRef(null);
-  const [alive, setAlive] = useState(true);
-
-  // ProcessMonitor kill/start
-  useEffect(() => {
-    const handler = (e) => setAlive(e.detail.alive);
-    window.addEventListener('prokyi-process-parallaxstars', handler);
-    return () => window.removeEventListener('prokyi-process-parallaxstars', handler);
-  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -94,7 +86,7 @@ const ParallaxStars = memo(function ParallaxStars() {
     };
   }, []);
 
-  return alive ? <canvas ref={canvasRef} className="parallax-stars" aria-hidden="true" /> : null;
+  return <canvas ref={canvasRef} className="parallax-stars" aria-hidden="true" />;
 });
 
 export default ParallaxStars;

@@ -341,7 +341,8 @@ export default function CyberTerminal() {
   }, [lines]);
 
   const exec = useCallback((cmd) => {
-    const trimmed = cmd.trim().toLowerCase();
+    const raw = cmd.trim();
+    const trimmed = raw.toLowerCase();
     const newLines = [`prokyi@cyber:~$ ${cmd}`];
 
     if (trimmed === 'exit') {
@@ -365,10 +366,10 @@ export default function CyberTerminal() {
       // Check arg commands (e.g. "decrypt hello world")
       const spaceIdx = trimmed.indexOf(' ');
       const cmdName = spaceIdx > -1 ? trimmed.slice(0, spaceIdx) : trimmed;
-      const cmdArgs = spaceIdx > -1 ? trimmed.slice(spaceIdx + 1) : '';
+      const rawArgs = spaceIdx > -1 ? raw.slice(raw.indexOf(' ') + 1) : '';
       const argHandler = ARG_COMMANDS[cmdName];
       if (argHandler) {
-        const result = argHandler(cmdArgs);
+        const result = argHandler(rawArgs);
         newLines.push(...result);
       } else {
         newLines.push(`  command not found: ${trimmed}`, '  Type "help" for available commands.');

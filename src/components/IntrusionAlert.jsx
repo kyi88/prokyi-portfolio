@@ -34,6 +34,7 @@ export function getSecurityLog() {
 }
 
 function logAlert(type) {
+  if (securityLog.length >= 50) securityLog.shift();
   securityLog.push({
     type,
     time: new Date().toLocaleTimeString('ja-JP'),

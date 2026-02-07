@@ -241,7 +241,7 @@ export default function Footer() {
           <span>COMPONENTS: 48</span>
           <span>CHUNKS: 8</span>
           <span>EASTER EGGS: 15</span>
-          <span>LOOPS: 84</span>
+          <span>LOOPS: 85</span>
           <LoadTime />
           <Uptime />
         </motion.div>

@@ -89,6 +89,7 @@ function ProcessMonitor() {
                     <button
                       className="process-monitor__kill-btn"
                       onClick={() => killProcess(p)}
+                      aria-label={isKilled ? `Start ${p.name}` : `Kill ${p.name}`}
                     >
                       {isKilled ? 'START' : 'KILL'}
                     </button>
