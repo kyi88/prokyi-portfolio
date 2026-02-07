@@ -47,6 +47,8 @@ import NeuralLinkSync from './components/NeuralLinkSync';
 import DarknetRelay from './components/DarknetRelay';
 import BioChipImplant from './components/BioChipImplant';
 import HackingMinigame from './components/HackingMinigame';
+import CryptoMiner from './components/CryptoMiner';
+import AIModelArena from './components/AIModelArena';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -759,6 +761,8 @@ export default function App() {
       <DarknetRelay />
       <BioChipImplant />
       <HackingMinigame />
+      <CryptoMiner />
+      <AIModelArena />
       {kernelPanic && (
         <div className="kernel-panic" aria-live="assertive">
           <pre>{`KERNEL PANIC - NOT SYNCING: Attempted to kill init!

@@ -1,0 +1,170 @@
+.crypto-miner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(420px, 92vw);
+  background: rgba(8, 8, 18, 0.96);
+  border: 1px solid var(--accent, #00e5ff);
+  border-radius: 6px;
+  z-index: 9990;
+  font-family: 'JetBrains Mono', 'Fira Mono', monospace;
+  font-size: 0.6rem;
+  color: #e0e0e0;
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.15);
+  overflow: hidden;
+}
+
+.crypto-miner--overheat {
+  border-color: #f44;
+  box-shadow: 0 0 40px rgba(255, 60, 60, 0.35);
+  animation: miner-heat 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes miner-heat {
+  from { background: rgba(30, 5, 5, 0.96); }
+  to   { background: rgba(50, 10, 10, 0.96); }
+}
+
+.crypto-miner__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(0, 229, 255, 0.08);
+  border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+}
+
+.crypto-miner__btn {
+  background: transparent;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  color: var(--accent, #00e5ff);
+  padding: 2px 8px;
+  font-family: inherit;
+  font-size: 0.55rem;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.crypto-miner__btn:hover {
+  background: rgba(0, 229, 255, 0.12);
+}
+
+.crypto-miner__btn--danger {
+  border-color: rgba(255, 60, 60, 0.5);
+  color: #f55;
+}
+
+.crypto-miner__btn--danger:hover {
+  background: rgba(255, 60, 60, 0.15);
+}
+
+.crypto-miner__body {
+  padding: 10px 12px;
+}
+
+.crypto-miner__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.crypto-miner__stat {
+  background: rgba(0, 229, 255, 0.04);
+  border: 1px solid rgba(0, 229, 255, 0.08);
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+
+.crypto-miner__stat-label {
+  font-size: 0.45rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.crypto-miner__stat-value {
+  font-size: 0.85rem;
+  color: var(--accent, #00e5ff);
+  font-weight: bold;
+  margin-top: 2px;
+}
+
+.crypto-miner__stat-value--hot {
+  color: #f44;
+}
+
+.crypto-miner__wallet {
+  background: rgba(255, 215, 0, 0.06);
+  border: 1px solid rgba(255, 215, 0, 0.15);
+  border-radius: 4px;
+  padding: 8px 10px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.crypto-miner__token {
+  font-size: 1.1rem;
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.crypto-miner__rank {
+  font-size: 0.5rem;
+  color: #aaa;
+  margin-top: 2px;
+}
+
+.crypto-miner__overclock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.crypto-miner__slider {
+  flex: 1;
+  accent-color: var(--accent, #00e5ff);
+}
+
+.crypto-miner__throttle {
+  background: rgba(255, 0, 0, 0.15);
+  border: 1px solid #f44;
+  border-radius: 4px;
+  padding: 6px;
+  text-align: center;
+  color: #f44;
+  font-weight: bold;
+  animation: throttle-blink 0.5s infinite;
+}
+
+@keyframes throttle-blink {
+  50% { opacity: 0.5; }
+}
+
+.crypto-miner__easter {
+  background: rgba(255, 165, 0, 0.1);
+  border: 1px solid #ffa500;
+  border-radius: 4px;
+  padding: 10px;
+  text-align: center;
+  color: #ffa500;
+  white-space: pre-line;
+  line-height: 1.4;
+  margin-top: 8px;
+}
+
+.crypto-miner__status {
+  font-size: 0.45rem;
+  color: #666;
+  text-align: center;
+  padding-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .crypto-miner {
+    width: 95vw;
+    font-size: 0.55rem;
+  }
+}

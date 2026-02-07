@@ -38,6 +38,8 @@ const HELP_TEXT = [
   '  darknet  — Tor circuit relay viewer',
   '  biochip  — BioChip implant HUD',
   '  hackgame — Password cracker minigame',
+  '  cryptominer — $PROKYI crypto miner',
+  '  arena    — AI Model battle arena',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -332,6 +334,14 @@ const COMMANDS = {
   hackgame: () => {
     window.dispatchEvent(new CustomEvent('prokyi-hackgame-toggle'));
     return ['🔓 Password Cracker minigame opened.'];
+  },
+  cryptominer: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-cryptominer-toggle'));
+    return ['⛏️ $PROKYI Crypto Miner dashboard opened.'];
+  },
+  arena: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-arena-toggle'));
+    return ['⚔️ AI Model Arena opened. Fight!'];
   },
   cursor: () => {
     const doc = document.documentElement;
