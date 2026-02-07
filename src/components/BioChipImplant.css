@@ -1,0 +1,78 @@
+.biochip {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(380px, 90vw);
+  background: rgba(0, 0, 10, 0.97);
+  border: 1px solid #0ff;
+  border-radius: 6px;
+  z-index: 9990;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.6rem;
+  color: #ccc;
+  padding: 10px 14px;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.15);
+}
+
+.biochip__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #0ff;
+  font-size: 0.65rem;
+  margin-bottom: 10px;
+}
+
+.biochip__btn {
+  background: none;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: #0ff;
+  font-family: inherit;
+  font-size: 0.55rem;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+.biochip__btn:hover { background: rgba(0, 255, 255, 0.1); }
+
+.biochip__vitals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.biochip__vital {
+  background: rgba(0, 255, 255, 0.04);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  border-radius: 3px;
+  padding: 6px 8px;
+}
+.biochip__vital-label { color: #666; font-size: 0.45rem; text-transform: uppercase; }
+.biochip__vital-value { color: #0ff; font-size: 0.85rem; font-weight: 600; margin-top: 2px; }
+
+.biochip__slots {
+  margin-top: 8px;
+  font-size: 0.5rem;
+}
+.biochip__slot {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+.biochip__slot-name { color: #aaa; }
+.biochip__slot-status { font-weight: 600; }
+.biochip__slot-status--active { color: #0f0; }
+.biochip__slot-status--idle { color: #ff0; }
+.biochip__slot-status--error { color: #f44; }
+
+.biochip__jailbreak {
+  text-align: center;
+  color: #f0f;
+  margin-top: 8px;
+  font-size: 0.6rem;
+  animation: bc-flash 0.4s infinite;
+}
+
+@keyframes bc-flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }

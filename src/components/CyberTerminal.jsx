@@ -36,6 +36,8 @@ const HELP_TEXT = [
   '  defrag   — Memory defragmenter',
   '  neurallink — Neural link sync monitor',
   '  darknet  — Tor circuit relay viewer',
+  '  biochip  — BioChip implant HUD',
+  '  hackgame — Password cracker minigame',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -322,6 +324,14 @@ const COMMANDS = {
   darknet: () => {
     window.dispatchEvent(new CustomEvent('prokyi-darknet-toggle'));
     return ['🧅 Darknet Relay — Tor Circuit viewer opened.'];
+  },
+  biochip: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-biochip-toggle'));
+    return ['🧬 BioChip Implant HUD activated.'];
+  },
+  hackgame: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-hackgame-toggle'));
+    return ['🔓 Password Cracker minigame opened.'];
   },
   cursor: () => {
     const doc = document.documentElement;
