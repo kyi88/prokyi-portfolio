@@ -91,3 +91,11 @@
 .footer__uptime {
   color: var(--c-accent);
 }
+.footer__egg {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--c-accent2);
+  text-shadow: 0 0 10px var(--c-accent2);
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}

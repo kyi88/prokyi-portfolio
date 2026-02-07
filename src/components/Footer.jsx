@@ -81,6 +81,19 @@ function Uptime() {
 }
 
 export default function Footer() {
+  const [eggClicks, setEggClicks] = useState(0);
+  const [showEgg, setShowEgg] = useState(false);
+
+  const handleCopyClick = () => {
+    const next = eggClicks + 1;
+    setEggClicks(next);
+    if (next >= 5) {
+      setShowEgg(true);
+      setEggClicks(0);
+      setTimeout(() => setShowEgg(false), 4000);
+    }
+  };
+
   return (
     <motion.footer
       className="footer"
@@ -102,9 +115,21 @@ export default function Footer() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.8 }}
+          onClick={handleCopyClick}
+          style={{ cursor: 'default', userSelect: 'none' }}
         >
           &copy; 2026 ぷろきぃ (prokyi) &mdash; <span className="gradient-text">技術と創造の交差点</span>
         </motion.p>
+        {showEgg && (
+          <motion.p
+            className="footer__egg"
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            🎉 You found the secret! — The cake is a lie, but the code is real.
+          </motion.p>
+        )}
         <motion.p
           className="footer__update"
           initial={{ opacity: 0 }}
@@ -132,8 +157,8 @@ export default function Footer() {
         >
           <span>COMPONENTS: 19</span>
           <span>CHUNKS: 8</span>
-          <span>EASTER EGGS: 8</span>
-          <span>LOOPS: 24</span>
+          <span>EASTER EGGS: 9</span>
+          <span>LOOPS: 25</span>
           <LoadTime />
           <Uptime />
         </motion.div>

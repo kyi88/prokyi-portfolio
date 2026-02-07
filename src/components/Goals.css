@@ -129,6 +129,14 @@
   border-radius: 2px;
   box-shadow: 0 0 6px rgba(79, 172, 254, 0.15);
 }
+.goal__rank {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--c-text-dim);
+  letter-spacing: 1px;
+  margin-top: 4px;
+  display: block;
+}
 
 @media (max-width: 640px) {
   .goals-grid { grid-template-columns: 1fr; }

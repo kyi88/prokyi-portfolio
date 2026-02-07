@@ -75,6 +75,9 @@ export default function Goals() {
                   transition={{ duration: 1.2, delay: 0.5 + i * 0.15 }}
                 />
               </div>
+              <span className="goal__rank">
+                {g.progress >= 80 ? '🏆 MASTER' : g.progress >= 50 ? '⚡ ADVANCED' : g.progress >= 20 ? '🔧 LEARNING' : '🌱 STARTING'}
+              </span>
             </div>
           </motion.article>
         ))}

@@ -83,6 +83,22 @@ export default function Header() {
           <span className="header__logo-text">prokyi</span>
         </a>
 
+        {/* Current section indicator */}
+        <AnimatePresence mode="wait">
+          {active && scrolled && (
+            <motion.span
+              key={active}
+              className="header__section-label"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 0.6, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+            >
+              / {navItems.find(n => n.href === `#${active}`)?.label || active}
+            </motion.span>
+          )}
+        </AnimatePresence>
+
         {viewedCount > 0 && (
           <motion.span
             className="header__viewed"
