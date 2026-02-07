@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import ShareButton from './ShareButton';
 import './Header.css';
 
 const navItems = [
@@ -199,6 +200,8 @@ export default function Header() {
             {theme === 'cyber' ? '🔵' : '🟢'}
           </motion.span>
         </button>
+
+        <ShareButton />
 
         <nav className={`header__nav ${menuOpen ? 'is-open' : ''}`}>
           {navItems.map((item) => (
