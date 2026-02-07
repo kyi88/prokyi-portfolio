@@ -401,3 +401,27 @@
   margin-right: 8px;
   letter-spacing: 1px;
 }
+
+/* Milestone toast */
+.milestone-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  padding: 12px 28px;
+  border-radius: 8px;
+  background: rgba(10, 10, 30, 0.95);
+  border: 1px solid var(--c-accent);
+  color: var(--c-accent);
+  font-family: var(--ff-mono, 'JetBrains Mono', monospace);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  box-shadow: 0 0 20px rgba(var(--c-accent-rgb, 79, 172, 254), 0.3);
+  animation: milestone-in 0.4s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes milestone-in {
+  0% { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.9); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}

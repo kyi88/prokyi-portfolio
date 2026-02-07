@@ -31,6 +31,7 @@ import MatrixRain from './components/MatrixRain';
 import ClickSpark from './components/ClickSpark';
 import ScrollPercentage from './components/ScrollPercentage';
 import ScanLine from './components/ScanLine';
+import Confetti from './components/Confetti';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -346,6 +347,8 @@ function BootScreen({ onDone }) {
 export default function App() {
   const [booting, setBooting] = useState(true);
   const [loaded, setLoaded] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [milestoneMsg, setMilestoneMsg] = useState('');
   const [muted, setMuted] = useState(() => localStorage.getItem('prokyi_muted') === 'true');
   const mutedRef = useRef(muted);
   mutedRef.current = muted;
@@ -383,6 +386,18 @@ export default function App() {
   useEffect(() => {
     if (!booting) {
       const t = setTimeout(() => setLoaded(true), 100);
+      return () => clearTimeout(t);
+    }
+  }, [booting]);
+
+  // Milestone confetti celebration
+  useEffect(() => {
+    if (booting) return;
+    const visits = parseInt(localStorage.getItem('prokyi_visits') || '0', 10);
+    if (visits > 0 && visits % 10 === 0) {
+      setShowConfetti(true);
+      setMilestoneMsg(`🎉 ${visits}回目の訪問！ありがとう！`);
+      const t = setTimeout(() => { setShowConfetti(false); setMilestoneMsg(''); }, 5000);
       return () => clearTimeout(t);
     }
   }, [booting]);
@@ -650,6 +665,12 @@ export default function App() {
       <ClickSpark />
       <ScrollPercentage />
       <ScanLine />
+      {showConfetti && <Confetti />}
+      {milestoneMsg && (
+        <div className="milestone-toast" aria-live="polite">
+          {milestoneMsg}
+        </div>
+      )}
         </>
       )}
     </SoundContext.Provider>

@@ -20,6 +20,7 @@ const HELP_TEXT = [
   '  ping     — Ping the matrix',
   '  fortune  — Random fortune cookie',
   '  crt      — Toggle CRT scanline overlay',
+  '  cursor   — Toggle custom cursor',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -222,6 +223,21 @@ const COMMANDS = {
   crt: () => {
     window.dispatchEvent(new CustomEvent('prokyi-crt-toggle'));
     return ['📺 CRT scanline overlay toggled.'];
+  },
+  cursor: () => {
+    const doc = document.documentElement;
+    const current = doc.style.cursor;
+    if (current === 'none') {
+      doc.style.cursor = '';
+      const dot = document.getElementById('cyber-cursor');
+      if (dot) dot.style.display = 'none';
+      return ['🖱️ Custom cursor OFF — default cursor restored.'];
+    } else {
+      doc.style.cursor = 'none';
+      const dot = document.getElementById('cyber-cursor');
+      if (dot) dot.style.display = '';
+      return ['🖱️ Custom cursor ON — cyber cursor active.'];
+    }
   },
 };
 
