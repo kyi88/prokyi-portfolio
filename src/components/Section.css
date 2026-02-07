@@ -168,25 +168,37 @@
 }
 .card__title-text.glitch::before {
   color: var(--c-accent2);
-  animation: section-glitch-1 6s infinite linear;
+  animation: section-glitch-1 4s infinite linear;
 }
 .card__title-text.glitch::after {
   color: var(--c-pink);
-  animation: section-glitch-2 6s infinite linear;
+  animation: section-glitch-2 4s infinite linear;
 }
 @keyframes section-glitch-1 {
-  0%, 90%, 93%, 96%, 100% { opacity: 0; transform: translate(0); }
-  91% { opacity: 0.5; transform: translate(-2px, -1px); clip-path: inset(25% 0 45% 0); }
-  92% { opacity: 0.5; transform: translate(2px, 1px); clip-path: inset(55% 0 15% 0); }
-  94% { opacity: 0.4; transform: translate(-1px, 1px); clip-path: inset(35% 0 35% 0); }
-  95% { opacity: 0.4; transform: translate(1px, -1px); clip-path: inset(10% 0 65% 0); }
+  0%, 4%, 8%, 20%, 24%, 40%, 44%, 60%, 64%, 80%, 84%, 100% { opacity: 0; transform: translate(0); }
+  2% { opacity: 0.5; transform: translate(-2px, -1px); clip-path: inset(25% 0 45% 0); }
+  3% { opacity: 0.5; transform: translate(2px, 1px); clip-path: inset(55% 0 15% 0); }
+  22% { opacity: 0.4; transform: translate(-1px, 1px); clip-path: inset(35% 0 35% 0); }
+  23% { opacity: 0.4; transform: translate(1px, -1px); clip-path: inset(10% 0 65% 0); }
+  42% { opacity: 0.5; transform: translate(2px, -1px); clip-path: inset(40% 0 30% 0); }
+  43% { opacity: 0.4; transform: translate(-1px, 1px); clip-path: inset(20% 0 50% 0); }
+  62% { opacity: 0.5; transform: translate(-2px, 1px); clip-path: inset(50% 0 20% 0); }
+  63% { opacity: 0.3; transform: translate(1px, -1px); clip-path: inset(15% 0 60% 0); }
+  82% { opacity: 0.4; transform: translate(2px, 1px); clip-path: inset(30% 0 40% 0); }
+  83% { opacity: 0.5; transform: translate(-2px, -1px); clip-path: inset(60% 0 10% 0); }
 }
 @keyframes section-glitch-2 {
-  0%, 92%, 95%, 98%, 100% { opacity: 0; transform: translate(0); }
-  93% { opacity: 0.4; transform: translate(2px, 1px); clip-path: inset(30% 0 40% 0); }
-  94% { opacity: 0.5; transform: translate(-2px, -1px); clip-path: inset(60% 0 10% 0); }
-  96% { opacity: 0.3; transform: translate(1px, -1px); clip-path: inset(50% 0 25% 0); }
-  97% { opacity: 0.4; transform: translate(-1px, 1px); clip-path: inset(15% 0 55% 0); }
+  0%, 12%, 16%, 30%, 34%, 50%, 54%, 70%, 74%, 90%, 94%, 100% { opacity: 0; transform: translate(0); }
+  13% { opacity: 0.4; transform: translate(2px, 1px); clip-path: inset(30% 0 40% 0); }
+  14% { opacity: 0.5; transform: translate(-2px, -1px); clip-path: inset(60% 0 10% 0); }
+  32% { opacity: 0.3; transform: translate(1px, -1px); clip-path: inset(50% 0 25% 0); }
+  33% { opacity: 0.4; transform: translate(-1px, 1px); clip-path: inset(15% 0 55% 0); }
+  52% { opacity: 0.5; transform: translate(-2px, 1px); clip-path: inset(45% 0 20% 0); }
+  53% { opacity: 0.3; transform: translate(2px, -1px); clip-path: inset(10% 0 65% 0); }
+  72% { opacity: 0.4; transform: translate(1px, 1px); clip-path: inset(55% 0 15% 0); }
+  73% { opacity: 0.5; transform: translate(-1px, -1px); clip-path: inset(25% 0 45% 0); }
+  92% { opacity: 0.4; transform: translate(2px, -1px); clip-path: inset(35% 0 35% 0); }
+  93% { opacity: 0.3; transform: translate(-2px, 1px); clip-path: inset(20% 0 50% 0); }
 }
 
 /* Section divider accent line */

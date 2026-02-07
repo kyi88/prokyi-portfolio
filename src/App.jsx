@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -19,6 +19,16 @@ import './App.css';
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
 const StatusScreen = lazy(() => import('./components/StatusScreen'));
 
+/* CRT Scanline overlay — cyberpunk monitor aesthetic */
+function CRTOverlay() {
+  return (
+    <div className="crt-overlay" aria-hidden="true">
+      <div className="crt-overlay__scanlines" />
+      <div className="crt-overlay__flicker" />
+    </div>
+  );
+}
+
 /* Parallax fog layers */
 function ParallaxFog() {
   const { scrollYProgress } = useScroll();
@@ -32,6 +42,77 @@ function ParallaxFog() {
       <motion.div className="parallax-fog__layer parallax-fog__layer--2" style={{ y: y2, opacity }} />
     </div>
   );
+}
+
+/* Random system glitch — brief full-screen distortion every ~25-40s */
+function SystemGlitch() {
+  const [glitching, setGlitching] = useState(false);
+
+  useEffect(() => {
+    const trigger = () => {
+      setGlitching(true);
+      setTimeout(() => setGlitching(false), 150 + Math.random() * 200);
+    };
+    const schedule = () => {
+      const delay = 25000 + Math.random() * 15000;
+      return setTimeout(() => {
+        trigger();
+        timerId = schedule();
+      }, delay);
+    };
+    let timerId = schedule();
+    return () => clearTimeout(timerId);
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {glitching && (
+        <motion.div
+          className="system-glitch"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.05 }}
+          aria-hidden="true"
+        />
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* Section scroll SFX — subtle blip when a section enters viewport */
+function useSectionSFX() {
+  const playedRef = useRef(new Set());
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.id;
+          if (entry.isIntersecting && id && !playedRef.current.has(id)) {
+            playedRef.current.add(id);
+            try {
+              const ctx = new (window.AudioContext || window.webkitAudioContext)();
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.value = 800 + Math.random() * 400;
+              gain.gain.value = 0.015;
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.start();
+              gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+              osc.stop(ctx.currentTime + 0.08);
+            } catch (_) {}
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    // Observe all sections
+    document.querySelectorAll('.section').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 }
 
 /* Skeleton placeholder for StatusScreen lazy load */
@@ -149,6 +230,9 @@ export default function App() {
   const [booting, setBooting] = useState(true);
   const [loaded, setLoaded] = useState(false);
 
+  // Section scroll sound effects
+  useSectionSFX();
+
   useEffect(() => {
     if (!booting) {
       const t = setTimeout(() => setLoaded(true), 100);
@@ -257,6 +341,8 @@ export default function App() {
             <CyberBackground />
       </Suspense>
       <ParallaxFog />
+      <CRTOverlay />
+      <SystemGlitch />
       <div className={`page ${loaded ? 'page--loaded' : ''}`}>
         <Header />
         <Hero />

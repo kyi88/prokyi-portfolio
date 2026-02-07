@@ -4,7 +4,7 @@ import './Career.css';
 
 const education = [
   { date: '2025.03', title: '千葉敬愛高等学校', sub: '理系特進コース 卒業', active: false,
-    detail: '数学・物理を中心に学習。独学でプログラミングを開始し、在学中にLinuxやPythonに触れ始めた。' },
+    detail: '数学・物理を中心に学習。独学でHTMLを学び、Webページ制作に興味を持つきっかけとなった。' },
   { date: '2025.04 —', title: 'ZEN大学 在学中', sub: 'オンライン講義を通じた実践的なスキル習得', active: true,
     detail: 'AI・機械学習、Web開発、サーバー構築など幅広い分野をオンラインで学習中。自宅ラボ環境を構築し実践的な技術力を磨いている。' },
 ];

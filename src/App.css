@@ -216,3 +216,66 @@
 @media (prefers-reduced-motion: reduce) {
   .parallax-fog { display: none; }
 }
+
+/* ═══════════════════════════
+   CRT Scanline Overlay
+   ═══════════════════════════ */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+}
+.crt-overlay__scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+}
+.crt-overlay__flicker {
+  position: absolute;
+  inset: 0;
+  animation: crt-flicker 8s linear infinite;
+}
+@keyframes crt-flicker {
+  0%, 100% { opacity: 0; }
+  3% { opacity: 0.02; background: rgba(255, 255, 255, 0.01); }
+  6% { opacity: 0; }
+  47% { opacity: 0; }
+  50% { opacity: 0.015; background: rgba(79, 172, 254, 0.01); }
+  53% { opacity: 0; }
+  92% { opacity: 0; }
+  95% { opacity: 0.02; background: rgba(0, 242, 254, 0.01); }
+  98% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crt-overlay { display: none; }
+}
+
+/* ═══════════════════════════
+   System Glitch
+   ═══════════════════════════ */
+.system-glitch {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  pointer-events: none;
+  background:
+    linear-gradient(transparent 40%, rgba(79, 172, 254, 0.03) 40.5%, transparent 41%),
+    linear-gradient(transparent 65%, rgba(255, 50, 80, 0.02) 65.5%, transparent 66%),
+    linear-gradient(transparent 85%, rgba(0, 242, 254, 0.02) 85.5%, transparent 86%);
+  animation: sys-glitch-shift 0.15s steps(2) 1;
+  mix-blend-mode: screen;
+}
+@keyframes sys-glitch-shift {
+  0% { transform: translateX(-2px) skewX(-0.5deg); }
+  25% { transform: translateX(3px) skewX(0.3deg); }
+  50% { transform: translateX(-1px) skewX(-0.2deg); }
+  75% { transform: translateX(2px) skewX(0.4deg); }
+  100% { transform: translateX(0); }
+}
