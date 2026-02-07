@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import './Footer.css';
 
@@ -82,6 +82,7 @@ function Uptime() {
 
 export default function Footer() {
   const [eggClicks, setEggClicks] = useState(0);
+  const eggTimerRef = useRef(null);
   const [showEgg, setShowEgg] = useState(false);
 
   const handleCopyClick = () => {
@@ -90,7 +91,8 @@ export default function Footer() {
     if (next >= 5) {
       setShowEgg(true);
       setEggClicks(0);
-      setTimeout(() => setShowEgg(false), 4000);
+      clearTimeout(eggTimerRef.current);
+      eggTimerRef.current = setTimeout(() => setShowEgg(false), 4000);
     }
   };
 
@@ -158,7 +160,7 @@ export default function Footer() {
           <span>COMPONENTS: 21</span>
           <span>CHUNKS: 8</span>
           <span>EASTER EGGS: 10</span>
-          <span>LOOPS: 44</span>
+          <span>LOOPS: 45</span>
           <LoadTime />
           <Uptime />
         </motion.div>

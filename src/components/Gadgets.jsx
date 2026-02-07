@@ -229,6 +229,7 @@ export default function Gadgets() {
           type="text"
           className="gadgets__search-input"
           placeholder="デバイスを検索..."
+          aria-label="デバイスを検索"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           autoComplete="off"

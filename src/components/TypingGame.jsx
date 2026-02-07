@@ -72,6 +72,10 @@ export default function TypingGame({ onClose }) {
   const [bestScore, setBestScore] = useState(() => parseInt(localStorage.getItem('prokyi_typing_best') || '0', 10));
   const [isNewRecord, setIsNewRecord] = useState(false);
   const inputRef = useRef(null);
+  const flashTimerRef = useRef(null);
+
+  // Cleanup flash timer on unmount
+  useEffect(() => () => clearTimeout(flashTimerRef.current), []);
 
   // Guard all sfx calls with mute check
   const playSfx = useCallback((fn) => { if (!mutedRef.current) fn(); }, []);
@@ -124,7 +128,8 @@ export default function TypingGame({ onClose }) {
       });
       setFlash('correct');
       playSfx(sfx.ok);
-      setTimeout(() => setFlash(null), 300);
+      clearTimeout(flashTimerRef.current);
+      flashTimerRef.current = setTimeout(() => setFlash(null), 300);
       setInput('');
 
       if (wordIdx + 1 >= words.length) {
@@ -141,7 +146,8 @@ export default function TypingGame({ onClose }) {
       setCombo(0);
       setFlash('miss');
       playSfx(sfx.miss);
-      setTimeout(() => setFlash(null), 200);
+      clearTimeout(flashTimerRef.current);
+      flashTimerRef.current = setTimeout(() => setFlash(null), 200);
     }
   };
 

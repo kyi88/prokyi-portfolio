@@ -99,12 +99,16 @@ export default function CommandPalette() {
                 placeholder="セクションへジャンプ..."
                 autoComplete="off"
                 spellCheck="false"
+                role="combobox"
+                aria-expanded="true"
+                aria-controls="cmd-panel-listbox"
+                aria-activedescendant={filtered.length > 0 ? `cmd-opt-${activeIdx}` : undefined}
               />
               <kbd className="cmd-panel__kbd">Esc</kbd>
             </div>
-            <ul className="cmd-panel__list" role="listbox">
+            <ul className="cmd-panel__list" role="listbox" id="cmd-panel-listbox">
               {filtered.map((c, i) => (
-                <li key={c.id} role="option" aria-selected={activeIdx === i}>
+                <li key={c.id} id={`cmd-opt-${i}`} role="option" aria-selected={activeIdx === i}>
                   <button
                     className={`cmd-panel__item ${activeIdx === i ? 'cmd-panel__item--active' : ''}`}
                     onClick={() => handleSelect(c.target)}

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import './Hero.css';
 
@@ -251,6 +251,9 @@ export default function Hero() {
             loading="eager"
             fetchpriority="high"
             onClick={handleAvatarClick}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleAvatarClick(); } }}
+            role="button"
+            tabIndex={0}
           />
         </motion.div>
 

@@ -147,7 +147,7 @@ export default function StatusScreen() {
       {/* Tabs */}
       <nav className="ss__tabs" role="tablist" aria-label="ステータスタブ">
         {tabs.map((t) => (
-          <button key={t.id} role="tab" aria-selected={tab === t.id} aria-controls={`ss-p-${t.id}`}
+          <button key={t.id} id={`ss-tab-${t.id}`} role="tab" aria-selected={tab === t.id} aria-controls={`ss-p-${t.id}`}
             className={`ss__tab${tab === t.id ? ' is-active' : ''}`} onClick={() => setTab(t.id)}>
             <span className="ss__tab-icon">{t.icon}</span>{t.label}
           </button>
@@ -158,7 +158,7 @@ export default function StatusScreen() {
       <AnimatePresence mode="wait">
         {/* ── STATS ── */}
         {tab === 'stats' && (
-          <motion.div key="stats" id="ss-p-stats" role="tabpanel" className="ss__panel" {...panelAnim}>
+          <motion.div key="stats" id="ss-p-stats" role="tabpanel" aria-labelledby="ss-tab-stats" className="ss__panel" {...panelAnim}>
             <h4 className="ss__ptitle">BASIC STATS</h4>
             <div className="ss__stats-grid">
               {STATS.map((s, i) => (
@@ -184,7 +184,7 @@ export default function StatusScreen() {
 
         {/* ── DEBUFFS ── */}
         {tab === 'debuffs' && (
-          <motion.div key="debuffs" id="ss-p-debuffs" role="tabpanel" className="ss__panel" {...panelAnim}>
+          <motion.div key="debuffs" id="ss-p-debuffs" role="tabpanel" aria-labelledby="ss-tab-debuffs" className="ss__panel" {...panelAnim}>
             <h4 className="ss__ptitle">DEBUFFS &amp; QUIRKS</h4>
             <div className="ss__debuffs-grid">
               {DEBUFFS.map((d, i) => (
@@ -203,7 +203,7 @@ export default function StatusScreen() {
 
         {/* ── HISTORY ── */}
         {tab === 'history' && (
-          <motion.div key="history" id="ss-p-history" role="tabpanel" className="ss__panel" {...panelAnim}>
+          <motion.div key="history" id="ss-p-history" role="tabpanel" aria-labelledby="ss-tab-history" className="ss__panel" {...panelAnim}>
             <h4 className="ss__ptitle">SKILL ACQUISITION LOG</h4>
             <div className="ss__timeline">
               {HISTORY.map((era, ei) => (
@@ -231,7 +231,7 @@ export default function StatusScreen() {
 
         {/* ── INVENTORY ── */}
         {tab === 'inventory' && (
-          <motion.div key="inventory" id="ss-p-inventory" role="tabpanel" className="ss__panel" {...panelAnim}>
+          <motion.div key="inventory" id="ss-p-inventory" role="tabpanel" aria-labelledby="ss-tab-inventory" className="ss__panel" {...panelAnim}>
             <h4 className="ss__ptitle">EQUIPPED INVENTORY</h4>
             <div className="ss__inv-grid">
               {INVENTORY.map((it, i) => (

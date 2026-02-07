@@ -130,25 +130,25 @@ function useSectionSFX(mutedRef, ready) {
 }
 
 /* System alert toasts — random cyber notifications */
+const ALERT_MSGS = [
+  '🔒 Firewall integrity: 98.7%',
+  '📡 Neural link: stable',
+  '⚡ Power cell: charging',
+  '🛡️ Intrusion attempt blocked',
+  '📊 Memory usage: optimal',
+  '🔧 Self-repair subroutine active',
+  '🌐 Network latency: 2ms',
+  '🎯 Threat level: minimal',
+];
 function SystemAlerts() {
   const [alerts, setAlerts] = useState([]);
-  const msgs = [
-    '🔒 Firewall integrity: 98.7%',
-    '📡 Neural link: stable',
-    '⚡ Power cell: charging',
-    '🛡️ Intrusion attempt blocked',
-    '📊 Memory usage: optimal',
-    '🔧 Self-repair subroutine active',
-    '🌐 Network latency: 2ms',
-    '🎯 Threat level: minimal',
-  ];
 
   const dismissTimers = useRef(new Set());
 
   useEffect(() => {
     const spawn = () => {
       const id = Date.now();
-      const msg = msgs[Math.floor(Math.random() * msgs.length)];
+      const msg = ALERT_MSGS[Math.floor(Math.random() * ALERT_MSGS.length)];
       setAlerts(prev => [...prev, { id, msg }]);
       const dTimer = setTimeout(() => {
         setAlerts(prev => prev.filter(a => a.id !== id));

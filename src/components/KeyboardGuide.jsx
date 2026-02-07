@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './KeyboardGuide.css';
 
@@ -13,6 +13,8 @@ const shortcuts = [
 
 export default function KeyboardGuide() {
   const [open, setOpen] = useState(false);
+  const panelRef = useRef(null);
+  const prevFocusRef = useRef(null);
 
   useEffect(() => {
     const handler = (e) => {
@@ -30,6 +32,17 @@ export default function KeyboardGuide() {
     return () => window.removeEventListener('keydown', handler);
   }, [open]);
 
+  // Focus management: save previous focus, focus panel on open, restore on close
+  useEffect(() => {
+    if (open) {
+      prevFocusRef.current = document.activeElement;
+      requestAnimationFrame(() => panelRef.current?.focus());
+    } else if (prevFocusRef.current) {
+      prevFocusRef.current.focus();
+      prevFocusRef.current = null;
+    }
+  }, [open]);
+
   return (
     <AnimatePresence>
       {open && (
@@ -42,6 +55,8 @@ export default function KeyboardGuide() {
         >
           <motion.div
             className="kb-panel"
+            ref={panelRef}
+            tabIndex={-1}
             role="dialog"
             aria-modal="true"
             aria-label="キーボードショートカット"
