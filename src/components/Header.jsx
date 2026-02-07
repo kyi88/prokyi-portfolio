@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ShareButton from './ShareButton';
 import GlitchText from './GlitchText';
+import Tooltip from './Tooltip';
 import useHoverSound from '../hooks/useHoverSound';
 import './Header.css';
 
@@ -176,6 +177,7 @@ export default function Header() {
         </AnimatePresence>
 
         {viewedCount > 0 && (
+          <Tooltip content={`${viewedCount}/${navItems.length}セクション閲覧済み`}>
           <motion.span
             className="header__viewed"
             key={viewedCount}
@@ -186,6 +188,7 @@ export default function Header() {
           >
             {viewedCount}/{navItems.length}
           </motion.span>
+          </Tooltip>
         )}
 
         <button

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import ProgressiveImage from './ProgressiveImage';
+import ParallaxStars from './ParallaxStars';
 import './Hero.css';
 
 const BASE = import.meta.env.BASE_URL;
@@ -232,6 +233,9 @@ export default function Hero() {
 
   return (
     <section className="hero" ref={ref} id="top" aria-label="自己紹介">
+      {/* Parallax star field */}
+      <ParallaxStars />
+
       {/* Particle trail canvas (desktop) */}
       <ParticleTrail />
 
