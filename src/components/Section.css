@@ -215,20 +215,21 @@
 .card__corner--br { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
 .card__title-num {
   font-family: var(--font-mono);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 900;
-  min-width: 34px;
-  padding: 3px 10px;
-  border: 1.5px solid rgba(0, 242, 254, 0.45);
-  border-radius: 5px;
-  background: rgba(0, 242, 254, 0.12);
-  color: #00f2fe;
+  min-width: 38px;
+  padding: 4px 12px;
+  border: 2px solid #00f2fe;
+  border-radius: 6px;
+  background: rgba(0, 242, 254, 0.15);
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
   letter-spacing: 3px;
-  text-shadow: 0 0 10px rgba(0, 242, 254, 0.7), 0 0 20px rgba(0, 242, 254, 0.35);
-  box-shadow: 0 0 8px rgba(0, 242, 254, 0.15), inset 0 0 6px rgba(0, 242, 254, 0.06);
-  -webkit-text-fill-color: initial;
+  text-shadow: 0 0 8px #00f2fe, 0 0 16px rgba(0, 242, 254, 0.5);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.25), inset 0 0 8px rgba(0, 242, 254, 0.1);
   flex-shrink: 0;
   text-align: center;
+  line-height: 1.4;
 }
 
 /* Section title glitch — short flicker bursts, never fully transparent */

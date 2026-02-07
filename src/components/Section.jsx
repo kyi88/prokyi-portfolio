@@ -132,7 +132,7 @@ function Section({ id, num, title, children }) {
         )}
       </AnimatePresence>
       <motion.h2
-        className="card__title gradient-text"
+        className="card__title"
         initial={{ opacity: 0, x: -30 }}
         animate={inView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
@@ -146,7 +146,7 @@ function Section({ id, num, title, children }) {
         >
           {scrambled}
         </motion.span>
-        <span className="card__title-text glitch" data-text={title}>{title}</span>
+        <span className="card__title-text gradient-text glitch" data-text={title}>{title}</span>
       </motion.h2>
       {/* Hologram shimmer */}
       <span className="card__holo" aria-hidden="true" />
