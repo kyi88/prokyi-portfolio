@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import GlowCard from './GlowCard';
+import NetworkGraph from './NetworkGraph';
 import './Sidebar.css';
 
 const RANDOM_FACTS = [
@@ -394,6 +395,7 @@ export default function Sidebar() {
       >
         <h3 className="side-card__title">スキル</h3>
         <SkillRadar data={skills} inView={inView} />
+        <NetworkGraph />
         <ul className="skill-list">
           {skills.map((s, i) => (
             <SkillListItem key={s.name} skill={s} index={i} inView={inView} />

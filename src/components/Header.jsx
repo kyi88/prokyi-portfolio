@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ShareButton from './ShareButton';
+import GlitchText from './GlitchText';
 import useHoverSound from '../hooks/useHoverSound';
 import './Header.css';
 
@@ -155,7 +156,7 @@ export default function Header() {
       <div className="header__inner">
         <a href="#top" className="header__logo" onClick={(e) => handleClick(e, '#top')}>
           <span className="header__logo-mark" aria-hidden="true">&lt;/&gt;</span>
-          <span className="header__logo-text">prokyi</span>
+          <GlitchText text="prokyi" className="header__logo-text" />
         </a>
 
         {/* Current section indicator */}

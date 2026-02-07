@@ -1,0 +1,36 @@
+.network-graph {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  margin-top: 0.75rem;
+  border: 1px solid rgba(var(--c-accent-rgb, 79, 172, 254), 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.network-graph__label {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  font-size: 0.55rem;
+  font-family: var(--ff-mono, 'JetBrains Mono', monospace);
+  color: var(--c-accent);
+  opacity: 0.5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.network-graph__canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .network-graph {
+    height: 120px;
+  }
+}
