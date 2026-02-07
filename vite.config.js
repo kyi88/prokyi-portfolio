@@ -6,5 +6,13 @@ export default defineConfig({
   base: '/prokyi-portfolio/',
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ['three', '@react-three/fiber'],
+          'framer-motion': ['framer-motion'],
+        },
+      },
+    },
   },
 });

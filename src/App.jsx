@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -6,12 +6,15 @@ import Section from './components/Section';
 import Profile from './components/Profile';
 import Career from './components/Career';
 import Goals from './components/Goals';
+import StatusScreen from './components/StatusScreen';
 import Gadgets from './components/Gadgets';
 import Links from './components/Links';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
-import ParticleCanvas from './components/ParticleCanvas';
+import EasterEggFab from './components/EasterEggFab';
 import './App.css';
+
+const CyberBackground = lazy(() => import('./components/CyberBackground'));
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -23,7 +26,9 @@ export default function App() {
 
   return (
     <>
-      <ParticleCanvas />
+      <Suspense fallback={null}>
+        <CyberBackground />
+      </Suspense>
       <div className={`page ${loaded ? 'page--loaded' : ''}`}>
         <Header />
         <Hero />
@@ -40,10 +45,13 @@ export default function App() {
               <Section id="goals" num="03" title="今後の目標・技術的関心">
                 <Goals />
               </Section>
-              <Section id="gadgets" num="04" title="ガジェット">
+              <Section id="status" num="04" title="プレイヤーステータス">
+                <StatusScreen />
+              </Section>
+              <Section id="gadgets" num="05" title="ガジェット">
                 <Gadgets />
               </Section>
-              <Section id="links" num="05" title="リンク / SNS">
+              <Section id="links" num="06" title="リンク / SNS">
                 <Links />
               </Section>
             </div>
@@ -53,6 +61,7 @@ export default function App() {
 
         <Footer />
       </div>
+      <EasterEggFab />
     </>
   );
 }

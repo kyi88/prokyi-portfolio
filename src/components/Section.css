@@ -54,6 +54,7 @@
   border-bottom: 1px solid var(--c-border);
   position: relative;
 }
+/* Card title accent underline */
 .card__title::after {
   content: '';
   position: absolute;
@@ -64,6 +65,22 @@
   background: linear-gradient(90deg, var(--c-accent), var(--c-accent2));
   border-radius: 2px;
 }
+/* Cyber corner accents */
+.card__corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: var(--c-accent);
+  border-style: solid;
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+.card:hover .card__corner { opacity: 0.3; }
+.card__corner--tl { top: 6px; left: 6px; border-width: 2px 0 0 2px; }
+.card__corner--tr { top: 6px; right: 6px; border-width: 2px 2px 0 0; }
+.card__corner--bl { bottom: 6px; left: 6px; border-width: 0 0 2px 2px; }
+.card__corner--br { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
 .card__title-num {
   font-family: var(--font-mono);
   font-size: 0.75rem;

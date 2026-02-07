@@ -34,3 +34,11 @@
   opacity: 0.5;
   margin-top: 6px;
 }
+.footer__system {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 1.5px;
+  color: var(--c-accent);
+  margin-top: 8px;
+  text-transform: uppercase;
+}

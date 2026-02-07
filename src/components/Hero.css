@@ -205,6 +205,7 @@
   color: var(--c-accent);
   margin-bottom: 8px;
   letter-spacing: 1.5px;
+  text-shadow: 0 0 8px rgba(79, 172, 254, 0.3);
 }
 .hero__name {
   font-size: clamp(2rem, 5vw, 3.4rem);

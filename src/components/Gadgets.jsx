@@ -82,6 +82,56 @@ const categories = [
       { name: 'Nothing CMF Watch Pro 2', specs: [] },
     ],
   },
+  {
+    id: 'audio',
+    name: 'オーディオ',
+    icon: '🎧',
+    color: '#a855f7',
+    devices: [
+      {
+        name: 'Soundcore Space One Pro',
+        specs: [
+          { label: 'Type', value: 'Wireless Headphones' },
+          { label: 'Codec', value: 'LDAC / Hi-Res' },
+          { label: 'Battery', value: '60h' },
+        ],
+      },
+      {
+        name: 'JBL Tour Pro 3',
+        specs: [
+          { label: 'Type', value: 'Wireless Earphones' },
+          { label: 'Driver', value: 'Dual Driver + Planar' },
+          { label: 'Battery', value: '12h (Buds)' },
+        ],
+      },
+      {
+        name: 'Edifier MR3',
+        specs: [
+          { label: 'Type', value: 'Monitor Speakers' },
+          { label: 'Driver', value: '4" Full Range' },
+          { label: 'Power', value: '36W RMS' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'gaming',
+    name: 'ゲーミング',
+    icon: '🎮',
+    color: '#ef4444',
+    devices: [
+      {
+        name: 'AYN Thor [MAX]',
+        specs: [
+          { label: 'Type', value: 'Emulation Console' },
+          { label: 'CPU', value: 'Snapdragon 8 Gen 2' },
+          { label: 'RAM / ROM', value: '16GB / 1TB' },
+          { label: 'Upper', value: '6" 120Hz' },
+          { label: 'Lower', value: '3.92" 60Hz' },
+        ],
+      },
+    ],
+  },
 ];
 
 const allId = 'all';
@@ -203,6 +253,10 @@ export default function Gadgets() {
 
                     {/* Animated border glow */}
                     <div className="gadget-card__glow" aria-hidden="true" />
+                    {/* Equalizer bars */}
+                    <div className="gadget-card__eq" aria-hidden="true">
+                      <span /><span /><span /><span /><span />
+                    </div>
                   </motion.article>
                 ))}
               </div>

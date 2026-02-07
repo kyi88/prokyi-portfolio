@@ -29,6 +29,15 @@ export default function Footer() {
         >
           Last updated: 2026/02/07
         </motion.p>
+        <motion.p
+          className="footer__system"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.3 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.7, duration: 0.8 }}
+        >
+          SYSTEM: React 19 + Vite 6 + Three.js + Framer Motion
+        </motion.p>
       </div>
     </motion.footer>
   );

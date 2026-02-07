@@ -34,6 +34,11 @@ export default function Section({ id, num, title, children }) {
         </motion.span>
         {title}
       </motion.h2>
+      {/* Cyber corner accents */}
+      <span className="card__corner card__corner--tl" aria-hidden="true" />
+      <span className="card__corner card__corner--tr" aria-hidden="true" />
+      <span className="card__corner card__corner--bl" aria-hidden="true" />
+      <span className="card__corner card__corner--br" aria-hidden="true" />
       {children}
     </motion.section>
   );
