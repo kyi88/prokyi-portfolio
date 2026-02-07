@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, lazy, Suspense } from 'react';
+import { useEffect, useState, useRef, lazy, Suspense, createContext, useContext } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -15,10 +15,15 @@ import CyberTerminal from './components/CyberTerminal';
 import KeyboardGuide from './components/KeyboardGuide';
 import ScrollToTop from './components/ScrollToTop';
 import CommandPalette from './components/CommandPalette';
+import Minimap from './components/Minimap';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
 const StatusScreen = lazy(() => import('./components/StatusScreen'));
+
+/* Sound context — global mute toggle */
+export const SoundContext = createContext({ muted: false });
+export function useSoundMuted() { return useContext(SoundContext).muted; }
 
 /* CRT Scanline overlay — cyberpunk monitor aesthetic */
 function CRTOverlay() {
@@ -82,7 +87,7 @@ function SystemGlitch() {
 }
 
 /* Section scroll SFX — subtle blip when a section enters viewport */
-function useSectionSFX() {
+function useSectionSFX(mutedRef) {
   const playedRef = useRef(new Set());
 
   useEffect(() => {
@@ -92,6 +97,7 @@ function useSectionSFX() {
           const id = entry.target.id;
           if (entry.isIntersecting && id && !playedRef.current.has(id)) {
             playedRef.current.add(id);
+            if (mutedRef.current) return;
             try {
               const ctx = new (window.AudioContext || window.webkitAudioContext)();
               const osc = ctx.createOscillator();
@@ -230,9 +236,19 @@ function BootScreen({ onDone }) {
 export default function App() {
   const [booting, setBooting] = useState(true);
   const [loaded, setLoaded] = useState(false);
+  const [muted, setMuted] = useState(() => localStorage.getItem('prokyi_muted') === 'true');
+  const mutedRef = useRef(muted);
+  mutedRef.current = muted;
+
+  const toggleMute = () => {
+    setMuted(prev => {
+      localStorage.setItem('prokyi_muted', String(!prev));
+      return !prev;
+    });
+  };
 
   // Section scroll sound effects
-  useSectionSFX();
+  useSectionSFX(mutedRef);
 
   useEffect(() => {
     if (!booting) {
@@ -284,6 +300,26 @@ export default function App() {
     };
   }, []);
 
+  // Console Easter Egg — fun messages for devtools inspectors
+  useEffect(() => {
+    console.log(
+      '%c ╔══════════════════════════════════════╗\n' +
+      ' ║   🔮 prokyi — Cyberdeck Portfolio 🔮  ║\n' +
+      ' ╚══════════════════════════════════════╝',
+      'color: #4facfe; font-size: 14px; font-weight: bold; text-shadow: 0 0 10px #4facfe;'
+    );
+    console.log(
+      '%c👾 Hey hacker! ソースコード覗いてるの？\n' +
+      '   気に入ったら GitHub で ⭐ してね！\n' +
+      '   → https://github.com/kyi88/prokyi-portfolio',
+      'color: #22d3a7; font-size: 12px;'
+    );
+    console.log(
+      '%c🎮 隠しコマンド: Konami Code (↑↑↓↓←→←→BA), ` でターミナル, Ctrl+K でコマンドパレット, ? でヘルプ',
+      'color: #a855f7; font-size: 11px;'
+    );
+  }, []);
+
   // Animated favicon
   useEffect(() => {
     const canvas = document.createElement('canvas');
@@ -328,7 +364,7 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <SoundContext.Provider value={{ muted }}>
       {/* Custom cursor dot (desktop only) */}
       <div id="cyber-cursor" className="cyber-cursor" aria-hidden="true" />
 
@@ -344,6 +380,24 @@ export default function App() {
       <ParallaxFog />
       <CRTOverlay />
       <SystemGlitch />
+
+      {/* Sound toggle */}
+      <button
+        className="sound-toggle"
+        onClick={toggleMute}
+        aria-label={muted ? 'サウンドON' : 'サウンドOFF'}
+        title={muted ? '🔇 Unmute' : '🔊 Mute'}
+      >
+        <motion.span
+          key={String(muted)}
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+        >
+          {muted ? '🔇' : '🔊'}
+        </motion.span>
+      </button>
+
       <div className={`page ${loaded ? 'page--loaded' : ''}`}>
         <Header />
         <Hero />
@@ -388,8 +442,9 @@ export default function App() {
       <KeyboardGuide />
       <ScrollToTop />
       <CommandPalette />
+      <Minimap />
         </>
       )}
-    </>
+    </SoundContext.Provider>
   );
 }

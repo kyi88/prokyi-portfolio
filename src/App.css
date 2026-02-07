@@ -20,6 +20,32 @@
   .cyber-cursor { display: none; }
 }
 
+/* Sound toggle button */
+.sound-toggle {
+  position: fixed;
+  bottom: 90px;
+  right: 16px;
+  z-index: 910;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(6, 8, 15, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.sound-toggle:hover {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 12px var(--c-glow);
+}
+
 .page {
   position: relative;
   z-index: 1;
