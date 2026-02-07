@@ -13,15 +13,16 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import CyberErrorBoundary from './components/CyberErrorBoundary';
 import NetworkStatus from './components/NetworkStatus';
-import Breadcrumbs from './components/Breadcrumbs';
-import ScrollVelocity from './components/ScrollVelocity';
-import CyberGrid from './components/CyberGrid';
 import PageProgress from './components/PageProgress';
-import ScrollPercentage from './components/ScrollPercentage';
-import ScanLine from './components/ScanLine';
-import ThemePreview from './components/ThemePreview';
 import { SoundContext } from './contexts/SoundContext';
 import './App.css';
+
+const Breadcrumbs = lazy(() => import('./components/Breadcrumbs'));
+const ScrollVelocity = lazy(() => import('./components/ScrollVelocity'));
+const CyberGrid = lazy(() => import('./components/CyberGrid'));
+const ScrollPercentage = lazy(() => import('./components/ScrollPercentage'));
+const ScanLine = lazy(() => import('./components/ScanLine'));
+const ThemePreview = lazy(() => import('./components/ThemePreview'));
 
 /* ── Lazy-loaded components (not needed at initial render) ── */
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -62,6 +63,15 @@ const SynapticFirewall = lazy(() => import('./components/SynapticFirewall'));
 const DeadDrop = lazy(() => import('./components/DeadDrop'));
 const WetwareCompiler = lazy(() => import('./components/WetwareCompiler'));
 const MissionComplete = lazy(() => import('./components/MissionComplete'));
+
+const BOOT_ASCII = [
+  ' ██████╗ ██████╗  ██████╗ ██╗  ██╗██╗   ██╗██╗',
+  ' ██╔══██╗██╔══██╗██╔═══██╗██║ ██╔╝╚██╗ ██╔╝██║',
+  ' ██████╔╝██████╔╝██║   ██║█████╔╝  ╚████╔╝ ██║',
+  ' ██╔═══╝ ██╔══██╗██║   ██║██╔═██╗   ╚██╔╝  ██║',
+  ' ██║     ██║  ██║╚██████╔╝██║  ██╗   ██║   ██║',
+  ' ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝',
+].join('\n');
 
 /* CRT Scanline overlay — cyberpunk monitor aesthetic */
 function CRTOverlay() {
@@ -321,13 +331,7 @@ function BootScreen({ onDone }) {
     return () => { clearInterval(iv); clearTimeout(asciiTimer); clearTimeout(doneTimer); };
   }, []);
 
-  const asciiArt = `
- ██████╗ ██████╗  ██████╗ ██╗  ██╗██╗   ██╗██╗
- ██╔══██╗██╔══██╗██╔═══██╗██║ ██╔╝╚██╗ ██╔╝██║
- ██████╔╝██████╔╝██║   ██║█████╔╝  ╚████╔╝ ██║
- ██╔═══╝ ██╔══██╗██║   ██║██╔═██╗   ╚██╔╝  ██║
- ██║     ██║  ██║╚██████╔╝██║  ██╗   ██║   ██║
- ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝`;
+  const asciiArt = BOOT_ASCII;
 
   return (
     <motion.div
@@ -665,7 +669,7 @@ export default function App() {
             <CyberBackground />
       </Suspense>
       <PageProgress />
-      <CyberGrid />
+      <Suspense fallback={null}><CyberGrid /></Suspense>
       <ParallaxFog />
       <CRTOverlay />
       <SystemGlitch />
@@ -739,8 +743,8 @@ export default function App() {
       <Minimap />
       <WelcomeBanner />
       </Suspense>
-      <Breadcrumbs />
-      <ScrollVelocity />
+      <Suspense fallback={null}><Breadcrumbs /></Suspense>
+      <Suspense fallback={null}><ScrollVelocity /></Suspense>
       <Suspense fallback={null}>
       <ScrollBurst />
       <FPSMonitor />
@@ -749,8 +753,8 @@ export default function App() {
       {procAlive.matrixrain && <MatrixRain />}
       {procAlive.clickspark && <ClickSpark />}
       </Suspense>
-      <ScrollPercentage />
-      {procAlive.scanline && <ScanLine />}
+      <Suspense fallback={null}><ScrollPercentage /></Suspense>
+      <Suspense fallback={null}>{procAlive.scanline && <ScanLine />}</Suspense>
       <Suspense fallback={null}>
       <IntrusionAlert />
       <PhantomCursor />
@@ -796,7 +800,7 @@ REBOOTING IN 2s...`}</pre>
           {milestoneMsg}
         </div>
       )}
-      <ThemePreview />
+      <Suspense fallback={null}><ThemePreview /></Suspense>
         </>
       )}
     </SoundContext.Provider>
