@@ -37,6 +37,8 @@ import IntrusionAlert from './components/IntrusionAlert';
 import PhantomCursor from './components/PhantomCursor';
 import SurveillanceFeed from './components/SurveillanceFeed';
 import GhostProtocol from './components/GhostProtocol';
+import CoreDump from './components/CoreDump';
+import SignalInterceptor from './components/SignalInterceptor';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -729,6 +731,8 @@ export default function App() {
       <PhantomCursor />
       <SurveillanceFeed />
       <GhostProtocol />
+      <CoreDump />
+      <SignalInterceptor />
       {kernelPanic && (
         <div className="kernel-panic" aria-live="assertive">
           <pre>{`KERNEL PANIC - NOT SYNCING: Attempted to kill init!

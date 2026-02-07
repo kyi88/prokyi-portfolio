@@ -27,6 +27,9 @@ const HELP_TEXT = [
   '  phantom  — Toggle ghost cursor',
   '  ghost    — Toggle UV scan mode',
   '  surveillance — View camera grid',
+  '  coredump — Toggle hex memory viewer',
+  '  scan     — Scan radio frequencies',
+  '  tune     — Toggle radio tuner (S key)',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -264,6 +267,24 @@ const COMMANDS = {
     '',
     '  Use ProcessMonitor in sidebar to kill/start processes.',
   ],
+  coredump: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-coredump-toggle'));
+    return ['💀 Core dump hex viewer toggled. (Ctrl+Shift+D)'];
+  },
+  scan: () => [
+    '[FREQUENCY SCAN]',
+    '  88.1 MHz ████████░░ SIGNAL — Station detected',
+    '  91.7 MHz ██████░░░░ SIGNAL — Station detected',
+    '  96.3 MHz █████░░░░░ SIGNAL — Station detected',
+    ' 100.5 MHz ███████░░░ SIGNAL — Station detected',
+    ' 103.5 MHz ████░░░░░░ SIGNAL — Station detected',
+    '',
+    '  5 stations found. Use "tune" to open the radio tuner.',
+  ],
+  tune: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-signal-toggle'));
+    return ['📡 Signal Interceptor toggled. Press S to toggle manually.'];
+  },
   cursor: () => {
     const doc = document.documentElement;
     const current = doc.style.cursor;

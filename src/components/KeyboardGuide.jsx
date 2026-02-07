@@ -9,6 +9,8 @@ const shortcuts = [
   { keys: ['G'], desc: 'Ghost Protocol (UV スキャン)' },
   { keys: ['R'], desc: 'マトリックスレイン切替' },
   { keys: ['F'], desc: 'FPSモニター切替' },
+  { keys: ['S'], desc: 'シグナルインターセプター切替' },
+  { keys: ['Ctrl+Shift+D'], desc: 'コアダンプHexビューア' },
   { keys: ['Ctrl+Shift+S'], desc: 'CRTスキャンライン切替' },
   { keys: ['↑↑↓↓←→←→BA'], desc: 'レトロモード(5秒)' },
   { keys: ['?'], desc: 'このヘルプを表示' },
