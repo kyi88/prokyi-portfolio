@@ -18,6 +18,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState('');
   const [viewedCount, setViewedCount] = useState(0);
+  const [viewedSections, setViewedSections] = useState(() => new Set());
   const [theme, setTheme] = useState(() => localStorage.getItem('prokyi_theme') || 'cyber');
   const viewedRef = useRef(new Set());
   const hoverSound = useHoverSound(1200, 0.03, 0.06);
@@ -39,12 +40,12 @@ export default function Header() {
     return () => window.removeEventListener('prokyi-theme-sync', onSync);
   }, []);
 
-  const sparkleTimers = useRef([]);
+  const sparkleTimers = useRef(new Set());
 
   // Cleanup sparkle DOM timers on unmount
   useEffect(() => () => {
     sparkleTimers.current.forEach(t => clearTimeout(t));
-    sparkleTimers.current = [];
+    sparkleTimers.current.clear();
   }, []);
 
   const toggleTheme = useCallback(() => {
@@ -53,7 +54,7 @@ export default function Header() {
     flash.style.cssText = 'position:fixed;inset:0;z-index:99990;pointer-events:none;background:var(--c-accent);opacity:0.08;transition:opacity 0.4s;';
     document.body.appendChild(flash);
     requestAnimationFrame(() => { flash.style.opacity = '0'; });
-    sparkleTimers.current.push(setTimeout(() => flash.remove(), 500));
+    { const tid = setTimeout(() => { flash.remove(); sparkleTimers.current.delete(tid); }, 500); sparkleTimers.current.add(tid); }
 
     // Sparkle particles burst from toggle button
     const btn = document.querySelector('.header__theme-btn');
@@ -80,7 +81,7 @@ export default function Header() {
           p.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0)`;
           p.style.opacity = '0';
         });
-        sparkleTimers.current.push(setTimeout(() => p.remove(), 700));
+        { const tid = setTimeout(() => { p.remove(); sparkleTimers.current.delete(tid); }, 700); sparkleTimers.current.add(tid); }
       }
     }
 
@@ -111,6 +112,7 @@ export default function Header() {
       }
       if (changed) {
         setViewedCount(seen.size);
+        setViewedSections(new Set(seen));
       }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -213,7 +215,7 @@ export default function Header() {
               onMouseEnter={hoverSound.onMouseEnter}
             >
               {item.label}
-              {!viewedRef.current.has(item.href.slice(1)) && (
+              {!viewedSections.has(item.href.slice(1)) && (
                 <span className="header__link-dot" aria-label="未閲覧" />
               )}
             </a>

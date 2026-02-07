@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import ProgressiveImage from './ProgressiveImage';
 import './Hero.css';
@@ -134,18 +134,18 @@ export default function Hero() {
   const springX = useSpring(tiltX, { stiffness: 150, damping: 20 });
   const springY = useSpring(tiltY, { stiffness: 150, damping: 20 });
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (!avatarRef.current) return;
     const rect = avatarRef.current.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
     tiltX.set((e.clientY - cy) / 8);
     tiltY.set(-(e.clientX - cx) / 8);
-  };
-  const handleMouseLeave = () => {
+  }, [tiltX, tiltY]);
+  const handleMouseLeave = useCallback(() => {
     tiltX.set(0);
     tiltY.set(0);
-  };
+  }, [tiltX, tiltY]);
 
   // Increment visit counter outside effect to avoid StrictMode double-counting
   const visitTarget = useRef(null);
