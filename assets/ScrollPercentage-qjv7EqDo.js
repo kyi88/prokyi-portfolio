@@ -1,0 +1,1 @@
+import{a as l,u as n,b as r,j as e,m as t}from"./framer-motion-DjJR-6Ks.js";function u(){const{scrollYProgress:s}=n(),a=r(s,c=>`${Math.round(c*100)}%`),o=r(s,[0,.02,.98,1],[0,1,1,0]);return e.jsx(t.div,{className:"scroll-pct","aria-hidden":"true",style:{opacity:o},children:e.jsx(t.span,{className:"scroll-pct__value",children:a})})}const m=l.memo(u);export{m as default};
