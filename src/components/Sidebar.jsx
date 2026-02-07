@@ -228,11 +228,39 @@ function SessionTimer() {
   return <span className="side-card__meta-item">SESSION {session}</span>;
 }
 
+/* Audio Bars — CSS-only equalizer visualization */
+function AudioBars() {
+  return (
+    <div className="audio-bars" aria-hidden="true" title="System Audio">
+      {Array.from({ length: 5 }, (_, i) => (
+        <span
+          key={i}
+          className="audio-bars__bar"
+          style={{ animationDelay: `${i * 0.12}s`, animationDuration: `${0.4 + Math.random() * 0.4}s` }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* Visit Streak tracker */
+function getVisitStreak() {
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const data = JSON.parse(localStorage.getItem('prokyi_streak') || '{}');
+    if (data.lastDate === today) return data.streak || 1;
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    const streak = data.lastDate === yesterday ? (data.streak || 0) + 1 : 1;
+    localStorage.setItem('prokyi_streak', JSON.stringify({ lastDate: today, streak }));
+    return streak;
+  } catch { return 1; }
+}
+
 export default function Sidebar() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
-
   const dayLabel = ['日','月','火','水','木','金','土'][new Date().getDay()];
+  const streak = getVisitStreak();
 
   return (
     <aside className="layout__side" ref={ref} aria-label="サイド情報">
@@ -251,6 +279,7 @@ export default function Sidebar() {
         <div className="side-card__meta">
           <span className="side-card__meta-item">{dayLabel}曜日</span>
           <SessionTimer />
+          <AudioBars />
         </div>
         <ul className="status-list">
           {statusItems.map((item) => (
@@ -273,6 +302,9 @@ export default function Sidebar() {
             </li>
           ))}
         </ul>
+        <div className="side-card__streak">
+          <span>🔥 STREAK: {streak} {streak >= 3 ? '日連続!' : '日'}</span>
+        </div>
         <WorldClocks />
       </motion.div>
       </GlowCard>
