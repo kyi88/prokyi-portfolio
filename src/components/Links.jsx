@@ -9,7 +9,7 @@ export default function Links() {
   return (
     <div className="link-row" ref={ref}>
       <motion.a
-        href="https://github.com/prokyi"
+        href="https://github.com/kyi88"
         className="link-btn link-btn--gh"
         target="_blank"
         rel="noopener noreferrer"
@@ -24,6 +24,10 @@ export default function Links() {
         </svg>
         GitHub
         <span className="link-btn__scan" aria-hidden="true" />
+        <span className="link-btn__preview">
+          <span className="link-btn__preview-url">github.com/kyi88</span>
+          <span className="link-btn__preview-desc">リポジトリ・プロジェクト一覧</span>
+        </span>
       </motion.a>
 
       <motion.a
@@ -42,6 +46,10 @@ export default function Links() {
         </svg>
         X (Twitter)
         <span className="link-btn__scan" aria-hidden="true" />
+        <span className="link-btn__preview">
+          <span className="link-btn__preview-url">x.com/programming_abc</span>
+          <span className="link-btn__preview-desc">技術系ツイート・情報発信</span>
+        </span>
       </motion.a>
     </div>
   );

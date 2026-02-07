@@ -25,6 +25,11 @@
 .side-card:hover {
   border-color: var(--c-border-hover);
   box-shadow: 0 0 40px var(--c-glow2);
+  animation: side-pulse 2s ease-in-out infinite;
+}
+@keyframes side-pulse {
+  0%, 100% { box-shadow: 0 0 40px var(--c-glow2); }
+  50% { box-shadow: 0 0 60px var(--c-glow2), 0 0 20px var(--c-glow); }
 }
 .side-card:hover::before {
   opacity: 1;

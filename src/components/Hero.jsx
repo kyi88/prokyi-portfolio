@@ -279,6 +279,18 @@ export default function Hero() {
             </div>
             <span className="hero__xp-text">{XP_CURRENT}/{XP_MAX} XP</span>
           </motion.div>
+
+          {/* Status LEDs */}
+          <motion.div
+            className="hero__leds"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1.9 }}
+          >
+            <span className="hero__led hero__led--green" title="SYS ONLINE" />
+            <span className="hero__led hero__led--blue" title="NET OK" />
+            <span className="hero__led hero__led--amber" title="LEARNING" />
+          </motion.div>
         </div>
       </motion.div>
 

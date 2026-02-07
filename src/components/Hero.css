@@ -380,6 +380,47 @@
   letter-spacing: 1px;
 }
 
+/* Status LEDs */
+.hero__leds {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.hero__led {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: help;
+}
+.hero__led--green {
+  background: #22d3a7;
+  box-shadow: 0 0 6px #22d3a7, 0 0 12px rgba(34, 211, 167, 0.3);
+  animation: led-blink-green 3s ease-in-out infinite;
+}
+.hero__led--blue {
+  background: #4facfe;
+  box-shadow: 0 0 6px #4facfe, 0 0 12px rgba(79, 172, 254, 0.3);
+  animation: led-blink-blue 4s ease-in-out infinite;
+}
+.hero__led--amber {
+  background: #fbbf24;
+  box-shadow: 0 0 6px #fbbf24, 0 0 12px rgba(251, 191, 36, 0.3);
+  animation: led-blink-amber 2s ease-in-out infinite;
+}
+@keyframes led-blink-green {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@keyframes led-blink-blue {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+@keyframes led-blink-amber {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
 /* Secret */
 .hero__secret {
   position: absolute;
