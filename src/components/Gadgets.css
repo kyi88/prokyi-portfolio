@@ -359,11 +359,8 @@
   flex: 1;
 }
 
-/* Responsive */
-@media (max-width: 640px) {
-  .gadgets__grid {
-    grid-template-columns: 1fr;
-  }
+/* Responsive — tablet */
+@media (max-width: 1024px) {
   .gadgets__tabs {
     overflow-x: auto;
     flex-wrap: nowrap;
@@ -373,6 +370,14 @@
   .gadgets__tab {
     white-space: nowrap;
     flex-shrink: 0;
+  }
+}
+/* Responsive — mobile */
+@media (max-width: 640px) {
+  .gadgets__grid {
+    grid-template-columns: 1fr;
+  }
+  .gadgets__tab {
     font-size: 0.7rem;
     padding: 4px 10px;
   }

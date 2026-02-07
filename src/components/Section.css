@@ -293,6 +293,11 @@
      Instead use margin-top gap + layout gap. */
 }
 
+@media (max-width: 1024px) {
+  .card {
+    padding: 32px 28px;
+  }
+}
 @media (max-width: 640px) {
   .card {
     padding: 24px 20px;

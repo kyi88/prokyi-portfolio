@@ -43,7 +43,7 @@
   color: var(--c-accent);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .welcome-banner { top: 56px; }
   .welcome-banner__text { font-size: 0.6rem; }
 }

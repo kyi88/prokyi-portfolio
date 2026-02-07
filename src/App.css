@@ -26,8 +26,8 @@
   bottom: 76px;
   right: 24px;
   z-index: 910;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(6, 8, 15, 0.6);
   backdrop-filter: blur(8px);
@@ -368,6 +368,16 @@
   border-radius: 4px;
   box-shadow: 0 0 20px var(--c-glow2);
   white-space: nowrap;
+}
+@media (max-width: 768px) {
+  .system-alerts {
+    max-width: 240px;
+    right: 12px;
+  }
+  .system-alert {
+    white-space: normal;
+    font-size: 0.65rem;
+  }
 }
 .system-alert__prefix {
   color: var(--c-accent);

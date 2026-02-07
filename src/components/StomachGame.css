@@ -77,3 +77,24 @@
   color: var(--c-text-dim); font-size: 1.1rem; cursor: pointer; transition: color .3s;
 }
 .sg__x:hover { color: #ef4444; }
+
+/* Touch-friendly close button */
+@media (pointer: coarse) {
+  .sg__x {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+  }
+}
+/* Landscape: taller game field */
+@media (max-height: 500px) and (orientation: landscape) {
+  .sg__field {
+    height: 200px;
+  }
+  .sg {
+    max-width: 560px;
+  }
+}

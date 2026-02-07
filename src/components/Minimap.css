@@ -76,7 +76,7 @@
   pointer-events: none;
 }
 
-/* Hide on mobile */
-@media (max-width: 768px) {
+/* Hide on tablet and mobile */
+@media (max-width: 1024px) {
   .minimap { display: none; }
 }

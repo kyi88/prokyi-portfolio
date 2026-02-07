@@ -222,6 +222,9 @@
 .link-btn:hover .link-btn__preview {
   display: flex;
 }
+@media (pointer: coarse) {
+  .link-btn__preview { display: none !important; }
+}
 .link-btn__preview-url {
   font-family: var(--font-mono);
   font-size: 0.65rem;

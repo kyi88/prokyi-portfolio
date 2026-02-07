@@ -265,6 +265,9 @@
 .shimura__close:hover { background: rgba(245,158,11,.12); box-shadow: 0 0 12px rgba(245,158,11,.08); }
 
 /* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .ss__tab { padding: 8px 14px; font-size: .7rem; }
+}
 @media (max-width: 640px) {
   .ss__stats-grid { grid-template-columns: repeat(2, 1fr); }
   .ss__debuffs-grid, .ss__inv-grid { grid-template-columns: 1fr; }

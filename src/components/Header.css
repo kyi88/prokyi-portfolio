@@ -191,7 +191,20 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (max-width: 640px) {
+/* Tablet: hide secondary info, shrink nav */
+@media (max-width: 1024px) {
+  .header__section-label,
+  .header__viewed {
+    display: none;
+  }
+  .header__link {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+  }
+}
+
+/* Tablet-narrow + mobile: hamburger menu */
+@media (max-width: 768px) {
   .header { height: 56px; }
   .header__nav {
     position: fixed;
@@ -215,5 +228,9 @@
   }
   .header__menu-btn {
     display: flex;
+  }
+  .header__theme-btn {
+    width: 44px;
+    height: 44px;
   }
 }

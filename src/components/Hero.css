@@ -487,7 +487,8 @@
 .hero__secret-icon { font-size: 1.1rem; }
 
 /* Responsive */
-@media (max-width: 640px) {
+/* Tablet: column layout, smaller orbs */
+@media (max-width: 1024px) {
   .hero {
     padding-top: 80px;
     min-height: auto;
@@ -496,11 +497,11 @@
   .hero__inner {
     flex-direction: column;
     text-align: center;
-    gap: 28px;
+    gap: 32px;
   }
   .hero__avatar-wrap {
-    width: 150px;
-    height: 150px;
+    width: 170px;
+    height: 170px;
   }
   .hero__tags {
     justify-content: center;
@@ -509,16 +510,29 @@
     margin-left: auto;
     margin-right: auto;
   }
+  .hero__orb--1 { width: 200px; height: 200px; }
+  .hero__orb--2 { width: 150px; height: 150px; }
+  .hero__orb--3 { width: 120px; height: 120px; }
+  .hero__xp-ring-wrap { justify-content: center; }
+  .hero__counter { justify-content: center; }
+  .hero__leds { justify-content: center; }
+}
+
+@media (max-width: 640px) {
+  .hero__avatar-wrap {
+    width: 150px;
+    height: 150px;
+  }
+  .hero__inner {
+    gap: 28px;
+  }
   .hide-sp { display: none; }
   .hero__orb--1 { width: 150px; height: 150px; }
   .hero__orb--2 { width: 100px; height: 100px; }
   .hero__orb--3 { width: 80px; height: 80px; }
   .hero__xp-ring { width: 100px; height: 100px; }
-  .hero__xp-ring-wrap { justify-content: center; }
   .hero__xp-ring-level { font-size: 0.65rem; }
   .hero__xp-ring-val { font-size: 0.5rem; }
-  .hero__counter { justify-content: center; }
-  .hero__leds { justify-content: center; }
   .hero__quote { font-size: 0.65rem; padding: 8px 12px; }
   .hero__secret { font-size: 0.7rem; padding: 6px 10px; }
 }
