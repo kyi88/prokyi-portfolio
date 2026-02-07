@@ -1,6 +1,44 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import './Footer.css';
+
+/* ── Cyber Quote Rotator ── */
+const QUOTES = [
+  '「未来はすでにここにある — ただ均等に行き渡っていないだけだ」',
+  '「我思う、ゆえに我あり... のプロセスID: 7742」',
+  '「コードは詩であり、バグは散文である」',
+  '「デバッグとは、まだ書いていないバグを見つける技術だ」',
+  '「Hello World から全ては始まった」',
+  '「夜のコーディングは、朝の技術的負債」',
+  '「The Net is vast and infinite — 攻殻機動隊」',
+  '「Stack Overflow がなかったら、我々は洞窟に住んでいただろう」',
+  '「0と1の間に、無限の可能性がある」',
+  '「電脳空間は第二の故郷」',
+];
+function QuoteRotator() {
+  const [idx, setIdx] = useState(() => Math.floor(Math.random() * QUOTES.length));
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setIdx(prev => (prev + 1) % QUOTES.length);
+    }, 8000);
+    return () => clearInterval(iv);
+  }, []);
+  return (
+    <AnimatePresence mode="wait">
+      <motion.p
+        key={idx}
+        className="footer__quote"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 0.4, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.5 }}
+        aria-hidden="true"
+      >
+        {QUOTES[idx]}
+      </motion.p>
+    </AnimatePresence>
+  );
+}
 
 /* ── Matrix trickle — falling chars in footer ── */
 function MatrixRain() {
@@ -114,6 +152,7 @@ export default function Footer() {
       </svg>
       <MatrixRain />
       <div className="footer__inner">
+        <QuoteRotator />
         <motion.p
           className="footer__copy"
           initial={{ opacity: 0 }}
@@ -163,7 +202,7 @@ export default function Footer() {
           <span>COMPONENTS: 21</span>
           <span>CHUNKS: 8</span>
           <span>EASTER EGGS: 10</span>
-          <span>LOOPS: 50</span>
+          <span>LOOPS: 51</span>
           <LoadTime />
           <Uptime />
         </motion.div>

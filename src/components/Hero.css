@@ -233,6 +233,15 @@
 
 /* Text */
 .hero__text { flex: 1; }
+.hero__time-greeting {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--c-accent2);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px var(--c-glow2);
+  opacity: 0.6;
+}
 .hero__greeting {
   font-family: var(--font-mono);
   font-size: 0.85rem;

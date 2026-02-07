@@ -266,6 +266,23 @@ export default function Hero() {
 
         {/* Text */}
         <div className="hero__text">
+          {/* Time-based greeting */}
+          <motion.p
+            className="hero__time-greeting"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 0.6, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            aria-hidden="true"
+          >
+            {(() => {
+              const h = new Date().getHours();
+              if (h >= 5 && h < 12) return '> SYSTEM_BOOT — おはよう、ハッカー';
+              if (h >= 12 && h < 17) return '> MISSION_ACTIVE — 探索中...';
+              if (h >= 17 && h < 21) return '> SUNSET_MODE — 夕暮れプロトコル';
+              return '> NIGHT_OWL_PROTOCOL — 同志よ';
+            })()}
+          </motion.p>
+
           <motion.p
             className="hero__greeting"
             initial={{ opacity: 0, x: -40, filter: 'blur(10px)' }}

@@ -20,6 +20,7 @@ import WelcomeBanner from './components/WelcomeBanner';
 import CyberErrorBoundary from './components/CyberErrorBoundary';
 import NetworkStatus from './components/NetworkStatus';
 import Breadcrumbs from './components/Breadcrumbs';
+import ScrollVelocity from './components/ScrollVelocity';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -563,6 +564,7 @@ export default function App() {
       <Minimap />
       <WelcomeBanner />
       <Breadcrumbs />
+      <ScrollVelocity />
         </>
       )}
     </SoundContext.Provider>
