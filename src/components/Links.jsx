@@ -5,6 +5,7 @@ import './Links.css';
 /* Ripple effect on click */
 function useRipple() {
   return useCallback((e) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const btn = e.currentTarget;
     const rect = btn.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
@@ -14,7 +15,9 @@ function useRipple() {
     span.style.left = (e.clientX - rect.left - size / 2) + 'px';
     span.style.top = (e.clientY - rect.top - size / 2) + 'px';
     btn.appendChild(span);
-    span.addEventListener('animationend', () => span.remove());
+    const cleanup = () => span.remove();
+    span.addEventListener('animationend', cleanup);
+    setTimeout(cleanup, 600); // fallback
   }, []);
 }
 

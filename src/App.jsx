@@ -164,21 +164,25 @@ function SystemAlerts() {
       dismissTimers.current.add(dTimer);
     };
     // Recursive setTimeout for truly random intervals
-    let timerId = null;
+    const timerIds = new Set();
     const schedule = () => {
       const delay = 30000 + Math.random() * 30000;
-      timerId = setTimeout(() => {
+      const id = setTimeout(() => {
+        timerIds.delete(id);
         spawn();
         schedule();
       }, delay);
+      timerIds.add(id);
     };
     // First one after 15-30s
-    timerId = setTimeout(() => {
+    const firstId = setTimeout(() => {
+      timerIds.delete(firstId);
       spawn();
       schedule();
     }, 15000 + Math.random() * 15000);
+    timerIds.add(firstId);
     return () => {
-      clearTimeout(timerId);
+      timerIds.forEach(t => clearTimeout(t));
       dismissTimers.current.forEach(t => clearTimeout(t));
       dismissTimers.current.clear();
     };
@@ -354,6 +358,7 @@ export default function App() {
 
   // Custom cursor tracking
   useEffect(() => {
+    if (booting) return;
     if (window.matchMedia('(pointer: coarse)').matches) return;
     document.documentElement.style.cursor = 'none';
     const dot = document.getElementById('cyber-cursor');
@@ -366,7 +371,7 @@ export default function App() {
       window.removeEventListener('mousemove', move);
       document.documentElement.style.cursor = '';
     };
-  }, []);
+  }, [booting]);
 
   // Tab title animation (focus / blur)
   useEffect(() => {

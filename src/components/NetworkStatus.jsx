@@ -1,22 +1,22 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './NetworkStatus.css';
 
 function NetworkStatus() {
   const [online, setOnline] = useState(navigator.onLine);
   const [showToast, setShowToast] = useState(false);
-  const [restored, setRestored] = useState(false);
+  const timerRef = useRef(null);
 
   useEffect(() => {
     const handleOnline = () => {
       setOnline(true);
-      setRestored(true);
       setShowToast(true);
-      const t = setTimeout(() => { setShowToast(false); setRestored(false); }, 3000);
-      return () => clearTimeout(t);
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setShowToast(false), 3000);
     };
     const handleOffline = () => {
       setOnline(false);
+      clearTimeout(timerRef.current);
       setShowToast(true);
     };
     window.addEventListener('online', handleOnline);
@@ -24,6 +24,7 @@ function NetworkStatus() {
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
+      clearTimeout(timerRef.current);
     };
   }, []);
 

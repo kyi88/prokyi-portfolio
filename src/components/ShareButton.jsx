@@ -1,9 +1,12 @@
-import { useState, useCallback, memo } from 'react';
+import { useState, useCallback, useRef, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './ShareButton.css';
 
 function ShareButton() {
   const [copied, setCopied] = useState(false);
+  const timerRef = useRef(null);
+
+  useEffect(() => () => clearTimeout(timerRef.current), []);
 
   const handleShare = useCallback(async () => {
     const data = {
@@ -17,19 +20,10 @@ function ShareButton() {
     } else {
       try {
         await navigator.clipboard.writeText(data.url);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch {
-        // fallback
-        const ta = document.createElement('textarea');
-        ta.value = data.url;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        ta.remove();
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      }
+      } catch { /* clipboard unavailable */ }
+      setCopied(true);
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopied(false), 2000);
     }
   }, []);
 

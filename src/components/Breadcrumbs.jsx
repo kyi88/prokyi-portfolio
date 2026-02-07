@@ -56,6 +56,7 @@ function Breadcrumbs() {
             <span key={s.id} className="breadcrumbs__item">
               {i > 0 && <span className="breadcrumbs__sep" aria-hidden="true">›</span>}
               <button
+                type="button"
                 className={`breadcrumbs__link ${active === s.id ? 'breadcrumbs__link--active' : ''}`}
                 onClick={() => handleClick(s.id)}
               >

@@ -7,7 +7,10 @@ function TextScramble({ text, active, className = '' }) {
   const rafRef = useRef(null);
 
   useEffect(() => {
-    if (!active) return;
+    if (!active) {
+      setDisplay(text);
+      return;
+    }
     // Check reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setDisplay(text);
