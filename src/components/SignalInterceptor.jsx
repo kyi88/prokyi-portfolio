@@ -31,9 +31,13 @@ function SignalInterceptor() {
   // Find matching station
   const station = STATIONS.find((s) => Math.abs(s.freq - freq) < TOLERANCE);
 
+  // Track found in ref to avoid re-triggering useEffect
+  const foundRef = useRef(found);
+  foundRef.current = found;
+
   // Mark found
   useEffect(() => {
-    if (station && !found.has(station.freq)) {
+    if (station && !foundRef.current.has(station.freq)) {
       setFound((prev) => {
         const next = new Set(prev);
         next.add(station.freq);
@@ -41,9 +45,9 @@ function SignalInterceptor() {
         return next;
       });
     }
-  }, [station, found]);
+  }, [station]);
 
-  // Toggle: S key or terminal command
+  // Toggle: S key (with input guard) or terminal command
   useEffect(() => {
     const onKey = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
@@ -60,6 +64,11 @@ function SignalInterceptor() {
     window.addEventListener('prokyi-signal-toggle', handler);
     return () => window.removeEventListener('prokyi-signal-toggle', handler);
   }, []);
+
+  const freqRef = useRef(freq);
+  freqRef.current = freq;
+  const stationRef = useRef(station);
+  stationRef.current = station;
 
   // Canvas wave animation
   useEffect(() => {
@@ -79,7 +88,7 @@ function SignalInterceptor() {
       ctx.clearRect(0, 0, w, h);
       ctx.lineWidth = 1;
 
-      const isStation = !!station;
+      const isStation = !!stationRef.current;
       const noiseAmp = isStation ? 3 : 12;
       const signalAmp = isStation ? 15 : 0;
 
@@ -94,7 +103,8 @@ function SignalInterceptor() {
       ctx.stroke();
 
       // Frequency marker line
-      const markerX = ((freq - FREQ_MIN) / (FREQ_MAX - FREQ_MIN)) * w;
+      const currentFreq = freqRef.current;
+      const markerX = ((currentFreq - FREQ_MIN) / (FREQ_MAX - FREQ_MIN)) * w;
       ctx.strokeStyle = 'rgba(0, 229, 255, 0.4)';
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
@@ -107,7 +117,7 @@ function SignalInterceptor() {
     };
     rafRef.current = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [open, freq, station]);
+  }, [open]);
 
   const handleFreqChange = useCallback((e) => {
     setFreq(parseFloat(e.target.value));
@@ -116,10 +126,10 @@ function SignalInterceptor() {
   if (!open) return null;
 
   return (
-    <div className="signal-interceptor">
-      <div className="signal-interceptor__header" onClick={() => setOpen(false)}>
+    <div className="signal-interceptor" role="dialog" aria-label="Signal Interceptor" aria-modal="true">
+      <div className="signal-interceptor__header">
         <span>📡 SIGNAL INTERCEPTOR</span>
-        <button className="signal-interceptor__close" aria-label="Close">✕</button>
+        <button className="signal-interceptor__close" onClick={() => setOpen(false)} aria-label="Close">✕</button>
       </div>
       <div className="signal-interceptor__wave-container">
         <canvas ref={canvasRef} />

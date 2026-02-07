@@ -4,7 +4,7 @@ import './PacketSniffer.css';
 
 const PROTO_MAP = {
   click: 'TCP/CLICK',
-  scroll: 'UDP/SCROLL',
+  wheel: 'UDP/SCROLL',
   mousemove: 'ICMP/HOVER',
   keydown: 'SSH/KEY',
 };
@@ -27,7 +27,7 @@ function PacketSniffer() {
   // Toggle: Ctrl+Shift+W or event
   useEffect(() => {
     const onKey = (e) => {
-      if (e.ctrlKey && e.shiftKey && (e.key === 'w' || e.key === 'W')) {
+      if (e.ctrlKey && e.shiftKey && (e.key === 'p' || e.key === 'P') && e.altKey) {
         e.preventDefault();
         setOpen((p) => !p);
       }
@@ -57,7 +57,9 @@ function PacketSniffer() {
       } else if (type === 'mousemove') {
         payload = `pos(${e.clientX},${e.clientY}) CRC:${randHex(2)}`;
       } else if (type === 'keydown') {
-        payload = `key=${e.key} code=${e.code}`;
+        const tag = e.target?.tagName || '';
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target?.isContentEditable) return;
+        payload = `key=[${e.code}] mod=${e.ctrlKey ? 'C' : ''}${e.shiftKey ? 'S' : ''}${e.altKey ? 'A' : ''}`;
       }
       const pkt = {
         id: Date.now() + Math.random(),

@@ -83,18 +83,19 @@ function SystemGlitch() {
 
   useEffect(() => {
     let glitchTimer = null;
+    let timerId = null;
     const trigger = () => {
       setGlitching(true);
       glitchTimer = setTimeout(() => setGlitching(false), 150 + Math.random() * 200);
     };
     const schedule = () => {
       const delay = 25000 + Math.random() * 15000;
-      return setTimeout(() => {
+      timerId = setTimeout(() => {
         trigger();
-        timerId = schedule();
+        schedule();
       }, delay);
     };
-    let timerId = schedule();
+    schedule();
     return () => { clearTimeout(timerId); clearTimeout(glitchTimer); };
   }, []);
 

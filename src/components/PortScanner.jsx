@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, memo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import './PortScanner.css';
 
 const PORTS = [
@@ -109,6 +109,9 @@ function PortScanner() {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.15 }}
+      role="dialog"
+      aria-label="Port Scanner"
+      aria-modal="true"
     >
       <div className="port-scanner__header">
         <span>NMAP — PORT SCANNER v7.94</span>
