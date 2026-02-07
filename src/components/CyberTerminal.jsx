@@ -30,6 +30,8 @@ const HELP_TEXT = [
   '  coredump — Toggle hex memory viewer',
   '  scan     — Scan radio frequencies',
   '  tune     — Toggle radio tuner (S key)',
+  '  nmap     — Port scan prokyi.local',
+  '  clamscan — Malware threat scanner',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -284,6 +286,22 @@ const COMMANDS = {
   tune: () => {
     window.dispatchEvent(new CustomEvent('prokyi-signal-toggle'));
     return ['📡 Signal Interceptor toggled. Press S to toggle manually.'];
+  },
+  nmap: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-portscan-toggle'));
+    return ['🔍 Port Scanner opened. Scanning prokyi.local...'];
+  },
+  portscan: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-portscan-toggle'));
+    return ['🔍 Port Scanner opened. Scanning prokyi.local...'];
+  },
+  clamscan: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-quarantine-toggle'));
+    return ['🛡️ ClamAV Malware Scanner activated.'];
+  },
+  quarantine: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-quarantine-toggle'));
+    return ['🛡️ ClamAV Malware Scanner activated.'];
   },
   cursor: () => {
     const doc = document.documentElement;
