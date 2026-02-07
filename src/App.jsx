@@ -362,6 +362,23 @@ export default function App() {
   // Section scroll sound effects — wait until sections are rendered
   useSectionSFX(mutedRef, loaded);
 
+  // Double-click screen pulse easter egg
+  useEffect(() => {
+    if (booting) return;
+    let count = 0;
+    const onDblClick = () => {
+      count++;
+      if (count >= 3) return; // Max 3 per session
+      const flash = document.createElement('div');
+      flash.style.cssText = 'position:fixed;inset:0;z-index:99998;pointer-events:none;background:var(--c-accent);opacity:0.06;transition:opacity 0.5s;';
+      document.body.appendChild(flash);
+      requestAnimationFrame(() => { flash.style.opacity = '0'; });
+      setTimeout(() => flash.remove(), 600);
+    };
+    window.addEventListener('dblclick', onDblClick);
+    return () => window.removeEventListener('dblclick', onDblClick);
+  }, [booting]);
+
   useEffect(() => {
     if (!booting) {
       const t = setTimeout(() => setLoaded(true), 100);

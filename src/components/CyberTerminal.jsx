@@ -18,6 +18,7 @@ const HELP_TEXT = [
   '  date     — Show current date/time',
   '  neofetch — System info',
   '  ping     — Ping the matrix',
+  '  fortune  — Random fortune cookie',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -203,6 +204,19 @@ const COMMANDS = {
       `--- matrix.cyber ping statistics ---`,
       `3 packets transmitted, 3 packets received, 0% packet loss`,
     ];
+  },
+  fortune: () => {
+    const fortunes = [
+      '🥠 今日のバグは明日のフィーチャーになる',
+      '🥠 コードを書く者、コードに語られる',
+      '🥠 sudo rm -rf / はジョークであり、実行してはいけない',
+      '🥠 コミットメッセージに「fix」だけ書く者に幸あれ',
+      '🥠 Stack Overflow は盲目の巨人の肩の上に立つことである',
+      '🥠 バックアップを取らぬ者は、バックアップの大切さを知ることになる',
+      '🥠 「undefined is not a function」— JavaScript の詩',
+      '🥠 完璧なコードは存在しない。しかし完璧を目指す過程に意味がある',
+    ];
+    return [fortunes[Math.floor(Math.random() * fortunes.length)]];
   },
 };
 

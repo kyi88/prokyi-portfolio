@@ -1,7 +1,20 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import GlowCard from './GlowCard';
 import './Sidebar.css';
+
+const RANDOM_FACTS = [
+  '💡 このサイトには11個のイースターエッグが隠されています',
+  '🎮 コナミコマンドを試してみて！',
+  '⌨️ バックティック(`)でターミナルが開きます',
+  '🖥️ Ctrl+K でコマンドパレットが使えます',
+  '📊 70回以上のループを経て改善されています',
+  '🌙 深夜にアクセスすると実績が解放されます',
+  '🎨 テーマは2種類: Cyber Blue & Hacker Green',
+  '🔍 R キーで Matrix Rain が発動します',
+  '📱 モバイルでも最適化されています',
+  '🏆 全実績をコンプリートしてみよう！',
+];
 
 /* World Clocks — Tokyo, London, New York */
 const ZONES = [
@@ -260,6 +273,30 @@ function getVisitStreak() {
   } catch { return 1; }
 }
 
+/* Random fact rotator */
+function RandomFact() {
+  const [idx, setIdx] = useState(() => Math.floor(Math.random() * RANDOM_FACTS.length));
+  useEffect(() => {
+    const iv = setInterval(() => setIdx(p => (p + 1) % RANDOM_FACTS.length), 10000);
+    return () => clearInterval(iv);
+  }, []);
+  return (
+    <div className="side-card__fact">
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={idx}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 0.6, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.3 }}
+        >
+          {RANDOM_FACTS[idx]}
+        </motion.p>
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export default function Sidebar() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
@@ -342,6 +379,7 @@ export default function Sidebar() {
             </li>
           ))}
         </ul>
+        <RandomFact />
       </motion.div>
       </GlowCard>
 
