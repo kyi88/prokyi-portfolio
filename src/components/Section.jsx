@@ -3,6 +3,38 @@ import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'fra
 import TextScramble from './TextScramble';
 import './Section.css';
 
+const SECTION_COMMANDS = {
+  profile: 'cat profile.md',
+  career: 'history --career',
+  goals: 'ls -la ~/goals/',
+  status: 'neofetch --status',
+  gadgets: 'lsusb --gadgets',
+  links: 'curl -s api/links',
+};
+
+/** Terminal command prompt typed above section title */
+function TerminalPrompt({ command, active }) {
+  const [text, setText] = useState('');
+  useEffect(() => {
+    if (!active || !command) return;
+    let i = 0;
+    const full = `$ ${command}`;
+    const iv = setInterval(() => {
+      i++;
+      setText(full.slice(0, i));
+      if (i >= full.length) clearInterval(iv);
+    }, 40);
+    return () => clearInterval(iv);
+  }, [active, command]);
+  if (!command) return null;
+  return (
+    <div className="card__terminal-prompt" aria-hidden="true">
+      <span className="card__terminal-text">{text}</span>
+      <span className="card__terminal-cursor">█</span>
+    </div>
+  );
+}
+
 /** Scramble a 2-digit number before settling */
 function useScrambleNum(target, active) {
   const [display, setDisplay] = useState(target);
@@ -105,6 +137,8 @@ function Section({ id, num, title, children }) {
     >
       {/* Mouse proximity glow */}
       <span className="card__glow" aria-hidden="true" />
+      {/* Terminal prompt */}
+      <TerminalPrompt command={SECTION_COMMANDS[id]} active={inView} />
       {/* Section read progress */}
       <motion.div className="card__read-progress" style={{ width: progressWidth }} aria-hidden="true" />
       {/* HOT badge — appears after 15s dwell time */}

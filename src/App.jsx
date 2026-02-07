@@ -28,6 +28,7 @@ import PageProgress from './components/PageProgress';
 import AchievementBadges from './components/AchievementBadges';
 import DataStream from './components/DataStream';
 import MatrixRain from './components/MatrixRain';
+import ClickSpark from './components/ClickSpark';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -624,6 +625,7 @@ export default function App() {
       <AchievementBadges />
       <DataStream />
       <MatrixRain />
+      <ClickSpark />
         </>
       )}
     </SoundContext.Provider>

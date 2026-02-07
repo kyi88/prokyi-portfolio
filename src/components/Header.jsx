@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ShareButton from './ShareButton';
+import useHoverSound from '../hooks/useHoverSound';
 import './Header.css';
 
 const navItems = [
@@ -19,6 +20,7 @@ export default function Header() {
   const [viewedCount, setViewedCount] = useState(0);
   const [theme, setTheme] = useState(() => localStorage.getItem('prokyi_theme') || 'cyber');
   const viewedRef = useRef(new Set());
+  const hoverSound = useHoverSound(1200, 0.03, 0.06);
 
   // Apply theme with flash transition
   useEffect(() => {
@@ -208,6 +210,7 @@ export default function Header() {
               href={item.href}
               className={`header__link ${active === item.href.slice(1) ? 'is-active' : ''}`}
               onClick={(e) => handleClick(e, item.href)}
+              onMouseEnter={hoverSound.onMouseEnter}
             >
               {item.label}
             </a>

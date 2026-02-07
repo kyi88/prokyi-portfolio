@@ -297,6 +297,31 @@
      Instead use margin-top gap + layout gap. */
 }
 
+/* Terminal prompt */
+.card__terminal-prompt {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--c-accent);
+  opacity: 0.5;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  letter-spacing: 0.5px;
+}
+.card__terminal-text {
+  white-space: pre;
+}
+.card__terminal-cursor {
+  animation: terminal-blink 0.7s step-end infinite;
+  font-size: 0.6rem;
+  line-height: 1;
+}
+@keyframes terminal-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 @media (max-width: 1024px) {
   .card {
     padding: 32px 28px;
