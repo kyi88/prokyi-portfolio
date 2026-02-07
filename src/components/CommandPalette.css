@@ -75,7 +75,8 @@
   transition: background 0.15s, color 0.15s;
   letter-spacing: 0.5px;
 }
-.cmd-panel__item:hover {
+.cmd-panel__item:hover,
+.cmd-panel__item--active {
   background: rgba(79, 172, 254, 0.1);
   color: var(--c-accent);
 }

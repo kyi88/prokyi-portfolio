@@ -15,12 +15,16 @@ const commands = [
 export default function CommandPalette() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [activeIdx, setActiveIdx] = useState(0);
   const inputRef = useRef(null);
 
   const filtered = commands.filter(c =>
     c.label.toLowerCase().includes(query.toLowerCase()) ||
     c.id.includes(query.toLowerCase())
   );
+
+  // Reset active index when filter changes
+  useEffect(() => { setActiveIdx(0); }, [query]);
 
   useEffect(() => {
     const handler = (e) => {
@@ -50,8 +54,14 @@ export default function CommandPalette() {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && filtered.length > 0) {
-      handleSelect(filtered[0].target);
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIdx(prev => (prev + 1) % filtered.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIdx(prev => (prev - 1 + filtered.length) % filtered.length);
+    } else if (e.key === 'Enter' && filtered.length > 0) {
+      handleSelect(filtered[activeIdx].target);
     }
   };
 
@@ -87,11 +97,11 @@ export default function CommandPalette() {
               />
               <kbd className="cmd-panel__kbd">Esc</kbd>
             </div>
-            <ul className="cmd-panel__list">
-              {filtered.map((c) => (
-                <li key={c.id}>
+            <ul className="cmd-panel__list" role="listbox">
+              {filtered.map((c, i) => (
+                <li key={c.id} role="option" aria-selected={activeIdx === i}>
                   <button
-                    className="cmd-panel__item"
+                    className={`cmd-panel__item ${activeIdx === i ? 'cmd-panel__item--active' : ''}`}
                     onClick={() => handleSelect(c.target)}
                   >
                     {c.label}

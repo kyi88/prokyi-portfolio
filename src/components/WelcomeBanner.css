@@ -1,9 +1,9 @@
 .welcome-banner {
   position: fixed;
-  top: 0;
+  top: 64px;
   left: 0;
   right: 0;
-  z-index: 9980;
+  z-index: 99;
   display: flex;
   align-items: center;
   justify-content: center;
