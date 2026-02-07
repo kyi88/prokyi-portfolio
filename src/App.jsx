@@ -369,9 +369,9 @@ export default function App() {
     if (booting) return;
     if (window.matchMedia('(pointer: coarse)').matches) return;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    document.documentElement.style.cursor = 'none';
     const dot = document.getElementById('cyber-cursor');
     if (!dot) return;
+    document.documentElement.style.cursor = 'none';
 
     // Create trail dots (skip trail if reduced motion)
     const TRAIL_COUNT = reducedMotion ? 0 : 5;

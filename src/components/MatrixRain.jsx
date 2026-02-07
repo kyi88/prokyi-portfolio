@@ -39,8 +39,15 @@ function MatrixRain() {
     resize();
     window.addEventListener('resize', resize);
 
-    const accentColor = getComputedStyle(document.documentElement)
+    let accentColor = getComputedStyle(document.documentElement)
       .getPropertyValue('--c-accent').trim() || '#4facfe';
+
+    // Update accent color on theme switch
+    const themeObserver = new MutationObserver(() => {
+      accentColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--c-accent').trim() || '#4facfe';
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
     // Throttle to ~20fps for authentic Matrix feel
     let lastTime = 0;
@@ -72,6 +79,7 @@ function MatrixRain() {
     return () => {
       clearInterval(intervalId);
       window.removeEventListener('resize', resize);
+      themeObserver.disconnect();
     };
   }, [visible]);
 

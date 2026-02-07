@@ -16,6 +16,7 @@ function AchievementBadges() {
   });
   const [toast, setToast] = useState(null);
   const toastTimerRef = useRef(null);
+  const toastQueueRef = useRef([]);
   const [panelOpen, setPanelOpen] = useState(false);
   const prevUnlockedRef = useRef(unlocked);
 
@@ -33,11 +34,15 @@ function AchievementBadges() {
     localStorage.setItem('prokyi_achievements', JSON.stringify(unlocked));
     const newIds = unlocked.filter(id => !prev.includes(id));
     if (newIds.length > 0) {
-      const lastId = newIds[newIds.length - 1];
-      const achievement = ACHIEVEMENTS.find(a => a.id === lastId);
-      if (achievement) {
+      const newAchievements = newIds
+        .map(id => ACHIEVEMENTS.find(a => a.id === id))
+        .filter(Boolean);
+      toastQueueRef.current.push(...newAchievements);
+      // Start showing queue if not already showing
+      if (!toast && toastQueueRef.current.length > 0) {
+        const next = toastQueueRef.current.shift();
+        setToast(next);
         clearTimeout(toastTimerRef.current);
-        setToast(achievement);
         toastTimerRef.current = setTimeout(() => setToast(null), 3000);
       }
     }
@@ -75,6 +80,26 @@ function AchievementBadges() {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     return () => observer.disconnect();
   }, []);
+
+  // Show next toast from queue when current toast disappears
+  useEffect(() => {
+    if (!toast && toastQueueRef.current.length > 0) {
+      const next = toastQueueRef.current.shift();
+      const timer = setTimeout(() => {
+        setToast(next);
+        toastTimerRef.current = setTimeout(() => setToast(null), 3000);
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
+  // Escape key closes panel
+  useEffect(() => {
+    if (!panelOpen) return;
+    const onKey = (e) => { if (e.key === 'Escape') setPanelOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [panelOpen]);
 
   // Cleanup
   useEffect(() => () => clearTimeout(toastTimerRef.current), []);
