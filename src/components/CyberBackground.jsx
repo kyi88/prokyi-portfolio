@@ -87,6 +87,42 @@ function Particles({ count = 500 }) {
   );
 }
 
+/* ── Expanding ring ripple on click ── */
+function ClickRipple() {
+  const ringRef = useRef();
+  const scaleRef = useRef(0);
+  const activeRef = useRef(false);
+
+  useEffect(() => {
+    const handler = () => {
+      scaleRef.current = 0.1;
+      activeRef.current = true;
+    };
+    window.addEventListener('click', handler);
+    return () => window.removeEventListener('click', handler);
+  }, []);
+
+  useFrame(({ pointer }) => {
+    if (!ringRef.current) return;
+    if (activeRef.current) {
+      scaleRef.current += 0.06;
+      ringRef.current.scale.set(scaleRef.current, scaleRef.current, 1);
+      ringRef.current.material.opacity = Math.max(0, 0.4 - scaleRef.current * 0.05);
+      ringRef.current.position.set(pointer.x * 8, pointer.y * 5, 0);
+      if (scaleRef.current > 8) activeRef.current = false;
+    } else {
+      ringRef.current.material.opacity = 0;
+    }
+  });
+
+  return (
+    <mesh ref={ringRef}>
+      <ringGeometry args={[0.9, 1, 48]} />
+      <meshBasicMaterial color="#4facfe" transparent opacity={0} side={THREE.DoubleSide} blending={THREE.AdditiveBlending} />
+    </mesh>
+  );
+}
+
 /* ── Subtle grid floor ── */
 function GridFloor() {
   const ref = useRef();
@@ -110,6 +146,7 @@ export default function CyberBackground() {
         style={{ background: 'transparent' }}
       >
         <Particles count={count} />
+        <ClickRipple />
         <GridFloor />
       </Canvas>
     </div>

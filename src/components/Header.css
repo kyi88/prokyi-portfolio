@@ -84,6 +84,9 @@
   background: rgba(79, 172, 254, 0.08);
   text-shadow: 0 0 12px rgba(79, 172, 254, 0.4);
 }
+.header__link.is-active {
+  box-shadow: 0 0 16px rgba(79, 172, 254, 0.12), inset 0 0 8px rgba(79, 172, 254, 0.05);
+}
 .header__link::after {
   content: '';
   position: absolute;

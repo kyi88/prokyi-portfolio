@@ -1,5 +1,33 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './Footer.css';
+
+/* ── Matrix trickle — falling chars in footer ── */
+function MatrixRain() {
+  const [columns, setColumns] = useState([]);
+  useEffect(() => {
+    const chars = 'ぷろきぃ01アイウエオ>_{}[]#$%&';
+    const cols = Array.from({ length: 18 }, (_, i) => ({
+      id: i,
+      left: `${(i / 18) * 100}%`,
+      delay: Math.random() * 4,
+      dur: 3 + Math.random() * 4,
+      char: chars[Math.floor(Math.random() * chars.length)],
+    }));
+    setColumns(cols);
+  }, []);
+
+  return (
+    <div className="footer__matrix" aria-hidden="true">
+      {columns.map(c => (
+        <span key={c.id} className="footer__matrix-char"
+          style={{ left: c.left, animationDelay: `${c.delay}s`, animationDuration: `${c.dur}s` }}>
+          {c.char}
+        </span>
+      ))}
+    </div>
+  );
+}
 
 export default function Footer() {
   return (
@@ -10,6 +38,7 @@ export default function Footer() {
       viewport={{ once: true }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
+      <MatrixRain />
       <div className="footer__inner">
         <motion.p
           className="footer__copy"

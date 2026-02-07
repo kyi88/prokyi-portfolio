@@ -4,6 +4,29 @@
   text-align: center;
   border-top: 1px solid transparent;
   position: relative;
+  overflow: hidden;
+}
+/* Matrix falling characters */
+.footer__matrix {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.footer__matrix-char {
+  position: absolute;
+  top: -20px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--c-accent);
+  opacity: 0;
+  animation: matrix-fall linear infinite;
+}
+@keyframes matrix-fall {
+  0% { top: -20px; opacity: 0; }
+  10% { opacity: 0.15; }
+  90% { opacity: 0.08; }
+  100% { top: 100%; opacity: 0; }
 }
 .footer::before {
   content: '';

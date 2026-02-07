@@ -184,6 +184,30 @@
   opacity: .6; transition: opacity .3s;
 }
 .ss-inv:hover::before { opacity: 1; }
+/* Scanline sweep on inv card hover */
+.ss-inv::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(79, 172, 254, 0.04) 50%,
+    transparent 100%
+  );
+  background-size: 100% 300%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.ss-inv:hover::after {
+  opacity: 1;
+  animation: inv-scan 2s linear infinite;
+}
+@keyframes inv-scan {
+  0% { background-position: 0 -100%; }
+  100% { background-position: 0 200%; }
+}
 .ss-inv__slot { font-family: var(--font-mono); font-size: .55rem; font-weight: 700; letter-spacing: 2px; color: var(--ic); opacity: .7; margin-bottom: 8px; }
 .ss-inv__icon { font-size: 1.8rem; margin-bottom: 8px; }
 .ss-inv__name { font-size: .92rem; font-weight: 700; color: var(--c-heading); margin-bottom: 2px; }
