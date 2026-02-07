@@ -55,6 +55,11 @@ export default function Sidebar() {
         whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
       >
         <h3 className="side-card__title">更新情報</h3>
+        {/* Scrolling ticker */}
+        <div className="news-ticker" aria-hidden="true">
+          <span className="news-ticker__text">SYSTEM ONLINE — ステータス画面追加 — ガジェット追加 — React版リニューアル — </span>
+          <span className="news-ticker__text">SYSTEM ONLINE — ステータス画面追加 — ガジェット追加 — React版リニューアル — </span>
+        </div>
         <ul className="news-list">
           {[
             ['2026/02/07', 'プレイヤーステータス追加'],

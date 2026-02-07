@@ -1,6 +1,25 @@
 /* ===================================================================
    App Layout
    =================================================================== */
+
+/* Custom cyber cursor */
+.cyber-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--c-accent, #4facfe);
+  box-shadow: 0 0 10px var(--c-accent, #4facfe), 0 0 20px rgba(79,172,254,0.3);
+  pointer-events: none;
+  z-index: 999999;
+  transform: translate(-100px, -100px);
+  transition: width 0.15s, height 0.15s;
+  mix-blend-mode: screen;
+}
+@media (pointer: coarse) {
+  .cyber-cursor { display: none; }
+}
+
 .page {
   position: relative;
   z-index: 1;

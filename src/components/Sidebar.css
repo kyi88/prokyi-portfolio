@@ -102,6 +102,30 @@
   color: var(--c-text-dim);
 }
 
+/* News ticker */
+.news-ticker {
+  display: flex;
+  overflow: hidden;
+  margin-bottom: 14px;
+  padding: 4px 0;
+  border-top: 1px solid rgba(79, 172, 254, 0.06);
+  border-bottom: 1px solid rgba(79, 172, 254, 0.06);
+}
+.news-ticker__text {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--c-accent);
+  letter-spacing: 1px;
+  white-space: nowrap;
+  animation: ticker-scroll 18s linear infinite;
+  opacity: 0.5;
+}
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
 @media (max-width: 1024px) {
   .layout__side {
     display: grid;

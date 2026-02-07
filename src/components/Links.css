@@ -61,3 +61,27 @@
   border-color: var(--c-accent);
   box-shadow: 0 4px 20px var(--c-glow);
 }
+
+/* Hover scan sweep for all link btns */
+.link-btn .link-btn__scan {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(79, 172, 254, 0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.link-btn:hover .link-btn__scan {
+  opacity: 1;
+  animation: link-scan 1.5s linear infinite;
+}
+@keyframes link-scan {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

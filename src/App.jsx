@@ -81,8 +81,27 @@ export default function App() {
     }
   }, [booting]);
 
+  // Custom cursor tracking
+  useEffect(() => {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    document.documentElement.style.cursor = 'none';
+    const dot = document.getElementById('cyber-cursor');
+    if (!dot) return;
+    const move = (e) => {
+      dot.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+    };
+    window.addEventListener('mousemove', move, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', move);
+      document.documentElement.style.cursor = '';
+    };
+  }, []);
+
   return (
     <>
+      {/* Custom cursor dot (desktop only) */}
+      <div id="cyber-cursor" className="cyber-cursor" aria-hidden="true" />
+
       <AnimatePresence mode="wait">
         {booting && <BootScreen onDone={() => setBooting(false)} />}
       </AnimatePresence>

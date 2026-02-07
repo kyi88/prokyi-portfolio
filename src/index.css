@@ -51,6 +51,7 @@
 html {
   scroll-behavior: smooth;
 }
+/* Custom cyber cursor — handled via a dedicated element rendered in App */
 
 body {
   font-family: var(--font-body);
