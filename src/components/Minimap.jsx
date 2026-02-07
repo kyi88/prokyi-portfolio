@@ -90,7 +90,7 @@ export default function Minimap() {
           {/* Active position line */}
           <motion.div
             className="minimap__track"
-            animate={{ top: `${sections.findIndex(s => s.id === active) * 28 + 6}px` }}
+            animate={{ top: `${Math.max(0, sections.findIndex(s => s.id === active)) * 28 + 6}px` }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           />
         </motion.nav>

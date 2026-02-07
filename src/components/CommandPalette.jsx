@@ -77,6 +77,9 @@ export default function CommandPalette() {
         >
           <motion.div
             className="cmd-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="コマンドパレット"
             initial={{ scale: 0.9, y: -20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: -20 }}

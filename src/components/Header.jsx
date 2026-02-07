@@ -100,6 +100,25 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Close mobile menu on Escape key or outside click
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
+    const onClickOutside = (e) => {
+      if (!e.target.closest('.header__nav') && !e.target.closest('.header__menu-btn')) {
+        setMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    document.addEventListener('click', onClickOutside);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.removeEventListener('click', onClickOutside);
+    };
+  }, [menuOpen]);
+
   const handleClick = (e, href) => {
     e.preventDefault();
     const el = document.querySelector(href);

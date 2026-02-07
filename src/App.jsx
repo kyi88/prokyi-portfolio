@@ -88,11 +88,12 @@ function SystemGlitch() {
 }
 
 /* Section scroll SFX — subtle blip when a section enters viewport */
-function useSectionSFX(mutedRef) {
+function useSectionSFX(mutedRef, ready) {
   const playedRef = useRef(new Set());
   const audioCtxRef = useRef(null);
 
   useEffect(() => {
+    if (!ready) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -121,10 +122,10 @@ function useSectionSFX(mutedRef) {
       },
       { threshold: 0.3 }
     );
-    // Observe all sections
+    // Observe all sections — now safe because ready===true means DOM is rendered
     document.querySelectorAll('.section').forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [ready]);
 }
 
 /* System alert toasts — random cyber notifications */
@@ -217,10 +218,14 @@ function BootScreen({ onDone }) {
     '[INIT] Rendering viewport ...',
   ];
 
-  // Subtle boot beep via Web Audio API
+  // Subtle boot beep via Web Audio API — reuse single AudioContext
+  const bootAudioCtxRef = useRef(null);
   const playBeep = (freq = 440, dur = 0.04) => {
     try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (!bootAudioCtxRef.current) {
+        bootAudioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      const ctx = bootAudioCtxRef.current;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
@@ -239,6 +244,7 @@ function BootScreen({ onDone }) {
     const freqs = [520, 600, 600, 600, 700, 880];
     // Hide ASCII art after first boot line
     const asciiTimer = setTimeout(() => setShowAscii(false), 600);
+    let doneTimer = null;
     const iv = setInterval(() => {
       if (i < bootLines.length) {
         const line = bootLines[i];
@@ -248,10 +254,15 @@ function BootScreen({ onDone }) {
         playBeep(freq);
       } else {
         clearInterval(iv);
-        setTimeout(onDone, 400);
+        doneTimer = setTimeout(() => {
+          onDone();
+          // Close boot AudioContext after transition
+          try { bootAudioCtxRef.current?.close(); } catch (_) {}
+          bootAudioCtxRef.current = null;
+        }, 400);
       }
     }, 180);
-    return () => { clearInterval(iv); clearTimeout(asciiTimer); };
+    return () => { clearInterval(iv); clearTimeout(asciiTimer); clearTimeout(doneTimer); };
   }, []);
 
   const asciiArt = `
@@ -314,8 +325,8 @@ export default function App() {
     });
   };
 
-  // Section scroll sound effects
-  useSectionSFX(mutedRef);
+  // Section scroll sound effects — wait until sections are rendered
+  useSectionSFX(mutedRef, loaded);
 
   useEffect(() => {
     if (!booting) {
