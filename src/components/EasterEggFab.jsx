@@ -39,6 +39,18 @@ export default function EasterEggFab() {
     return () => window.removeEventListener('keydown', handler);
   }, [konamiIdx]);
 
+  // Outside click to close menu
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (!e.target.closest('.ee-fab') && !e.target.closest('.ee-menu')) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('pointerdown', handler);
+    return () => document.removeEventListener('pointerdown', handler);
+  }, [open]);
+
   // Cleanup konami timer on unmount
   useEffect(() => () => {
     clearTimeout(konamiTimerRef.current);

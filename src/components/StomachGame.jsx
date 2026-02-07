@@ -71,10 +71,22 @@ export default function StomachGame({ onClose }) {
 
   useEffect(() => { if (hp <= 0) setOver(true); }, [hp]);
 
+  const flashTimers = useRef(new Set());
+
+  // Cleanup flash timeouts on unmount
+  useEffect(() => () => {
+    flashTimers.current.forEach(t => clearTimeout(t));
+    flashTimers.current.clear();
+  }, []);
+
   const addFlash = (x, text) => {
     const fid = Date.now() + Math.random();
     setFlashes(p => [...p, { id: fid, x, text }]);
-    setTimeout(() => setFlashes(p => p.filter(f => f.id !== fid)), 600);
+    const tid = setTimeout(() => {
+      setFlashes(p => p.filter(f => f.id !== fid));
+      flashTimers.current.delete(tid);
+    }, 600);
+    flashTimers.current.add(tid);
   };
 
   const tap = useCallback((it) => {
@@ -87,7 +99,6 @@ export default function StomachGame({ onClose }) {
       addFlash(it.x, `+${pts}`);
     } else {
       setScore(s => s + 5);
-      setCombo(0);
       addFlash(it.x, '+5');
     }
   }, [over, combo]);

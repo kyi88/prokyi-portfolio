@@ -189,6 +189,16 @@ export default function CyberTerminal() {
     return () => window.removeEventListener('keydown', handler);
   }, []);
 
+  // Escape key to close terminal
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (e.key === 'Escape') { e.preventDefault(); setOpen(false); }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [open]);
+
   // Focus input when opened
   useEffect(() => {
     if (open && inputRef.current) {
@@ -228,7 +238,7 @@ export default function CyberTerminal() {
       newLines.push(`  command not found: ${trimmed}`, '  Type "help" for available commands.');
     }
     newLines.push('');
-    setLines(prev => [...prev, ...newLines]);
+    setLines(prev => [...prev, ...newLines].slice(-500));
   }, []);
 
   const handleSubmit = (e) => {

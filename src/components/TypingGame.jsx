@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SoundContext } from '../App';
 import './TypingGame.css';
 
 /* ── Sound effects via Web Audio API — singleton AudioContext ── */
@@ -55,6 +56,9 @@ function shuffle(arr) {
 }
 
 export default function TypingGame({ onClose }) {
+  const { muted } = useContext(SoundContext);
+  const mutedRef = useRef(muted);
+  mutedRef.current = muted;
   const [phase, setPhase] = useState('ready'); // ready | playing | done
   const [words, setWords] = useState([]);
   const [wordIdx, setWordIdx] = useState(0);
@@ -69,6 +73,9 @@ export default function TypingGame({ onClose }) {
   const [isNewRecord, setIsNewRecord] = useState(false);
   const inputRef = useRef(null);
 
+  // Guard all sfx calls with mute check
+  const playSfx = useCallback((fn) => { if (!mutedRef.current) fn(); }, []);
+
   // Start
   const start = useCallback(() => {
     setWords(shuffle(WORDS));
@@ -81,7 +88,7 @@ export default function TypingGame({ onClose }) {
     setMistakes(0);
     setIsNewRecord(false);
     setPhase('playing');
-    sfx.start();
+    playSfx(sfx.start);
   }, []);
 
   // Timer
@@ -89,7 +96,7 @@ export default function TypingGame({ onClose }) {
     if (phase !== 'playing') return;
     if (timeLeft <= 0) {
       setPhase('done');
-      sfx.done();
+      playSfx(sfx.done);
       return;
     }
     const t = setTimeout(() => setTimeLeft(prev => prev - 1), 1000);
@@ -116,7 +123,7 @@ export default function TypingGame({ onClose }) {
         return next;
       });
       setFlash('correct');
-      sfx.ok();
+      playSfx(sfx.ok);
       setTimeout(() => setFlash(null), 300);
       setInput('');
 
@@ -128,12 +135,12 @@ export default function TypingGame({ onClose }) {
       }
     } else if (currentWord.startsWith(val)) {
       // partial correct — key sound
-      sfx.key();
+      playSfx(sfx.key);
     } else {
       setMistakes(prev => prev + 1);
       setCombo(0);
       setFlash('miss');
-      sfx.miss();
+      playSfx(sfx.miss);
       setTimeout(() => setFlash(null), 200);
     }
   };
@@ -162,7 +169,7 @@ export default function TypingGame({ onClose }) {
       setIsNewRecord(true);
       localStorage.setItem('prokyi_typing_best', String(score));
     }
-  }, [phase, score]);
+  }, [phase, score, bestScore]);
 
   return (
     <motion.div className="tg-overlay"

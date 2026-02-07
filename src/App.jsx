@@ -56,9 +56,10 @@ function SystemGlitch() {
   const [glitching, setGlitching] = useState(false);
 
   useEffect(() => {
+    let glitchTimer = null;
     const trigger = () => {
       setGlitching(true);
-      setTimeout(() => setGlitching(false), 150 + Math.random() * 200);
+      glitchTimer = setTimeout(() => setGlitching(false), 150 + Math.random() * 200);
     };
     const schedule = () => {
       const delay = 25000 + Math.random() * 15000;
@@ -68,7 +69,7 @@ function SystemGlitch() {
       }, delay);
     };
     let timerId = schedule();
-    return () => clearTimeout(timerId);
+    return () => { clearTimeout(timerId); clearTimeout(glitchTimer); };
   }, []);
 
   return (
@@ -142,14 +143,18 @@ function SystemAlerts() {
     '🎯 Threat level: minimal',
   ];
 
+  const dismissTimers = useRef(new Set());
+
   useEffect(() => {
     const spawn = () => {
       const id = Date.now();
       const msg = msgs[Math.floor(Math.random() * msgs.length)];
       setAlerts(prev => [...prev, { id, msg }]);
-      setTimeout(() => {
+      const dTimer = setTimeout(() => {
         setAlerts(prev => prev.filter(a => a.id !== id));
+        dismissTimers.current.delete(dTimer);
       }, 4000);
+      dismissTimers.current.add(dTimer);
     };
     // Recursive setTimeout for truly random intervals
     let timerId = null;
@@ -165,7 +170,11 @@ function SystemAlerts() {
       spawn();
       schedule();
     }, 15000 + Math.random() * 15000);
-    return () => clearTimeout(timerId);
+    return () => {
+      clearTimeout(timerId);
+      dismissTimers.current.forEach(t => clearTimeout(t));
+      dismissTimers.current.clear();
+    };
   }, []);
 
   return (
@@ -222,6 +231,7 @@ function BootScreen({ onDone }) {
   const bootAudioCtxRef = useRef(null);
   const playBeep = (freq = 440, dur = 0.04) => {
     try {
+      if (localStorage.getItem('prokyi_muted') === 'true') return;
       if (!bootAudioCtxRef.current) {
         bootAudioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
       }
