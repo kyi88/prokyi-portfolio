@@ -15,6 +15,9 @@ const HELP_TEXT = [
   '  theme    — Toggle color theme',
   '  uptime   — Session uptime',
   '  random   — Random cyber fact',
+  '  date     — Show current date/time',
+  '  neofetch — System info',
+  '  ping     — Ping the matrix',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -161,6 +164,45 @@ const COMMANDS = {
       '🥛 乳糖不耐性: 牛乳を飲むと大変なことになる。',
     ];
     return [`[RANDOM FACT]`, `  ${facts[Math.floor(Math.random() * facts.length)]}`];
+  },
+  date: () => {
+    const now = new Date();
+    return [
+      `[DATE/TIME]`,
+      `  ${now.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}`,
+      `  ${now.toLocaleTimeString('ja-JP')}`,
+      `  Unix: ${Math.floor(now.getTime() / 1000)}`,
+    ];
+  },
+  neofetch: () => [
+    '  ┌─────────────────────────────────┐',
+    '  │  ██████╗ ██╗  ██╗██╗   ██╗     │',
+    '  │  ██╔══██╗██║ ██╔╝╚██╗ ██╔╝     │',
+    '  │  ██████╔╝█████╔╝  ╚████╔╝      │',
+    '  │  ██╔═══╝ ██╔═██╗   ╚██╔╝       │',
+    '  │  ██║     ██║  ██╗   ██║        │',
+    '  │  ╚═╝     ╚═╝  ╚═╝   ╚═╝        │',
+    '  └─────────────────────────────────┘',
+    `  OS: CyberDeck OS v2.0`,
+    `  Host: prokyi-portfolio`,
+    `  Kernel: React 19.x`,
+    `  Shell: CyberTerminal v1.0`,
+    `  DE: Framer Motion 11`,
+    `  WM: Vite 6.4.1`,
+    `  GPU: Three.js r${typeof window !== 'undefined' ? '170' : '???'}`,
+    `  Memory: ${typeof performance !== 'undefined' && performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1048576) + 'MB' : 'N/A'}`,
+    `  Uptime: ${Math.floor(performance.now() / 1000)}s`,
+  ],
+  ping: () => {
+    const latency = Math.floor(Math.random() * 30 + 5);
+    return [
+      `PING matrix.cyber (127.0.0.1): 56 data bytes`,
+      `64 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=${latency}ms`,
+      `64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=${latency + Math.floor(Math.random() * 10)}ms`,
+      `64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=${latency + Math.floor(Math.random() * 5)}ms`,
+      `--- matrix.cyber ping statistics ---`,
+      `3 packets transmitted, 3 packets received, 0% packet loss`,
+    ];
   },
 };
 

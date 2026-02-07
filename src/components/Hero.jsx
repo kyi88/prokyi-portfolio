@@ -437,13 +437,18 @@ export default function Hero() {
       <motion.div
         className="hero__scroll-hint"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.0, duration: 1 }}
+        animate={{ opacity: 1, y: [0, 8, 0] }}
+        transition={{ delay: 2.0, duration: 1.5, y: { repeat: Infinity, duration: 1.5, ease: 'easeInOut' } }}
         aria-hidden="true"
       >
-        <span>scroll</span>
-        <svg width="16" height="24" viewBox="0 0 16 24">
-          <path d="M8 4v12M3 12l5 5 5-5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <span>scroll down</span>
+        <svg width="20" height="28" viewBox="0 0 20 28">
+          <rect x="6" y="2" width="8" height="14" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" />
+          <motion.circle cx="10" cy="8" r="1.5" fill="currentColor"
+            animate={{ cy: [7, 12, 7] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+          />
+          <path d="M10 18v6M6 22l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </motion.div>
     </section>
