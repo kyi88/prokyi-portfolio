@@ -1,5 +1,5 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Section from './components/Section';
@@ -18,6 +18,21 @@ import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
 const StatusScreen = lazy(() => import('./components/StatusScreen'));
+
+/* Parallax fog layers */
+function ParallaxFog() {
+  const { scrollYProgress } = useScroll();
+  const y1 = useTransform(scrollYProgress, [0, 1], ['0%', '-30%']);
+  const y2 = useTransform(scrollYProgress, [0, 1], ['0%', '-50%']);
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.18, 0.08, 0.12, 0.06]);
+
+  return (
+    <div className="parallax-fog" aria-hidden="true">
+      <motion.div className="parallax-fog__layer parallax-fog__layer--1" style={{ y: y1, opacity }} />
+      <motion.div className="parallax-fog__layer parallax-fog__layer--2" style={{ y: y2, opacity }} />
+    </div>
+  );
+}
 
 /* Skeleton placeholder for StatusScreen lazy load */
 function StatusSkeleton() {
@@ -155,6 +170,33 @@ export default function App() {
     };
   }, []);
 
+  // Tab title animation (focus / blur)
+  useEffect(() => {
+    const ORIGINAL = 'prokyi — Cyberdeck Portfolio';
+    const AWAY_MSGS = ['🔒 SYSTEM IDLE ...', '👋 戻ってきて！', '⚠ CONNECTION LOST'];
+    let idx = 0;
+    let iv;
+    const handleVisibility = () => {
+      if (document.hidden) {
+        document.title = AWAY_MSGS[0];
+        idx = 0;
+        iv = setInterval(() => {
+          idx = (idx + 1) % AWAY_MSGS.length;
+          document.title = AWAY_MSGS[idx];
+        }, 2000);
+      } else {
+        clearInterval(iv);
+        document.title = ORIGINAL;
+      }
+    };
+    document.title = ORIGINAL;
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      clearInterval(iv);
+    };
+  }, []);
+
   // Animated favicon
   useEffect(() => {
     const canvas = document.createElement('canvas');
@@ -212,6 +254,7 @@ export default function App() {
           <Suspense fallback={null}>
             <CyberBackground />
       </Suspense>
+      <ParallaxFog />
       <div className={`page ${loaded ? 'page--loaded' : ''}`}>
         <Header />
         <Hero />

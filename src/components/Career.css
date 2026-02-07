@@ -108,3 +108,39 @@
 @media (max-width: 640px) {
   .job-row { flex-direction: column; }
 }
+
+/* Timeline detail expansion */
+.timeline__detail {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--c-text);
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: rgba(79, 172, 254, 0.04);
+  border-left: 2px solid var(--c-accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  overflow: hidden;
+}
+.timeline__expand {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--c-accent);
+  margin-top: 6px;
+  opacity: 0.5;
+  letter-spacing: 1px;
+  transition: opacity 0.3s;
+}
+.timeline__item:hover .timeline__expand { opacity: 1; }
+
+/* Job chip detail expansion */
+.job-chip__detail {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--c-text);
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--c-border);
+  width: 100%;
+  overflow: hidden;
+}
