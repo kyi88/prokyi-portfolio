@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getSecurityLog } from './IntrusionAlert';
 import './CyberTerminal.css';
 
 const HELP_TEXT = [
@@ -21,6 +22,8 @@ const HELP_TEXT = [
   '  fortune  — Random fortune cookie',
   '  crt      — Toggle CRT scanline overlay',
   '  cursor   — Toggle custom cursor',
+  '  decrypt  — Decrypt animation on text',
+  '  security-log — View intrusion log',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -241,6 +244,34 @@ const COMMANDS = {
   },
 };
 
+/* Commands that need arguments (handled in processCommand) */
+const ARG_COMMANDS = {
+  decrypt: (args) => {
+    if (!args.trim()) return ['Usage: decrypt <text>'];
+    const cipher = '▓█▒░ΨΔΩ∑λΞΠ₿⌐¥£€∞≈♦◊◄►▲▼ABCDEF0123456789';
+    const encrypted = args.split('').map((c) =>
+      c === ' ' ? ' ' : cipher[Math.floor(Math.random() * cipher.length)]
+    ).join('');
+    return [
+      `[ENCRYPTED] ${encrypted}`,
+      `[DECRYPTING...]`,
+      `[DECRYPTED] ${args}`,
+    ];
+  },
+  'security-log': () => {
+    const log = getSecurityLog();
+    if (log.length === 0) return ['[SECURITY LOG] No intrusions detected this session.'];
+    return [
+      '[SECURITY LOG]',
+      `  Total alerts: ${log.length}`,
+      '  ─────────────────────────────',
+      ...log.map((entry, i) =>
+        `  ${String(i + 1).padStart(2, '0')}. [${entry.time}] ${entry.type.toUpperCase()}`
+      ),
+    ];
+  },
+};
+
 export default function CyberTerminal() {
   const [open, setOpen] = useState(false);
   const [lines, setLines] = useState([
@@ -312,7 +343,17 @@ export default function CyberTerminal() {
       const result = handler();
       newLines.push(...result);
     } else {
-      newLines.push(`  command not found: ${trimmed}`, '  Type "help" for available commands.');
+      // Check arg commands (e.g. "decrypt hello world")
+      const spaceIdx = trimmed.indexOf(' ');
+      const cmdName = spaceIdx > -1 ? trimmed.slice(0, spaceIdx) : trimmed;
+      const cmdArgs = spaceIdx > -1 ? trimmed.slice(spaceIdx + 1) : '';
+      const argHandler = ARG_COMMANDS[cmdName];
+      if (argHandler) {
+        const result = argHandler(cmdArgs);
+        newLines.push(...result);
+      } else {
+        newLines.push(`  command not found: ${trimmed}`, '  Type "help" for available commands.');
+      }
     }
     newLines.push('');
     setLines(prev => [...prev, ...newLines].slice(-500));

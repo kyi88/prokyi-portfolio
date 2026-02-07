@@ -33,6 +33,7 @@ import ScrollPercentage from './components/ScrollPercentage';
 import ScanLine from './components/ScanLine';
 import Confetti from './components/Confetti';
 import ThemePreview from './components/ThemePreview';
+import IntrusionAlert from './components/IntrusionAlert';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -403,6 +404,16 @@ export default function App() {
     }
   }, [booting]);
 
+  // External confetti trigger (e.g. IntrusionAlert brute-force countermeasure)
+  useEffect(() => {
+    const handler = () => {
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 4000);
+    };
+    window.addEventListener('prokyi-confetti', handler);
+    return () => window.removeEventListener('prokyi-confetti', handler);
+  }, []);
+
   // Custom cursor tracking with trail
   useEffect(() => {
     if (booting) return;
@@ -666,6 +677,7 @@ export default function App() {
       <ClickSpark />
       <ScrollPercentage />
       <ScanLine />
+      <IntrusionAlert />
       {showConfetti && <Confetti />}
       {milestoneMsg && (
         <div className="milestone-toast" aria-live="polite">

@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, useCallback, memo } from 'react';
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import TextScramble from './TextScramble';
+import DecryptReveal from './DecryptReveal';
 import './Section.css';
 
 const SECTION_COMMANDS = {
@@ -202,7 +203,7 @@ function Section({ id, num, title, children }) {
           {scrambled}
         </motion.span>
         <span className="card__title-text gradient-text glitch" data-text={title}>
-          <TextScramble text={title} active={inView} />
+          <DecryptReveal text={title} speed={55} cycles={5} />
         </span>
       </motion.h2>
       {/* Hologram shimmer */}

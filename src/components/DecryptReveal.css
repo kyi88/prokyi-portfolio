@@ -1,0 +1,37 @@
+.decrypt-reveal {
+  display: inline;
+  font-family: var(--ff-mono, 'JetBrains Mono', monospace);
+}
+
+.decrypt-reveal__char {
+  display: inline-block;
+  transition: text-shadow 0.15s ease;
+}
+
+.decrypt-reveal__char--scrambling {
+  opacity: 0.7;
+  color: var(--c-accent, #00e5ff);
+}
+
+.decrypt-reveal__char--settled {
+  text-shadow: 0 0 8px var(--c-accent, #00e5ff), 0 0 2px var(--c-accent, #00e5ff);
+  animation: decrypt-flash 0.3s ease-out;
+}
+
+@keyframes decrypt-flash {
+  0% {
+    text-shadow: 0 0 16px var(--c-accent, #00e5ff), 0 0 30px var(--c-accent, #00e5ff);
+    color: #fff;
+  }
+  100% {
+    text-shadow: none;
+    color: inherit;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decrypt-reveal__char--settled {
+    animation: none;
+    text-shadow: none;
+  }
+}

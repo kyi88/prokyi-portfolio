@@ -1,0 +1,86 @@
+.intrusion-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  backdrop-filter: blur(4px);
+  background: rgba(255, 0, 0, 0.06);
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+.intrusion-overlay--clickable {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.intrusion-overlay__scanline {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 0, 0, 0.03) 2px,
+    rgba(255, 0, 0, 0.03) 4px
+  );
+  animation: intrusion-scan 0.08s infinite;
+}
+
+@keyframes intrusion-scan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+.intrusion-overlay__title {
+  font-family: var(--ff-mono, 'JetBrains Mono', monospace);
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
+  font-weight: 900;
+  color: #ff1744;
+  text-shadow: 0 0 20px rgba(255, 23, 68, 0.8), 0 0 60px rgba(255, 23, 68, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  animation: intrusion-blink 0.3s ease-in-out infinite alternate;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.intrusion-overlay__sub {
+  font-family: var(--ff-mono, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  color: rgba(255, 23, 68, 0.7);
+  margin-top: 8px;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+
+@keyframes intrusion-blink {
+  0% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+.intrusion-overlay__border {
+  position: absolute;
+  inset: 20px;
+  border: 2px solid rgba(255, 23, 68, 0.3);
+  animation: intrusion-border-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes intrusion-border-pulse {
+  0% { border-color: rgba(255, 23, 68, 0.1); }
+  100% { border-color: rgba(255, 23, 68, 0.5); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intrusion-overlay__scanline,
+  .intrusion-overlay__title,
+  .intrusion-overlay__border {
+    animation: none;
+  }
+  .intrusion-overlay__title {
+    opacity: 1;
+  }
+}
