@@ -540,3 +540,19 @@ html{scrollbar-color:var(--c-accent) var(--c-bg);scrollbar-width:thin}
 ::-webkit-scrollbar-track{background:var(--c-bg)}
 ::-webkit-scrollbar-thumb{background:rgba(79,172,254,.25);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:rgba(79,172,254,.45)}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .parallax-fog,
+  .crt-overlay,
+  .system-glitch,
+  .card__holo,
+  .card::after,
+  .footer__matrix { display: none !important; }
+}

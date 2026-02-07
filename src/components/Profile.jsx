@@ -1,5 +1,5 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, memo } from 'react';
 import './Profile.css';
 
 /* Typewriter hook — reveals text character by character */
@@ -46,7 +46,7 @@ const itemVariant = (i) => ({
   },
 });
 
-export default function Profile() {
+function Profile() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
   const bioText = useTypewriter(BIO_TEXT, inView);
@@ -96,3 +96,5 @@ export default function Profile() {
     </div>
   );
 }
+
+export default memo(Profile);

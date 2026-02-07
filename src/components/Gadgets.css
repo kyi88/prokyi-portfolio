@@ -342,5 +342,12 @@
   .gadgets__tab {
     white-space: nowrap;
     flex-shrink: 0;
+    font-size: 0.7rem;
+    padding: 4px 10px;
   }
+  .gadgets__search {
+    font-size: 0.8rem;
+  }
+  .gadget-card__name { font-size: 0.85rem; }
+  .gadget-card__spec { font-size: 0.68rem; }
 }

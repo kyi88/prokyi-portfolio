@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback, memo } from 'react';
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import './Section.css';
 
@@ -26,7 +26,7 @@ function useScrambleNum(target, active) {
   return display;
 }
 
-export default function Section({ id, num, title, children }) {
+function Section({ id, num, title, children }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const scrambled = useScrambleNum(num, inView);
@@ -115,3 +115,5 @@ export default function Section({ id, num, title, children }) {
     </motion.section>
   );
 }
+
+export default memo(Section);
