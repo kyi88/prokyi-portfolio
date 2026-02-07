@@ -90,6 +90,7 @@ function SystemGlitch() {
 /* Section scroll SFX — subtle blip when a section enters viewport */
 function useSectionSFX(mutedRef) {
   const playedRef = useRef(new Set());
+  const audioCtxRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -100,7 +101,10 @@ function useSectionSFX(mutedRef) {
             playedRef.current.add(id);
             if (mutedRef.current) return;
             try {
-              const ctx = new (window.AudioContext || window.webkitAudioContext)();
+              if (!audioCtxRef.current) {
+                audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+              }
+              const ctx = audioCtxRef.current;
               const osc = ctx.createOscillator();
               const gain = ctx.createGain();
               osc.type = 'sine';
@@ -146,16 +150,21 @@ function SystemAlerts() {
         setAlerts(prev => prev.filter(a => a.id !== id));
       }, 4000);
     };
-    // First one after 15-30s, then every 30-60s
-    let iv = null;
-    const timeout = setTimeout(() => {
-      spawn();
-      iv = setInterval(() => spawn(), 30000 + Math.random() * 30000);
-    }, 15000 + Math.random() * 15000);
-    return () => {
-      clearTimeout(timeout);
-      if (iv) clearInterval(iv);
+    // Recursive setTimeout for truly random intervals
+    let timerId = null;
+    const schedule = () => {
+      const delay = 30000 + Math.random() * 30000;
+      timerId = setTimeout(() => {
+        spawn();
+        schedule();
+      }, delay);
     };
+    // First one after 15-30s
+    timerId = setTimeout(() => {
+      spawn();
+      schedule();
+    }, 15000 + Math.random() * 15000);
+    return () => clearTimeout(timerId);
   }, []);
 
   return (

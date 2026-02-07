@@ -88,6 +88,7 @@ export default function Hero() {
   const [typed, setTyped] = useState('');
   const [avatarClicks, setAvatarClicks] = useState(0);
   const [secretMsg, setSecretMsg] = useState(false);
+  const [quote] = useState(() => CYBER_QUOTES[Math.floor(Math.random() * CYBER_QUOTES.length)]);
   const ref = useRef(null);
   const avatarRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -373,7 +374,7 @@ export default function Hero() {
         transition={{ delay: 2.5, duration: 1.5 }}
         aria-hidden="true"
       >
-        {CYBER_QUOTES[Math.floor(Math.random() * CYBER_QUOTES.length)]}
+        {quote}
       </motion.p>
 
       {/* Scroll hint */}
