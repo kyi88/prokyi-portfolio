@@ -135,13 +135,7 @@ function QuantumEntangle() {
   }, [open]);
 
   const handleObserve = useCallback(() => {
-    if (observedRef.current) return;
-    observedRef.current = true;
-    setObserved(true);
-    setCoherence(0);
-    coherenceRef.current = 0;
-
-    // Easter egg: rapid clicks → superposition
+    // Easter egg: rapid clicks → superposition (count ALL clicks, even after collapse)
     clickCountRef.current++;
     clearTimeout(clickTimerRef.current);
     clickTimerRef.current = setTimeout(() => { clickCountRef.current = 0; }, 1500);
@@ -157,7 +151,14 @@ function QuantumEntangle() {
         coherenceRef.current = 99.9;
         setCoherence(99.9);
       }, 3000);
+      return;
     }
+
+    if (observedRef.current) return;
+    observedRef.current = true;
+    setObserved(true);
+    setCoherence(0);
+    coherenceRef.current = 0;
   }, []);
 
   useEffect(() => () => {

@@ -46,6 +46,7 @@ const HELP_TEXT = [
   '  firewall — Synaptic neural firewall',
   '  deaddrop — Encrypted dead drop messages',
   '  wetware  — Wetware bio-compiler',
+  '  mission  — Mission complete status',
   '  secret   — ???',
   '  matrix   — Enter the matrix',
   '  clear    — Clear terminal',
@@ -372,6 +373,10 @@ const COMMANDS = {
   wetware: () => {
     window.dispatchEvent(new CustomEvent('prokyi-wetware-toggle'));
     return ['🧬 Wetware Compiler initialized. Build your genome.'];
+  },
+  mission: () => {
+    window.dispatchEvent(new CustomEvent('prokyi-mission-toggle'));
+    return ['🏆 Mission status: ALL 100 LOOPS COMPLETE.'];
   },
   cursor: () => {
     const doc = document.documentElement;

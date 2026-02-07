@@ -169,6 +169,10 @@ function WetwareCompiler() {
               key={`${i}-${base}`}
               className={`wetware-compiler__seq-block wetware-compiler__seq-block--${base}`}
               onClick={() => removeBase(i)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); removeBase(i); } }}
+              role="button"
+              tabIndex={0}
+              aria-label={`Remove base ${base} at position ${i + 1}`}
               title="Click to remove"
             >
               {base}

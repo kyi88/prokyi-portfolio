@@ -14,20 +14,24 @@ const CAPSULES = [
 
 /* Simple Caesar cipher on 3 rings */
 function encrypt(text, shifts) {
+  let pos = 0;
   return text.split('').map((ch) => {
     const idx = ALPHABET.indexOf(ch.toUpperCase());
     if (idx < 0) return ch;
-    const ring = shifts[Math.abs(ch.charCodeAt(0)) % shifts.length];
+    const ring = shifts[pos % shifts.length];
+    pos++;
     const shifted = ALPHABET[(idx + ring) % 26];
     return ch === ch.toLowerCase() ? shifted.toLowerCase() : shifted;
   }).join('');
 }
 
 function decrypt(text, shifts) {
+  let pos = 0;
   return text.split('').map((ch) => {
     const idx = ALPHABET.indexOf(ch.toUpperCase());
     if (idx < 0) return ch;
-    const ring = shifts[Math.abs(ch.charCodeAt(0)) % shifts.length];
+    const ring = shifts[pos % shifts.length];
+    pos++;
     const shifted = ALPHABET[(idx - ring + 26) % 26];
     return ch === ch.toLowerCase() ? shifted.toLowerCase() : shifted;
   }).join('');

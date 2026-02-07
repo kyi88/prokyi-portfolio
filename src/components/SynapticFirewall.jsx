@@ -22,6 +22,7 @@ function SynapticFirewall() {
   const [targetNode, setTargetNode] = useState(null);
   const [compromised, setCompromised] = useState(false);
   const timerRef = useRef(null);
+  const activeRef = useRef(false);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -36,11 +37,15 @@ function SynapticFirewall() {
     };
   }, [open]);
 
-  useEffect(() => () => clearInterval(timerRef.current), []);
+  useEffect(() => () => {
+    clearInterval(timerRef.current);
+    activeRef.current = false;
+  }, []);
 
   useEffect(() => {
     if (!open) {
       clearInterval(timerRef.current);
+      activeRef.current = false;
       setNodes(initNodes());
       setRunning(false);
       setBlocked(0);
@@ -67,6 +72,7 @@ function SynapticFirewall() {
   const startDefense = useCallback(() => {
     if (running) return;
     setRunning(true);
+    activeRef.current = true;
     setNodes(initNodes());
     setBlocked(0);
     setInfected(0);
@@ -91,6 +97,7 @@ function SynapticFirewall() {
 
         // After 1.5s, if not blocked, infect
         setTimeout(() => {
+          if (!activeRef.current) return;
           setNodes((cur) => {
             if (cur[target].state === 'safe') {
               const updated = [...cur];
