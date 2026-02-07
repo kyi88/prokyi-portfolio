@@ -23,6 +23,7 @@ import Breadcrumbs from './components/Breadcrumbs';
 import ScrollVelocity from './components/ScrollVelocity';
 import ScrollBurst from './components/ScrollBurst';
 import FPSMonitor from './components/FPSMonitor';
+import CyberGrid from './components/CyberGrid';
 import './App.css';
 
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -496,6 +497,7 @@ export default function App() {
           <Suspense fallback={null}>
             <CyberBackground />
       </Suspense>
+      <CyberGrid />
       <ParallaxFog />
       <CRTOverlay />
       <SystemGlitch />
