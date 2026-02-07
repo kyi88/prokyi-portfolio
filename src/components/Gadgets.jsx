@@ -300,6 +300,8 @@ export default function Gadgets() {
 
                     {/* Animated border glow */}
                     <div className="gadget-card__glow" aria-hidden="true" />
+                    {/* Holographic reflection */}
+                    <div className="gadget-card__holo" aria-hidden="true" />
                     {/* Equalizer bars */}
                     <div className="gadget-card__eq" aria-hidden="true">
                       <span /><span /><span /><span /><span />

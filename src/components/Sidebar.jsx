@@ -170,6 +170,13 @@ function SkillListItem({ skill, index, inView }) {
   );
 }
 
+/* Status value with optional count-up */
+function StatusValue({ item, inView }) {
+  const numMatch = item.v.match(/^(\d+)$/);
+  const count = useCountUp(numMatch ? parseInt(numMatch[1]) : 0, inView && !!numMatch, 800, 300);
+  return <span>{numMatch ? count : item.v}</span>;
+}
+
 export default function Sidebar() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-40px' });
@@ -203,18 +210,18 @@ export default function Sidebar() {
           <span className="side-card__meta-item">SESSION {session}</span>
         </div>
         <ul className="status-list">
-          {statusItems.map(({ k, v, bar, color }) => (
-            <li key={k}>
-              <span>{k}</span>
+          {statusItems.map((item) => (
+            <li key={item.k}>
+              <span>{item.k}</span>
               <div className="status-val-wrap">
-                <span>{v}</span>
-                {bar != null && (
+                <StatusValue item={item} inView={inView} />
+                {item.bar != null && (
                   <div className="status-bar">
                     <motion.div
                       className="status-bar__fill"
-                      style={{ background: color }}
+                      style={{ background: item.color }}
                       initial={{ width: 0 }}
-                      animate={inView ? { width: `${bar}%` } : {}}
+                      animate={inView ? { width: `${item.bar}%` } : {}}
                       transition={{ duration: 1, delay: 0.5 }}
                     />
                   </div>

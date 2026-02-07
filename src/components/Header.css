@@ -146,6 +146,19 @@
   left: 20%;
 }
 
+/* Nav link hover glitch micro-effect */
+.header__link:hover {
+  animation: nav-glitch 0.3s ease-out 1;
+}
+@keyframes nav-glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(1px, -1px); }
+  60% { transform: translate(-1px, 0); }
+  80% { transform: translate(1px, 0); }
+  100% { transform: translate(0); }
+}
+
 /* Hamburger */
 .header__menu-btn {
   display: none;
