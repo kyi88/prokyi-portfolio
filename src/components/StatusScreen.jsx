@@ -42,7 +42,13 @@ const INVENTORY = [
   { slot: 'DESKTOP AUDIO', name: 'Edifier MR3',             type: 'Monitor Speakers',       icon: '🔊', rarity: 'RARE',      color: '#3b82f6', specs: [{ l: 'DRIVER',  v: '4\" Full Range' }, { l: 'POWER',   v: '36W RMS' }] },
   { slot: 'ARTIFACT',      name: 'AYN Thor',                type: 'Emulation Console [MAX]', icon: '🎮', rarity: 'LEGENDARY', color: '#ef4444', specs: [{ l: 'CPU',     v: 'Snapdragon 8 Gen 2' }, { l: 'RAM/ROM', v: '16GB / 1TB' }, { l: 'UPPER',  v: '6" 120Hz' }, { l: 'LOWER', v: '3.92" 60Hz' }] },
 ];
-
+const CARDS = [
+  { name: '楽天カード',                                 brand: 'Visa / Mastercard / JCB / AMEX', type: 'CREDIT',  icon: '💳', color: '#e60033', issuer: '楽天カード株式会社' },
+  { name: '楽天銀行デビットカード',                     brand: 'Visa / Mastercard / JCB',         type: 'DEBIT',   icon: '🏦', color: '#bf0000', issuer: '楽天銀行株式会社' },
+  { name: 'Amazon Prime Mastercard',                    brand: 'Mastercard',                      type: 'CREDIT',  icon: '📦', color: '#ff9900', issuer: '三井住友カード株式会社' },
+  { name: 'PayPayカード',                               brand: 'Visa / Mastercard / JCB',         type: 'CREDIT',  icon: '🔴', color: '#ff0033', issuer: 'PayPayカード株式会社' },
+  { name: 'Olive フレキシブルペイ（一般）',             brand: 'Visa',                            type: 'FLEXIBLE',icon: '🫒', color: '#2e8b57', issuer: '三井住友カード株式会社' },
+];
 /* ════════════════════════ SUB-COMPONENTS ════════════════════════ */
 
 function GlitchText({ children, className = '' }) {
@@ -122,6 +128,7 @@ const tabs = [
   { id: 'debuffs',   label: 'DEBUFFS',   icon: '⚠️' },
   { id: 'history',   label: 'HISTORY',   icon: '📜' },
   { id: 'inventory', label: 'INVENTORY', icon: '🎒' },
+  { id: 'cards',     label: 'CARDS',     icon: '💳' },
 ];
 
 const panelAnim = { initial: { opacity: 0, x: -20 }, animate: { opacity: 1, x: 0 }, exit: { opacity: 0, x: 20 }, transition: { duration: 0.35 } };
@@ -251,6 +258,31 @@ export default function StatusScreen() {
                     </ul>
                   )}
                   <div className="ss-inv__glow" aria-hidden="true" />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+        {/* ── CARDS ── */}
+        {tab === 'cards' && (
+          <motion.div key="cards" id="ss-p-cards" role="tabpanel" aria-labelledby="ss-tab-cards" className="ss__panel" {...panelAnim}>
+            <h4 className="ss__ptitle">PAYMENT CARDS</h4>
+            <div className="ss__cards-grid">
+              {CARDS.map((c, i) => (
+                <motion.div key={c.name} className="ss-card" style={{ '--cc': c.color }}
+                  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.5 }}
+                  whileHover={{ scale: 1.03, boxShadow: `0 0 24px ${c.color}33` }}
+                >
+                  <div className="ss-card__chip" aria-hidden="true" />
+                  <div className="ss-card__head">
+                    <span className="ss-card__icon">{c.icon}</span>
+                    <span className="ss-card__type" style={{ background: c.color }}>{c.type}</span>
+                  </div>
+                  <h5 className="ss-card__name">{c.name}</h5>
+                  <div className="ss-card__brand">{c.brand}</div>
+                  <div className="ss-card__issuer">Issuer: {c.issuer}</div>
+                  <div className="ss-card__glow" aria-hidden="true" />
                 </motion.div>
               ))}
             </div>
