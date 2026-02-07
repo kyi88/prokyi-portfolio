@@ -54,18 +54,6 @@ function AIModelArena() {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
   }, [log]);
 
-  useEffect(() => {
-    if (!open) {
-      clearInterval(timerRef.current);
-      clearTimeout(bossTimerRef.current);
-      setFighting(false);
-      setResult(null);
-      setStreak(0);
-      setIsBoss(false);
-      resetFight();
-    }
-  }, [open, resetFight]);
-
   const resetFight = useCallback(() => {
     setProkyiHp(100);
     setEnemyHp(100);
@@ -90,6 +78,18 @@ function AIModelArena() {
     setResult(null);
     setFighting(false);
   }, []);
+
+  useEffect(() => {
+    if (!open) {
+      clearInterval(timerRef.current);
+      clearTimeout(bossTimerRef.current);
+      setFighting(false);
+      setResult(null);
+      setStreak(0);
+      setIsBoss(false);
+      resetFight();
+    }
+  }, [open, resetFight]);
 
   // Spawn boss after 10 streak (via useEffect, not inside state updater)
   useEffect(() => {
