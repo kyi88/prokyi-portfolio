@@ -16,7 +16,7 @@ const IS_MOBILE = typeof window !== 'undefined' &&
   (window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent));
 
 const POINTS_DESKTOP = 15000;
-const POINTS_MOBILE = 12000;
+const POINTS_MOBILE = 15000;
 const MAX_RES_DESKTOP = 1200;
 const MAX_RES_MOBILE = 1200;
 const FPS_DESKTOP = 30;
@@ -107,7 +107,8 @@ function drawFrame(ctx, cw, ch, scale, basePoints, t) {
   const cx = cw / 2;
   const cy = ch / 2;
 
-  const pointCount = Math.min(basePoints, Math.round(basePoints * (cw * ch) / (800 * 800)));
+  // Always use full point count to preserve tentacle detail
+  const pointCount = basePoints;
 
   for (let i = pointCount; i--;) {
     const y = i / 99;
@@ -127,17 +128,23 @@ function drawFrame(ctx, cw, ch, scale, basePoints, t) {
 
     if (px < 0 || px >= cw || py < 0 || py >= ch) continue;
 
-    // 2x2 block for sub-pixel density
-    for (let dy = 0; dy < 2; dy++) {
-      for (let dx = 0; dx < 2; dx++) {
-        const bx = px + dx;
-        const by = py + dy;
-        if (bx >= cw || by >= ch) continue;
-        const idx = (by * cw + bx) * 4;
-        data[idx]     = Math.min(255, data[idx]     + 80);
-        data[idx + 1] = Math.min(255, data[idx + 1] + 170);
-        data[idx + 2] = Math.min(255, data[idx + 2] + 210);
-        data[idx + 3] = 255;
+    // Single pixel for sharp detail at high DPR
+    const idx = (py * cw + px) * 4;
+    data[idx]     = Math.min(255, data[idx]     + 90);
+    data[idx + 1] = Math.min(255, data[idx + 1] + 180);
+    data[idx + 2] = Math.min(255, data[idx + 2] + 220);
+    data[idx + 3] = 255;
+
+    // Add a second pixel below-right only if scale is large enough (body fill)
+    if (scale > 1.5 && d < 3) {
+      const bx = px + 1;
+      const by = py + 1;
+      if (bx < cw && by < ch) {
+        const idx2 = (by * cw + bx) * 4;
+        data[idx2]     = Math.min(255, data[idx2]     + 60);
+        data[idx2 + 1] = Math.min(255, data[idx2 + 1] + 130);
+        data[idx2 + 2] = Math.min(255, data[idx2 + 2] + 170);
+        data[idx2 + 3] = 255;
       }
     }
   }
