@@ -1,158 +1,175 @@
-import { useRef, useMemo, useState, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Color, AdditiveBlending, DoubleSide } from 'three';
+import { useEffect, useRef, memo } from 'react';
 
-/* ── Responsive particle count ── */
-function useParticleCount() {
-  const [count, setCount] = useState(() => {
-    if (typeof window === 'undefined') return 300;
-    const w = window.innerWidth;
-    if (w < 480) return 0;       // disable on very small screens
-    if (w < 768) return 120;
-    if (w < 1024) return 200;
-    return 400;
-  });
-  useEffect(() => {
-    let timer;
-    const onResize = () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        const w = window.innerWidth;
-        if (w < 480) setCount(0);
-        else if (w < 768) setCount(120);
-        else if (w < 1024) setCount(200);
-        else setCount(400);
-      }, 250);
-    };
-    window.addEventListener('resize', onResize);
-    return () => { window.removeEventListener('resize', onResize); clearTimeout(timer); };
-  }, []);
-  return count;
+/**
+ * CyberBackground — Canvas 2D floating particles + grid.
+ * Replaced Three.js (880 KB) with pure Canvas 2D (0 KB dependency).
+ * Same visual: colorful additive-blended particles, mouse parallax, click ripple.
+ */
+
+const PALETTE = ['#4facfe', '#00f2fe', '#a855f7', '#f59e0b', '#ff2d87', '#22d3a7'];
+
+function getCount() {
+  if (typeof window === 'undefined') return 0;
+  const w = window.innerWidth;
+  if (w < 480) return 0;
+  if (w < 768) return 80;
+  if (w < 1024) return 140;
+  return 260;
 }
 
-/* ── Floating particles with mouse-following ── */
-function Particles({ count = 500 }) {
-  const mesh = useRef();
-
-  const [positions, colors, speeds] = useMemo(() => {
-    const pos = new Float32Array(count * 3);
-    const col = new Float32Array(count * 3);
-    const spd = new Float32Array(count);
-    const palette = [
-      new Color('#4facfe'),
-      new Color('#00f2fe'),
-      new Color('#a855f7'),
-      new Color('#f59e0b'),
-      new Color('#ff2d87'),
-      new Color('#22d3a7'),
-    ];
-    for (let i = 0; i < count; i++) {
-      pos[i * 3]     = (Math.random() - 0.5) * 22;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 22;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 22;
-      const c = palette[Math.floor(Math.random() * palette.length)];
-      col[i * 3]     = c.r;
-      col[i * 3 + 1] = c.g;
-      col[i * 3 + 2] = c.b;
-      spd[i] = 0.2 + Math.random() * 0.8;
-    }
-    return [pos, col, spd];
-  }, [count]);
-
-  useFrame(({ clock, pointer }) => {
-    if (!mesh.current) return;
-    const t = clock.getElapsedTime();
-    const arr = mesh.current.geometry.attributes.position.array;
-    for (let i = 0; i < count; i++) {
-      arr[i * 3 + 1] += Math.sin(t * 0.3 * speeds[i] + i * 0.1) * 0.0015;
-      arr[i * 3]     += Math.cos(t * 0.2 * speeds[i] + i * 0.07) * 0.001;
-    }
-    mesh.current.geometry.attributes.position.needsUpdate = true;
-    mesh.current.rotation.y = pointer.x * 0.12;
-    mesh.current.rotation.x = pointer.y * 0.08;
-  });
-
-  return (
-    <points ref={mesh}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
-        <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.055}
-        vertexColors
-        transparent
-        opacity={0.65}
-        sizeAttenuation
-        depthWrite={false}
-        blending={AdditiveBlending}
-      />
-    </points>
-  );
-}
-
-/* ── Expanding ring ripple on click ── */
-function ClickRipple() {
-  const ringRef = useRef();
-  const scaleRef = useRef(0);
-  const activeRef = useRef(false);
+function CyberBackground() {
+  const canvasRef = useRef(null);
+  const rafRef = useRef(null);
 
   useEffect(() => {
-    const handler = () => {
-      scaleRef.current = 0.1;
-      activeRef.current = true;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    let cw, ch;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    let count = getCount();
+    if (count === 0) return;
+
+    let particles = [];
+    const initParticles = () => {
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random(),
+          y: Math.random(),
+          z: 0.3 + Math.random() * 0.7,
+          vx: (Math.random() - 0.5) * 0.0002,
+          vy: (Math.random() - 0.5) * 0.0002,
+          color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+          phase: Math.random() * Math.PI * 2,
+        });
+      }
     };
-    window.addEventListener('click', handler);
-    return () => window.removeEventListener('click', handler);
+    initParticles();
+
+    let mx = 0.5, my = 0.5;
+    const onMouseMove = (e) => {
+      mx = e.clientX / window.innerWidth;
+      my = e.clientY / window.innerHeight;
+    };
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+
+    let ripples = [];
+    const onClickRipple = (e) => {
+      ripples.push({ x: e.clientX * dpr, y: e.clientY * dpr, r: 0, alpha: 0.5 });
+    };
+    window.addEventListener('click', onClickRipple, { passive: true });
+
+    const resize = () => {
+      cw = canvas.width = Math.round(window.innerWidth * dpr);
+      ch = canvas.height = Math.round(window.innerHeight * dpr);
+      const newCount = getCount();
+      if (newCount !== count) { count = newCount; initParticles(); }
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    let visible = !document.hidden;
+    const onVis = () => { visible = !document.hidden; };
+    document.addEventListener('visibilitychange', onVis);
+
+    let last = 0;
+    const interval = 1000 / 30;
+
+    const loop = (now) => {
+      rafRef.current = requestAnimationFrame(loop);
+      if (!visible) return;
+      if (now - last < interval) return;
+      last = now;
+
+      ctx.clearRect(0, 0, cw, ch);
+
+      const parallaxX = (mx - 0.5) * 20;
+      const parallaxY = (my - 0.5) * 14;
+      const t = now * 0.001;
+
+      // Particles (additive blend)
+      ctx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < count; i++) {
+        const p = particles[i];
+        p.x += p.vx + Math.cos(t * 0.3 + p.phase) * 0.00008;
+        p.y += p.vy + Math.sin(t * 0.2 + p.phase) * 0.00006;
+        if (p.x < -0.05) p.x = 1.05;
+        if (p.x > 1.05) p.x = -0.05;
+        if (p.y < -0.05) p.y = 1.05;
+        if (p.y > 1.05) p.y = -0.05;
+
+        const px = p.x * cw + parallaxX * p.z;
+        const py = p.y * ch + parallaxY * p.z;
+        const size = p.z * 2.5 * dpr;
+
+        ctx.globalAlpha = 0.35 + p.z * 0.3;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(px, py, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Click ripples
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const rp = ripples[i];
+        rp.r += 4 * dpr;
+        rp.alpha -= 0.012;
+        if (rp.alpha <= 0) { ripples.splice(i, 1); continue; }
+        ctx.globalAlpha = rp.alpha;
+        ctx.strokeStyle = '#4facfe';
+        ctx.lineWidth = 1.5 * dpr;
+        ctx.beginPath();
+        ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Subtle grid (bottom area)
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 0.06;
+      ctx.strokeStyle = '#1a3a5c';
+      ctx.lineWidth = 1;
+      const gridY = ch * 0.7;
+      const gridLines = 12;
+      const spacing = (ch - gridY) / gridLines;
+      for (let g = 0; g <= gridLines; g++) {
+        const gy = gridY + g * spacing;
+        ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(cw, gy); ctx.stroke();
+      }
+      const vLines = 20;
+      const vSpacing = cw / vLines;
+      for (let v = 0; v <= vLines; v++) {
+        ctx.beginPath(); ctx.moveTo(v * vSpacing, gridY); ctx.lineTo(v * vSpacing, ch); ctx.stroke();
+      }
+
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+    };
+
+    rafRef.current = requestAnimationFrame(loop);
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('click', onClickRipple);
+      document.removeEventListener('visibilitychange', onVis);
+    };
   }, []);
 
-  useFrame(({ pointer }) => {
-    if (!ringRef.current) return;
-    if (activeRef.current) {
-      scaleRef.current += 0.06;
-      ringRef.current.scale.set(scaleRef.current, scaleRef.current, 1);
-      ringRef.current.material.opacity = Math.max(0, 0.4 - scaleRef.current * 0.05);
-      ringRef.current.position.set(pointer.x * 8, pointer.y * 5, 0);
-      if (scaleRef.current > 8) activeRef.current = false;
-    } else {
-      ringRef.current.material.opacity = 0;
-    }
-  });
-
-  return (
-    <mesh ref={ringRef}>
-      <ringGeometry args={[0.9, 1, 48]} />
-      <meshBasicMaterial color="#4facfe" transparent opacity={0} side={DoubleSide} blending={AdditiveBlending} />
-    </mesh>
-  );
-}
-
-/* ── Subtle grid floor ── */
-function GridFloor() {
-  const ref = useRef();
-  useFrame(({ clock }) => {
-    if (ref.current) ref.current.position.z = (clock.getElapsedTime() * 0.25) % 2;
-  });
-  return <gridHelper ref={ref} args={[40, 40, '#1a3a5c', '#0a1929']} position={[0, -6, 0]} />;
-}
-
-export default function CyberBackground() {
-  const count = useParticleCount();
-
-  if (count === 0) return null; // skip rendering on very small screens
+  if (getCount() === 0) return null;
 
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }} aria-hidden="true">
-      <Canvas
-        camera={{ position: [0, 0, 9], fov: 55 }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: false, alpha: true, powerPreference: 'low-power' }}
-        style={{ background: 'transparent' }}
-      >
-        <Particles count={count} />
-        <ClickRipple />
-        <GridFloor />
-      </Canvas>
+      <canvas
+        ref={canvasRef}
+        style={{ width: '100vw', height: '100vh', display: 'block' }}
+      />
     </div>
   );
 }
+
+export default memo(CyberBackground);

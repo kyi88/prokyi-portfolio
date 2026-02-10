@@ -10,11 +10,9 @@
     "deploy": "vite build && gh-pages -d dist"
   },
   "dependencies": {
-    "@react-three/fiber": "^9.5.0",
     "framer-motion": "^11.18.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "three": "^0.182.0",
     "tone": "^15.1.22"
   },
   "devDependencies": {

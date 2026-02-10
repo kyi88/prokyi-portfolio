@@ -3,11 +3,6 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Section from './components/Section';
-import Profile from './components/Profile';
-import Career from './components/Career';
-import Goals from './components/Goals';
-import Gadgets from './components/Gadgets';
-import Links from './components/Links';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -25,6 +20,13 @@ const CyberGrid = lazy(() => import('./components/CyberGrid'));
 const ScrollPercentage = lazy(() => import('./components/ScrollPercentage'));
 const ScanLine = lazy(() => import('./components/ScanLine'));
 const ThemePreview = lazy(() => import('./components/ThemePreview'));
+
+/* ── Below-fold sections (lazy) ── */
+const Profile = lazy(() => import('./components/Profile'));
+const Career = lazy(() => import('./components/Career'));
+const Goals = lazy(() => import('./components/Goals'));
+const Gadgets = lazy(() => import('./components/Gadgets'));
+const Links = lazy(() => import('./components/Links'));
 
 /* ── Lazy-loaded components (not needed at initial render) ── */
 const CyberBackground = lazy(() => import('./components/CyberBackground'));
@@ -535,13 +537,13 @@ export default function App() {
     document.documentElement.style.cursor = 'none';
 
     // Create trail dots (skip trail if reduced motion)
-    const TRAIL_COUNT = reducedMotion ? 0 : 5;
+    const TRAIL_COUNT = reducedMotion ? 0 : 3;
     const trailDots = [];
     for (let i = 0; i < TRAIL_COUNT; i++) {
       const d = document.createElement('div');
       d.className = 'cyber-cursor-trail';
-      d.style.opacity = String(0.3 - i * 0.05);
-      d.style.width = d.style.height = `${6 - i}px`;
+      d.style.opacity = String(0.25 - i * 0.07);
+      d.style.width = d.style.height = `${5 - i}px`;
       d.setAttribute('aria-hidden', 'true');
       document.body.appendChild(d);
       trailDots.push({ el: d, x: 0, y: 0 });
@@ -740,15 +742,15 @@ export default function App() {
           <div className="layout">
             <div className="layout__content">
               <Section id="profile" num="01" title="基本情報">
-                <Profile />
+                <Suspense fallback={null}><Profile /></Suspense>
               </Section>
               <div className="section-divider" aria-hidden="true" />
               <Section id="career" num="02" title="学歴・経歴">
-                <Career />
+                <Suspense fallback={null}><Career /></Suspense>
               </Section>
               <div className="section-divider" aria-hidden="true" />
               <Section id="goals" num="03" title="今後の目標・技術的関心">
-                <Goals />
+                <Suspense fallback={null}><Goals /></Suspense>
               </Section>
               <div className="section-divider" aria-hidden="true" />
               <Section id="status" num="04" title="プレイヤーステータス">
@@ -758,11 +760,11 @@ export default function App() {
               </Section>
               <div className="section-divider" aria-hidden="true" />
               <Section id="gadgets" num="05" title="ガジェット">
-                <Gadgets />
+                <Suspense fallback={null}><Gadgets /></Suspense>
               </Section>
               <div className="section-divider" aria-hidden="true" />
               <Section id="links" num="06" title="リンク / SNS">
-                <Links />
+                <Suspense fallback={null}><Links /></Suspense>
               </Section>
             </div>
             <Sidebar />

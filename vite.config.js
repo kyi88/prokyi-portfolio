@@ -59,9 +59,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          three: ['three', '@react-three/fiber'],
           'framer-motion': ['framer-motion'],
-          tone: ['tone'],
         },
       },
     },

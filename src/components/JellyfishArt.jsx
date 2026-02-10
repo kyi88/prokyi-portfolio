@@ -42,6 +42,25 @@ function JellyfishArt() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let cw, ch, scale;
 
+    // Pre-compute frame-invariant values (don't depend on t)
+    const pointCount = basePoints;
+    const yArr = new Float32Array(pointCount);
+    const kArr = new Float32Array(pointCount);
+    const eArr = new Float32Array(pointCount);
+    const dArr = new Float32Array(pointCount);
+    const modArr = new Uint8Array(pointCount);   // i % 2
+    for (let i = 0; i < pointCount; i++) {
+      const y = i / 99;
+      const k = 8 * Math.cos(y);
+      const e = y / 8 - 12;
+      const mag = Math.sqrt(k * k + e * e);
+      yArr[i] = y;
+      kArr[i] = k;
+      eArr[i] = e;
+      dArr[i] = (mag * mag * mag) / 999 + 1;
+      modArr[i] = i & 1;
+    }
+
     const resize = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -58,7 +77,7 @@ function JellyfishArt() {
 
     // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      drawFrame(ctx, cw, ch, scale, basePoints, Math.PI / 4);
+      drawFrame(ctx, cw, ch, scale, pointCount, Math.PI / 4, kArr, eArr, dArr, modArr);
       return () => window.removeEventListener('resize', resize);
     }
 
@@ -74,7 +93,7 @@ function JellyfishArt() {
       if (now - last < interval) return;
       last = now;
       tRef.current += Math.PI / 45;
-      drawFrame(ctx, cw, ch, scale, basePoints, tRef.current);
+      drawFrame(ctx, cw, ch, scale, pointCount, tRef.current, kArr, eArr, dArr, modArr);
     };
     rafRef.current = requestAnimationFrame(loop);
 
@@ -99,51 +118,49 @@ function JellyfishArt() {
   );
 }
 
-function drawFrame(ctx, cw, ch, scale, basePoints, t) {
+function drawFrame(ctx, cw, ch, scale, pointCount, t, kArr, eArr, dArr, modArr) {
   ctx.clearRect(0, 0, cw, ch);
 
   const imageData = ctx.getImageData(0, 0, cw, ch);
   const data = imageData.data;
   const cx = cw / 2;
   const cy = ch / 2;
-
-  // Always use full point count to preserve tentacle detail
-  const pointCount = basePoints;
+  const halfT = t / 2;
+  const eighthT = t / 8;
+  const fillBody = scale > 1.5;
 
   for (let i = pointCount; i--;) {
-    const y = i / 99;
-    const k = 8 * Math.cos(y);
-    const e = y / 8 - 12;
-    const mag = Math.sqrt(k * k + e * e);
-    const d = (mag * mag * mag) / 999 + 1;
+    const k = kArr[i];
+    const e = eArr[i];
+    const d = dArr[i];
+
     const q =
       79 -
       e * Math.sin(k) +
-      (k / d) * (8 + 4 * Math.sin(d * d - t + Math.cos(e + t / 2)));
-    const c = d / 2 + (e / 99) * Math.sin(t + d) - t / 8 + (i % 2) * 3;
+      (k / d) * (8 + 4 * Math.sin(d * d - t + Math.cos(e + halfT)));
+    const c = d / 2 + (e / 99) * Math.sin(t + d) - eighthT + modArr[i] * 3;
 
-    // Map formula coords (centered at 200,190 in 400x400) to canvas center
-    const px = ((q * Math.sin(c) + 200 - 200) * scale + cx) | 0;
-    const py = (((q + 40) * Math.cos(c) + 190 - 200) * scale + cy) | 0;
+    const sinC = Math.sin(c);
+    const cosC = Math.cos(c);
+    const px = (q * sinC * scale + cx) | 0;
+    const py = ((q + 40) * cosC * scale + cy - 10 * scale) | 0;
 
     if (px < 0 || px >= cw || py < 0 || py >= ch) continue;
 
-    // Single pixel for sharp detail at high DPR
-    const idx = (py * cw + px) * 4;
-    data[idx]     = Math.min(255, data[idx]     + 90);
-    data[idx + 1] = Math.min(255, data[idx + 1] + 180);
-    data[idx + 2] = Math.min(255, data[idx + 2] + 220);
+    const idx = (py * cw + px) << 2;
+    data[idx]     = data[idx]     + 90 < 256 ? data[idx]     + 90 : 255;
+    data[idx + 1] = data[idx + 1] + 180 < 256 ? data[idx + 1] + 180 : 255;
+    data[idx + 2] = data[idx + 2] + 220 < 256 ? data[idx + 2] + 220 : 255;
     data[idx + 3] = 255;
 
-    // Add a second pixel below-right only if scale is large enough (body fill)
-    if (scale > 1.5 && d < 3) {
+    if (fillBody && d < 3) {
       const bx = px + 1;
       const by = py + 1;
       if (bx < cw && by < ch) {
-        const idx2 = (by * cw + bx) * 4;
-        data[idx2]     = Math.min(255, data[idx2]     + 60);
-        data[idx2 + 1] = Math.min(255, data[idx2 + 1] + 130);
-        data[idx2 + 2] = Math.min(255, data[idx2 + 2] + 170);
+        const idx2 = (by * cw + bx) << 2;
+        data[idx2]     = data[idx2]     + 60 < 256 ? data[idx2]     + 60 : 255;
+        data[idx2 + 1] = data[idx2 + 1] + 130 < 256 ? data[idx2 + 1] + 130 : 255;
+        data[idx2 + 2] = data[idx2 + 2] + 170 < 256 ? data[idx2 + 2] + 170 : 255;
         data[idx2 + 3] = 255;
       }
     }
