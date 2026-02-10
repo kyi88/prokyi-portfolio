@@ -289,54 +289,119 @@ function BootScreen({ onDone }) {
 
   // Boot sound FX via Web Audio API — reuse single AudioContext
   const bootAudioCtxRef = useRef(null);
+  const pendingSoundsRef = useRef([]);   // queued freqs when ctx is locked
+  const unlockedRef = useRef(false);
+
   const getBootCtx = () => {
     if (!bootAudioCtxRef.current) {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      registerCtx(ctx);          // auto-unlock via audioUnlock.js
+      registerCtx(ctx);
       bootAudioCtxRef.current = ctx;
     }
     return bootAudioCtxRef.current;
   };
-  const playBeep = (freq = 440, dur = 0.06) => {
+
+  const _playTone = (ctx, freq, dur = 0.06, delay = 0) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    const t = ctx.currentTime + delay;
+    gain.gain.setValueAtTime(0.05, t);
+    gain.gain.linearRampToValueAtTime(0.04, t + dur * 0.3);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + dur + 0.01);
+    osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+  };
+
+  const playBeep = (freq = 440) => {
     try {
       if (localStorage.getItem('prokyi_muted') === 'true') return;
       const ctx = getBootCtx();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.05, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.04, ctx.currentTime + dur * 0.3);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + dur + 0.01);
-      osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+      if (ctx.state === 'running') {
+        unlockedRef.current = true;
+        _playTone(ctx, freq);
+      } else {
+        // Queue for later — will be flushed when unlocked
+        pendingSoundsRef.current.push({ type: 'beep', freq });
+      }
     } catch (_) {}
   };
+
   const playBootSuccess = () => {
     try {
       if (localStorage.getItem('prokyi_muted') === 'true') return;
       const ctx = getBootCtx();
-      const notes = [523, 659, 784, 1047]; // C5 E5 G5 C6
-      notes.forEach((f, i) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.value = f;
-        const t = ctx.currentTime + i * 0.06;
-        gain.gain.setValueAtTime(0.06, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(t); osc.stop(t + 0.15);
-        osc.onended = () => { osc.disconnect(); gain.disconnect(); };
-      });
+      if (ctx.state === 'running') {
+        unlockedRef.current = true;
+        const notes = [523, 659, 784, 1047];
+        notes.forEach((f, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = f;
+          const t = ctx.currentTime + i * 0.06;
+          gain.gain.setValueAtTime(0.06, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(t); osc.stop(t + 0.15);
+          osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+        });
+      } else {
+        pendingSoundsRef.current.push({ type: 'success' });
+      }
     } catch (_) {}
   };
 
-  // Eagerly create AudioContext so resume listeners can unlock it
-  useEffect(() => { getBootCtx(); }, []);
+  // Flush queued sounds rapidly when AudioContext is unlocked
+  const flushPending = useRef(() => {});
+  flushPending.current = () => {
+    if (unlockedRef.current) return;
+    const ctx = bootAudioCtxRef.current;
+    if (!ctx || ctx.state !== 'running') return;
+    unlockedRef.current = true;
+    const queue = pendingSoundsRef.current.splice(0);
+    if (queue.length === 0) return;
+    // Replay all missed beeps quickly with 30ms spacing
+    let offset = 0;
+    queue.forEach(item => {
+      if (item.type === 'beep') {
+        _playTone(ctx, item.freq, 0.04, offset);
+        offset += 0.03;
+      } else if (item.type === 'success') {
+        [523, 659, 784, 1047].forEach((f, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = f;
+          const t = ctx.currentTime + offset + i * 0.06;
+          gain.gain.setValueAtTime(0.06, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(t); osc.stop(t + 0.15);
+          osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+        });
+        offset += 0.3;
+      }
+    });
+  };
+
+  // Eagerly create ctx + poll for unlock to flush queued sounds
+  useEffect(() => {
+    const ctx = getBootCtx();
+    // Poll statechange — some browsers fire it, some don't
+    const onStateChange = () => flushPending.current();
+    ctx.addEventListener('statechange', onStateChange);
+    // Also poll periodically as fallback
+    const poll = setInterval(() => flushPending.current(), 50);
+    return () => {
+      ctx.removeEventListener('statechange', onStateChange);
+      clearInterval(poll);
+    };
+  }, []);
 
   useEffect(() => {
     let i = 0;
