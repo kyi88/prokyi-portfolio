@@ -36,7 +36,10 @@ export default function EasterEggFab() {
       }
     };
     window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    return () => {
+      window.removeEventListener('keydown', handler);
+      clearTimeout(konamiTimerRef.current);
+    };
   }, [konamiIdx]);
 
   // Outside click to close menu

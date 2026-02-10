@@ -79,9 +79,13 @@ function JellyfishArt() {
     rafRef.current = requestAnimationFrame(loop);
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       window.removeEventListener('resize', resize);
       document.removeEventListener('visibilitychange', onVisChange);
+      // Clean up context reference
+      try { 
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      } catch (_) {}
     };
   }, []);
 

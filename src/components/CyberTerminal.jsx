@@ -460,9 +460,9 @@ export default function CyberTerminal() {
 
   // Focus input when opened
   useEffect(() => {
-    if (open && inputRef.current) {
-      setTimeout(() => inputRef.current?.focus(), 100);
-    }
+    if (!open) return;
+    const timeoutId = setTimeout(() => inputRef.current?.focus(), 100);
+    return () => clearTimeout(timeoutId);
   }, [open]);
 
   // Auto-scroll

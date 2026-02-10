@@ -610,6 +610,7 @@ export default function App() {
     canvas.width = 32;
     canvas.height = 32;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     let link = document.querySelector("link[rel~='icon']");
     if (!link) {
       link = document.createElement('link');
@@ -618,6 +619,7 @@ export default function App() {
     }
     let frame = 0;
     let iv = null;
+    let dataUrl = null;
     const draw = () => {
       ctx.clearRect(0, 0, 32, 32);
       // Outer ring
@@ -640,7 +642,8 @@ export default function App() {
       ctx.strokeStyle = `hsla(${(hue + 60) % 360}, 80%, 50%, 0.6)`;
       ctx.lineWidth = 1.5;
       ctx.stroke();
-      link.href = canvas.toDataURL('image/png');
+      dataUrl = canvas.toDataURL('image/png');
+      link.href = dataUrl;
       frame++;
     };
     const start = () => { if (!iv) iv = setInterval(draw, 3000); };
@@ -652,6 +655,9 @@ export default function App() {
     return () => {
       stop();
       document.removeEventListener('visibilitychange', onVisibility);
+      try { ctx.canvas = null; } catch (_) {}
+      canvas.remove?.();
+      dataUrl = null;
     };
   }, []);
 
