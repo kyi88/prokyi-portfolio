@@ -277,6 +277,7 @@ function StatusSkeleton() {
 function BootScreen({ onDone }) {
   const [lines, setLines] = useState([]);
   const [showAscii, setShowAscii] = useState(true);
+  const [started, setStarted] = useState(false);
   const bootLines = [
     '[BOOT] Initializing prokyi.sys ...',
     '[OK]   Neural interface connected',
@@ -332,7 +333,19 @@ function BootScreen({ onDone }) {
     } catch (_) {}
   };
 
+  // ユーザー操作なしでもブート開始（1.2秒後に自動開始）
   useEffect(() => {
+    const auto = setTimeout(() => setStarted(true), 1200);
+    return () => clearTimeout(auto);
+  }, []);
+
+  // クリックで即座に開始（AudioContext解禁）
+  const handleStart = () => {
+    if (!started) setStarted(true);
+  };
+
+  useEffect(() => {
+    if (!started) return;
     let i = 0;
     const freqs = [520, 580, 640, 700, 780, 880];
     // Hide ASCII art after first boot line
@@ -357,7 +370,7 @@ function BootScreen({ onDone }) {
       }
     }, 180);
     return () => { clearInterval(iv); clearTimeout(asciiTimer); clearTimeout(doneTimer); };
-  }, []);
+  }, [started]);
 
   const asciiArt = BOOT_ASCII;
 
@@ -366,6 +379,8 @@ function BootScreen({ onDone }) {
       className="boot-screen"
       exit={{ opacity: 0, scale: 1.05 }}
       transition={{ duration: 0.5 }}
+      onClick={handleStart}
+      style={{ cursor: started ? 'default' : 'pointer' }}
     >
       <div className="boot-screen__inner">
         {/* ASCII art header */}
@@ -394,6 +409,16 @@ function BootScreen({ onDone }) {
           ))}
           <span className="boot-screen__cursor">_</span>
         </div>
+        {!started && (
+          <motion.p
+            className="boot-screen__hint"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.3, 0.8, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            CLICK TO BOOT
+          </motion.p>
+        )}
       </div>
     </motion.div>
   );
@@ -404,10 +429,14 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [milestoneMsg, setMilestoneMsg] = useState('');
-  // デフォルトをミュートに設定（初回訪問時）
+  // 効果音はデフォルトON（初回訪問時）
   const [muted, setMuted] = useState(() => {
     const stored = localStorage.getItem('prokyi_muted');
-    return stored === null ? true : stored === 'true';
+    if (stored === null) {
+      localStorage.setItem('prokyi_muted', 'false');
+      return false;
+    }
+    return stored === 'true';
   });
   const mutedRef = useRef(muted);
   mutedRef.current = muted;

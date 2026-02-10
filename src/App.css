@@ -229,6 +229,16 @@
   50% { opacity: 0; }
 }
 
+.boot-screen__hint {
+  margin-top: 24px;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--c-accent, #4facfe);
+  text-align: center;
+  font-family: 'Fira Code', monospace;
+  text-transform: uppercase;
+}
+
 /* ═══════════════════════════
    Status Skeleton Loader
    ═══════════════════════════ */
