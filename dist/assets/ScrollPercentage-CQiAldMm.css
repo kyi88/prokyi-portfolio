@@ -1,1 +1,0 @@
-.scroll-pct{position:fixed;bottom:24px;left:72px;z-index:900;font-family:var(--font-mono);font-size:.65rem;letter-spacing:1px;color:var(--c-accent);opacity:.4;pointer-events:none}.scroll-pct__value{display:block}@media(max-width:768px){.scroll-pct{display:none}}
