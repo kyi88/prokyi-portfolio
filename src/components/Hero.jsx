@@ -142,8 +142,8 @@ function Hero() {
     const rect = avatarRef.current.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    tiltX.set((e.clientY - cy) / 8);
-    tiltY.set(-(e.clientX - cx) / 8);
+    tiltX.set(-(e.clientY - cy) / 8);
+    tiltY.set((e.clientX - cx) / 8);
   }, [tiltX, tiltY]);
   const handleMouseLeave = useCallback(() => {
     tiltX.set(0);

@@ -11,8 +11,8 @@ function useTilt() {
     const rect = el.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.setProperty('--tilt-x', `${-y * 10}deg`);
-    el.style.setProperty('--tilt-y', `${x * 10}deg`);
+    el.style.setProperty('--tilt-x', `${y * 10}deg`);
+    el.style.setProperty('--tilt-y', `${-x * 10}deg`);
   }, []);
   const onMouseLeave = useCallback((e) => {
     const el = e.currentTarget;
