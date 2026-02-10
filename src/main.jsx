@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 
+// Force-unlock AudioContext ASAP (silent autoplay + gesture listeners)
+import './utils/audioUnlock';
+
 /* Console easter egg */
 console.log(
   '%c⚡ PROKYI SYSTEM v2.0 ⚡',

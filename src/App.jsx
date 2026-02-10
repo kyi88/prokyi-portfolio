@@ -16,6 +16,7 @@ import NetworkStatus from './components/NetworkStatus';
 import PageProgress from './components/PageProgress';
 import { SoundContext } from './contexts/SoundContext';
 import { useEffectSound } from './hooks/useEffectSound';
+import { registerCtx } from './utils/audioUnlock';
 import './App.css';
 
 const Breadcrumbs = lazy(() => import('./components/Breadcrumbs'));
@@ -291,23 +292,11 @@ function BootScreen({ onDone }) {
   const getBootCtx = () => {
     if (!bootAudioCtxRef.current) {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      // Eagerly try to unlock
-      if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+      registerCtx(ctx);          // auto-unlock via audioUnlock.js
       bootAudioCtxRef.current = ctx;
     }
     return bootAudioCtxRef.current;
   };
-
-  // Unlock AudioContext on any user gesture (covers autoplay policy)
-  useEffect(() => {
-    const unlock = () => {
-      const ctx = bootAudioCtxRef.current;
-      if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
-    };
-    const events = ['pointerdown', 'keydown', 'touchstart', 'mousedown'];
-    events.forEach(e => document.addEventListener(e, unlock, { once: false, passive: true }));
-    return () => events.forEach(e => document.removeEventListener(e, unlock));
-  }, []);
   const playBeep = (freq = 440, dur = 0.06) => {
     try {
       if (localStorage.getItem('prokyi_muted') === 'true') return;

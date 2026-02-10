@@ -1,5 +1,6 @@
 import { useCallback, useRef, useContext } from 'react';
 import { SoundContext } from '../contexts/SoundContext';
+import { registerCtx } from '../utils/audioUnlock';
 
 /**
  * useHoverSound — plays a tiny blip on hover via Web Audio API.
@@ -11,15 +12,7 @@ let audioCtx = null;
 function getCtx() {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    // Eagerly try to resume
-    if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
-    // Unlock on any user gesture
-    const unlock = () => {
-      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
-    };
-    ['pointerdown', 'keydown', 'touchstart', 'mousedown'].forEach(e =>
-      document.addEventListener(e, unlock, { passive: true })
-    );
+    registerCtx(audioCtx);
   }
   return audioCtx;
 }
