@@ -1,10 +1,11 @@
+// Create global AudioContext FIRST — before any other imports
+// to catch navigation user-activation window
+import './utils/audioUnlock';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
-
-// Force-unlock AudioContext ASAP (silent autoplay + gesture listeners)
-import './utils/audioUnlock';
 
 /* Console easter egg */
 console.log(

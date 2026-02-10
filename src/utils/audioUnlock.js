@@ -1,91 +1,94 @@
 /**
- * audioUnlock.js — Force-unlock AudioContext as early as possible.
+ * audioUnlock.js — Global shared AudioContext singleton.
  *
- * Chrome requires a user activation (pointerdown/keydown/touchend etc.)
- * before AudioContext.resume() will succeed.
+ * Creates AudioContext at the EARLIEST possible moment (script load)
+ * to catch the brief user-activation window from page navigation.
+ * Also installs gesture listeners to unlock it on first interaction.
  *
- * Strategy:
- *  1. Silent <audio autoplay> — works on some desktop browsers.
- *  2. pointerdown / mousedown / keydown / touchstart / touchend —
- *     the lightest real user gestures that grant user activation.
- *  3. Poll + statechange event for immediate flush on unlock.
+ * All sound code should use getGlobalCtx() instead of creating its own.
  */
 
-// Tiny silent WAV
-const SILENT_WAV =
-  'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
-
-const _ctxSet = new Set();
-let _unlockBound = false;
+let _ctx = null;
 let _unlocked = false;
+const _onUnlockCallbacks = [];
 
-/** Register an AudioContext to be auto-unlocked. */
-export function registerCtx(ctx) {
-  if (!ctx) return;
-  _ctxSet.add(ctx);
-  _ensureUnlockListeners();
-  if (ctx.state === 'suspended') ctx.resume().catch(() => {});
-  if (ctx.state === 'running') _unlocked = true;
+/** Get the global shared AudioContext. Created on first call. */
+export function getGlobalCtx() {
+  if (!_ctx) {
+    _ctx = new (window.AudioContext || window.webkitAudioContext)();
+    // Immediately try resume — may succeed if navigation provides activation
+    _ctx.resume().then(() => {
+      _unlocked = true;
+      _fireCallbacks();
+    }).catch(() => {});
+    if (_ctx.state === 'running') {
+      _unlocked = true;
+    }
+    // Watch for external resume
+    _ctx.addEventListener('statechange', () => {
+      if (_ctx.state === 'running' && !_unlocked) {
+        _unlocked = true;
+        _fireCallbacks();
+      }
+    });
+  }
+  return _ctx;
 }
 
 export function isUnlocked() { return _unlocked; }
 
-/** Resume ALL registered AudioContexts. */
-function _resumeAll() {
-  _ctxSet.forEach(ctx => {
-    if (ctx.state === 'suspended') {
-      ctx.resume().then(() => { _unlocked = true; }).catch(() => {});
-    }
-    if (ctx.state === 'running') _unlocked = true;
-  });
+/** Register a callback to be fired once when AudioContext is unlocked. */
+export function onUnlock(cb) {
+  if (_unlocked) { cb(); return; }
+  _onUnlockCallbacks.push(cb);
 }
 
-function _ensureUnlockListeners() {
-  if (_unlockBound) return;
-  _unlockBound = true;
+function _fireCallbacks() {
+  while (_onUnlockCallbacks.length) {
+    try { _onUnlockCallbacks.shift()(); } catch {}
+  }
+}
 
-  // Strategy 1: Silent autoplay
-  try {
-    const audio = document.createElement('audio');
-    audio.src = SILENT_WAV;
-    audio.volume = 0.01;
-    audio.setAttribute('autoplay', '');
-    audio.setAttribute('playsinline', '');
-    audio.style.display = 'none';
-    document.body?.appendChild(audio);
-    const p = audio.play();
-    if (p && p.then) {
-      p.then(() => {
-        _resumeAll();
-        setTimeout(() => { try { audio.remove(); } catch {} }, 500);
-      }).catch(() => {
-        try { audio.remove(); } catch {}
-      });
-    }
-  } catch {}
+/** Legacy compat — registers external AudioContext for unlock. */
+export function registerCtx(ctx) {
+  if (!ctx) return;
+  if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+  // Install gesture handler for this ctx too
+  const resume = () => { if (ctx.state === 'suspended') ctx.resume().catch(() => {}); };
+  _gestureHandlers.push(resume);
+}
 
-  // Strategy 2: User activation events (these actually unlock AudioContext)
-  const gestureEvents = [
+const _gestureHandlers = [];
+
+function _installGestureListeners() {
+  const events = [
     'pointerdown', 'pointerup', 'mousedown',
     'keydown', 'touchstart', 'touchend',
   ];
   const handler = () => {
-    _resumeAll();
-    // Once unlocked, remove all listeners
+    // Resume global ctx
+    if (_ctx && _ctx.state === 'suspended') {
+      _ctx.resume().then(() => {
+        _unlocked = true;
+        _fireCallbacks();
+      }).catch(() => {});
+    }
+    if (_ctx && _ctx.state === 'running') {
+      _unlocked = true;
+      _fireCallbacks();
+    }
+    // Resume any registered external contexts
+    _gestureHandlers.forEach(fn => fn());
+    // Cleanup once unlocked
     if (_unlocked) {
-      gestureEvents.forEach(e => document.removeEventListener(e, handler));
+      events.forEach(e => document.removeEventListener(e, handler));
     }
   };
-  gestureEvents.forEach(e =>
+  events.forEach(e =>
     document.addEventListener(e, handler, { passive: true })
   );
 }
 
-// Auto-init on import
-if (typeof document !== 'undefined') {
-  if (document.body) {
-    _ensureUnlockListeners();
-  } else {
-    document.addEventListener('DOMContentLoaded', _ensureUnlockListeners, { once: true });
-  }
-}
+// ═══ Auto-init: create ctx + install listeners ASAP ═══
+getGlobalCtx();
+_installGestureListeners();

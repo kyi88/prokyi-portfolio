@@ -1,22 +1,13 @@
 import { useCallback, useRef, useContext } from 'react';
 import { SoundContext } from '../contexts/SoundContext';
-import { registerCtx } from '../utils/audioUnlock';
+import { getGlobalCtx } from '../utils/audioUnlock';
 
 /**
  * useHoverSound — plays a tiny blip on hover via Web Audio API.
+ * Uses the global shared AudioContext from audioUnlock.js.
  * Respects global mute from SoundContext.
  * Returns { onMouseEnter } to spread onto the target element.
  */
-let audioCtx = null;
-
-function getCtx() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    registerCtx(audioCtx);
-  }
-  return audioCtx;
-}
-
 export default function useHoverSound(freq = 880, duration = 0.04, volume = 0.08) {
   const { muted } = useContext(SoundContext);
   const mutedRef = useRef(muted);
@@ -31,7 +22,8 @@ export default function useHoverSound(freq = 880, duration = 0.04, volume = 0.08
     lastPlay.current = now;
 
     try {
-      const ctx = getCtx();
+      const ctx = getGlobalCtx();
+      if (ctx.state !== 'running') return;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';

@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react';
-import { registerCtx } from '../utils/audioUnlock';
+import { getGlobalCtx } from '../utils/audioUnlock';
 
 /**
  * UI効果音フック
@@ -14,10 +14,10 @@ export function useEffectSound(soundType = 'click') {
       if (localStorage.getItem('prokyi_muted') === 'true') return;
 
       if (!audioCtxRef.current) {
-        audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
-        registerCtx(audioCtxRef.current);
+        audioCtxRef.current = getGlobalCtx();
       }
       const ctx = audioCtxRef.current;
+      if (ctx.state !== 'running') return;
 
       switch (soundType) {
         case 'click': playClickSound(ctx); break;
