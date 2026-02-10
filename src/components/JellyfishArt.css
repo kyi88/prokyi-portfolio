@@ -35,8 +35,11 @@
 @media (max-width: 768px) {
   @keyframes jellyfish-fadein {
     to {
-      opacity: 0.28;
+      opacity: 0.32;
     }
+  }
+  .jellyfish-art__canvas {
+    transform: scale(1.15);
   }
 }
 

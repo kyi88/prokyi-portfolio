@@ -6,21 +6,21 @@ import './JellyfishArt.css';
  * Canvas dynamically sized to viewport for crisp full-screen rendering.
  *
  * Mobile optimizations:
- * - Much lower internal resolution (max 400px)
- * - Fewer points (6000 vs 15000)
- * - Lower fps (20 vs 30)
- * - CSS smoothing hides pixelation
+ * - Moderate internal resolution (max 720px) for good quality
+ * - 10000 points for detailed shape
+ * - 24 fps for smooth animation without battery drain
+ * - CSS smoothing hides any remaining pixelation
  */
 
 const IS_MOBILE = typeof window !== 'undefined' &&
   (window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent));
 
 const POINTS_DESKTOP = 15000;
-const POINTS_MOBILE = 6000;
+const POINTS_MOBILE = 10000;
 const MAX_RES_DESKTOP = 1200;
-const MAX_RES_MOBILE = 400;
+const MAX_RES_MOBILE = 720;
 const FPS_DESKTOP = 30;
-const FPS_MOBILE = 20;
+const FPS_MOBILE = 24;
 
 function JellyfishArt() {
   const canvasRef = useRef(null);
