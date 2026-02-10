@@ -277,7 +277,6 @@ function StatusSkeleton() {
 function BootScreen({ onDone }) {
   const [lines, setLines] = useState([]);
   const [showAscii, setShowAscii] = useState(true);
-  const [started, setStarted] = useState(false);
   const bootLines = [
     '[BOOT] Initializing prokyi.sys ...',
     '[OK]   Neural interface connected',
@@ -291,10 +290,24 @@ function BootScreen({ onDone }) {
   const bootAudioCtxRef = useRef(null);
   const getBootCtx = () => {
     if (!bootAudioCtxRef.current) {
-      bootAudioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      // Eagerly try to unlock
+      if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+      bootAudioCtxRef.current = ctx;
     }
     return bootAudioCtxRef.current;
   };
+
+  // Unlock AudioContext on any user gesture (covers autoplay policy)
+  useEffect(() => {
+    const unlock = () => {
+      const ctx = bootAudioCtxRef.current;
+      if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+    };
+    const events = ['pointerdown', 'keydown', 'touchstart', 'mousedown'];
+    events.forEach(e => document.addEventListener(e, unlock, { once: false, passive: true }));
+    return () => events.forEach(e => document.removeEventListener(e, unlock));
+  }, []);
   const playBeep = (freq = 440, dur = 0.06) => {
     try {
       if (localStorage.getItem('prokyi_muted') === 'true') return;
@@ -333,19 +346,10 @@ function BootScreen({ onDone }) {
     } catch (_) {}
   };
 
-  // ユーザー操作なしでもブート開始（1.2秒後に自動開始）
-  useEffect(() => {
-    const auto = setTimeout(() => setStarted(true), 1200);
-    return () => clearTimeout(auto);
-  }, []);
-
-  // クリックで即座に開始（AudioContext解禁）
-  const handleStart = () => {
-    if (!started) setStarted(true);
-  };
+  // Eagerly create AudioContext so resume listeners can unlock it
+  useEffect(() => { getBootCtx(); }, []);
 
   useEffect(() => {
-    if (!started) return;
     let i = 0;
     const freqs = [520, 580, 640, 700, 780, 880];
     // Hide ASCII art after first boot line
@@ -370,7 +374,7 @@ function BootScreen({ onDone }) {
       }
     }, 180);
     return () => { clearInterval(iv); clearTimeout(asciiTimer); clearTimeout(doneTimer); };
-  }, [started]);
+  }, []);
 
   const asciiArt = BOOT_ASCII;
 
@@ -379,8 +383,6 @@ function BootScreen({ onDone }) {
       className="boot-screen"
       exit={{ opacity: 0, scale: 1.05 }}
       transition={{ duration: 0.5 }}
-      onClick={handleStart}
-      style={{ cursor: started ? 'default' : 'pointer' }}
     >
       <div className="boot-screen__inner">
         {/* ASCII art header */}
@@ -409,16 +411,6 @@ function BootScreen({ onDone }) {
           ))}
           <span className="boot-screen__cursor">_</span>
         </div>
-        {!started && (
-          <motion.p
-            className="boot-screen__hint"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0.3, 0.8, 0.3] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            CLICK TO BOOT
-          </motion.p>
-        )}
       </div>
     </motion.div>
   );

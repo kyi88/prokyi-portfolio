@@ -14,8 +14,17 @@ export function useEffectSound(soundType = 'click') {
 
       if (!audioCtxRef.current) {
         audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+        // Eagerly try to resume
+        if (audioCtxRef.current.state === 'suspended') audioCtxRef.current.resume().catch(() => {});
+        // Unlock on any user gesture
+        const ctx = audioCtxRef.current;
+        const unlock = () => { if (ctx.state === 'suspended') ctx.resume().catch(() => {}); };
+        ['pointerdown', 'keydown', 'touchstart', 'mousedown'].forEach(e =>
+          document.addEventListener(e, unlock, { passive: true })
+        );
       }
       const ctx = audioCtxRef.current;
+      if (ctx.state === 'suspended') ctx.resume().catch(() => {});
 
       switch (soundType) {
         case 'click': playClickSound(ctx); break;

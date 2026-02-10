@@ -11,6 +11,15 @@ let audioCtx = null;
 function getCtx() {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // Eagerly try to resume
+    if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+    // Unlock on any user gesture
+    const unlock = () => {
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+    };
+    ['pointerdown', 'keydown', 'touchstart', 'mousedown'].forEach(e =>
+      document.addEventListener(e, unlock, { passive: true })
+    );
   }
   return audioCtx;
 }
