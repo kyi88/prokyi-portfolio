@@ -16,9 +16,9 @@ const IS_MOBILE = typeof window !== 'undefined' &&
   (window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent));
 
 const POINTS_DESKTOP = 15000;
-const POINTS_MOBILE = 10000;
+const POINTS_MOBILE = 12000;
 const MAX_RES_DESKTOP = 1200;
-const MAX_RES_MOBILE = 720;
+const MAX_RES_MOBILE = 1200;
 const FPS_DESKTOP = 30;
 const FPS_MOBILE = 24;
 
@@ -39,7 +39,7 @@ function JellyfishArt() {
     const basePoints = mobile ? POINTS_MOBILE : POINTS_DESKTOP;
     const targetFps = mobile ? FPS_MOBILE : FPS_DESKTOP;
 
-    const dpr = mobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let cw, ch, scale;
 
     const resize = () => {
