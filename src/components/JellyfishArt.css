@@ -1,0 +1,46 @@
+/* ── JellyfishArt ── */
+/* Background generative canvas — cyberpunk bio-organism */
+
+.jellyfish-art {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  animation: jellyfish-fadein 2.5s ease-out 2s forwards;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes jellyfish-fadein {
+  to {
+    opacity: 0.25;
+  }
+}
+
+.jellyfish-art__canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  /* Smooth upscaling on mobile (low internal res) */
+  image-rendering: auto;
+}
+
+/* Mobile — slightly lower opacity to keep text readable */
+@media (max-width: 768px) {
+  @keyframes jellyfish-fadein {
+    to {
+      opacity: 0.15;
+    }
+  }
+}
+
+/* Reduced motion — show static, no animation */
+@media (prefers-reduced-motion: reduce) {
+  .jellyfish-art {
+    opacity: 0.15;
+    animation: none;
+  }
+}

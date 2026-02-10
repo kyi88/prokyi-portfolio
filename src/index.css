@@ -28,6 +28,15 @@ html {
 
   --c-text: #b8c5d6;
   --c-text-dim: #5a6a7e;
+
+  /* Bottom-right button stack */
+  --fab-right: 24px;
+  --fab-size: 44px;
+  --fab-gap: 10px;
+  --fab-bottom-1: 24px;
+  --fab-bottom-2: calc(var(--fab-bottom-1) + var(--fab-size) + var(--fab-gap));
+  --fab-bottom-3: calc(var(--fab-bottom-2) + var(--fab-size) + var(--fab-gap));
+  --fab-bottom-4: calc(var(--fab-bottom-3) + var(--fab-size) + var(--fab-gap));
   --c-heading: #e4edff;
 
   /* Primary palette */
@@ -53,6 +62,23 @@ html {
 
   --radius: 16px;
   --radius-sm: 10px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --fab-right: 16px;
+    --fab-size: 38px;
+    --fab-gap: 10px;
+    --fab-bottom-1: 16px;
+  }
+}
+@media (max-width: 480px) {
+  :root {
+    --fab-right: 12px;
+    --fab-size: 34px;
+    --fab-gap: 10px;
+    --fab-bottom-1: 12px;
+  }
 }
 
 /* ── Hacker Green theme ── */

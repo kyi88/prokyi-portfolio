@@ -37,11 +37,11 @@
 /* Sound toggle button */
 .sound-toggle {
   position: fixed;
-  bottom: 76px;
-  right: 24px;
+  bottom: var(--fab-bottom-2, 78px);
+  right: var(--fab-right, 24px);
   z-index: 910;
-  width: 44px;
-  height: 44px;
+  width: var(--fab-size, 44px);
+  height: var(--fab-size, 44px);
   border-radius: 50%;
   background: rgba(6, 8, 15, 0.6);
   -webkit-backdrop-filter: blur(8px);
@@ -61,19 +61,12 @@
 }
 @media (max-width: 768px) {
   .sound-toggle {
-    bottom: 64px;
-    right: 16px;
-    width: 38px;
-    height: 38px;
-    font-size: 0.9rem;
+    bottom: var(--fab-bottom-2, 64px);
   }
 }
 @media (max-width: 480px) {
   .sound-toggle {
-    bottom: 56px;
-    right: 12px;
-    width: 34px;
-    height: 34px;
+    bottom: var(--fab-bottom-2, 56px);
   }
 }
 

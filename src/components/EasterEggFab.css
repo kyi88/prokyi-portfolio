@@ -1,18 +1,28 @@
 /* Easter Egg FAB */
 .ee-fab {
-  position: fixed; bottom: 124px; right: 24px; z-index: 920;
-  width: 44px; height: 44px; border-radius: 50%;
+  position: fixed;
+  bottom: var(--fab-bottom-3, 132px);
+  right: var(--fab-right, 24px);
+  z-index: 920;
+  width: var(--fab-size, 44px);
+  height: var(--fab-size, 44px);
+  border-radius: 50%;
   border: 1px solid rgba(79,172,254,.25);
-  background: rgba(14,18,30,.85); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-  font-size: 1.2rem; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+  background: rgba(14,18,30,.85);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 4px 18px rgba(0,0,0,.4), 0 0 12px rgba(79,172,254,.08);
   transition: border-color .3s;
 }
 .ee-fab:hover { border-color: var(--c-accent, #4facfe); }
 
 .ee-menu {
-  position: fixed; bottom: 228px; right: 24px; z-index: 920;
+  position: fixed; bottom: 240px; right: 24px; z-index: 920;
   background: rgba(14,18,30,.95); border: 1px solid rgba(79,172,254,.18);
   border-radius: 8px; padding: 6px; box-shadow: 0 8px 28px rgba(0,0,0,.5);
 }
@@ -66,28 +76,20 @@
 }
 @media (max-width: 768px) {
   .ee-fab {
-    bottom: 112px;
-    right: 16px;
-    width: 38px;
-    height: 38px;
-    font-size: 1rem;
+    bottom: var(--fab-bottom-3, 112px);
   }
   .ee-menu {
-    bottom: 156px;
-    right: 16px;
+    bottom: calc(var(--fab-bottom-3, 112px) + var(--fab-size, 38px) + 8px);
+    right: var(--fab-right, 16px);
   }
 }
 @media (max-width: 480px) {
   .ee-fab {
-    bottom: 100px;
-    right: 12px;
-    width: 34px;
-    height: 34px;
-    font-size: 0.95rem;
+    bottom: var(--fab-bottom-3, 100px);
   }
   .ee-menu {
-    bottom: 140px;
-    right: 12px;
+    bottom: calc(var(--fab-bottom-3, 100px) + var(--fab-size, 34px) + 8px);
+    right: var(--fab-right, 12px);
   }
 }
 

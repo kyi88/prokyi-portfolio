@@ -30,10 +30,11 @@ const StatusScreen = lazy(() => import('./components/StatusScreen'));
 const EasterEggFab = lazy(() => import('./components/EasterEggFab'));
 const CyberTerminal = lazy(() => import('./components/CyberTerminal'));
 const KeyboardGuide = lazy(() => import('./components/KeyboardGuide'));
-const ProceduralBGM = lazy(() => import('./components/ProceduralBGM'));
+
 const CommandPalette = lazy(() => import('./components/CommandPalette'));
 const Minimap = lazy(() => import('./components/Minimap'));
 const WelcomeBanner = lazy(() => import('./components/WelcomeBanner'));
+// ProceduralBGM removed
 const FPSMonitor = lazy(() => import('./components/FPSMonitor'));
 const ScrollBurst = lazy(() => import('./components/ScrollBurst'));
 const AchievementBadges = lazy(() => import('./components/AchievementBadges'));
@@ -43,7 +44,6 @@ const ClickSpark = lazy(() => import('./components/ClickSpark'));
 const Confetti = lazy(() => import('./components/Confetti'));
 const IntrusionAlert = lazy(() => import('./components/IntrusionAlert'));
 const PhantomCursor = lazy(() => import('./components/PhantomCursor'));
-const SurveillanceFeed = lazy(() => import('./components/SurveillanceFeed'));
 const GhostProtocol = lazy(() => import('./components/GhostProtocol'));
 const CoreDump = lazy(() => import('./components/CoreDump'));
 const SignalInterceptor = lazy(() => import('./components/SignalInterceptor'));
@@ -64,6 +64,7 @@ const SynapticFirewall = lazy(() => import('./components/SynapticFirewall'));
 const DeadDrop = lazy(() => import('./components/DeadDrop'));
 const WetwareCompiler = lazy(() => import('./components/WetwareCompiler'));
 const MissionComplete = lazy(() => import('./components/MissionComplete'));
+const JellyfishArt = lazy(() => import('./components/JellyfishArt'));
 
 const BOOT_ASCII = [
   ' ██████╗ ██████╗  ██████╗ ██╗  ██╗██╗   ██╗██╗',
@@ -668,6 +669,7 @@ export default function App() {
         <>
           <Suspense fallback={null}>
             <CyberBackground />
+            <JellyfishArt />
       </Suspense>
       <PageProgress />
       <Suspense fallback={null}><CyberGrid /></Suspense>
@@ -676,9 +678,6 @@ export default function App() {
       <SystemGlitch />
       <SystemAlerts />
       <NetworkStatus />
-
-      {/* Procedural generative BGM */}
-      <Suspense fallback={null}><ProceduralBGM /></Suspense>
 
       {/* Sound toggle */}
       <button
@@ -762,7 +761,6 @@ export default function App() {
       <Suspense fallback={null}>
       <IntrusionAlert />
       <PhantomCursor />
-      <SurveillanceFeed />
       <GhostProtocol />
       <CoreDump />
       <SignalInterceptor />

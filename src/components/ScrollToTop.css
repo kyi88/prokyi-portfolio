@@ -1,10 +1,10 @@
 .scroll-top {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: var(--fab-bottom-1, 24px);
+  right: var(--fab-right, 24px);
   z-index: 910;
-  width: 44px;
-  height: 44px;
+  width: var(--fab-size, 44px);
+  height: var(--fab-size, 44px);
   border: 1px solid rgba(79, 172, 254, 0.3);
   border-radius: 50%;
   background: rgba(5, 7, 14, 0.85);
@@ -24,17 +24,11 @@
 }
 @media (max-width: 768px) {
   .scroll-top {
-    bottom: 16px;
-    right: 16px;
-    width: 38px;
-    height: 38px;
+    bottom: var(--fab-bottom-1, 16px);
   }
 }
 @media (max-width: 480px) {
   .scroll-top {
-    bottom: 12px;
-    right: 12px;
-    width: 34px;
-    height: 34px;
+    bottom: var(--fab-bottom-1, 12px);
   }
 }

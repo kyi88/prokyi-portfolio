@@ -3,10 +3,10 @@
 /* Trophy button */
 .achievement-btn {
   position: fixed;
-  bottom: 180px;
-  right: 24px;
-  width: 40px;
-  height: 40px;
+  bottom: var(--fab-bottom-4, 186px);
+  right: var(--fab-right, 24px);
+  width: var(--fab-size, 44px);
+  height: var(--fab-size, 44px);
   border-radius: 50%;
   border: 1px solid var(--c-border);
   background: var(--c-card);
@@ -73,7 +73,7 @@
 /* Panel */
 .achievement-panel {
   position: fixed;
-  bottom: 228px;
+  bottom: 240px;
   right: 24px;
   width: 260px;
   background: #0a0c18;
@@ -143,30 +143,22 @@
 
 @media (max-width: 768px) {
   .achievement-panel {
-    right: 12px;
+    right: var(--fab-right, 16px);
     width: 240px;
-    bottom: 216px;
+    bottom: calc(var(--fab-bottom-4, 160px) + var(--fab-size, 38px) + 8px);
   }
   .achievement-btn {
-    bottom: 168px;
-    right: 16px;
-    width: 36px;
-    height: 36px;
-    font-size: 0.9rem;
+    bottom: var(--fab-bottom-4, 160px);
   }
 }
 @media (max-width: 480px) {
   .achievement-panel {
-    right: 8px;
+    right: var(--fab-right, 12px);
     width: 220px;
-    bottom: 200px;
+    bottom: calc(var(--fab-bottom-4, 144px) + var(--fab-size, 34px) + 8px);
   }
   .achievement-btn {
-    bottom: 152px;
-    right: 12px;
-    width: 34px;
-    height: 34px;
-    font-size: 0.85rem;
+    bottom: var(--fab-bottom-4, 144px);
   }
   .achievement-toast {
     right: 12px;
