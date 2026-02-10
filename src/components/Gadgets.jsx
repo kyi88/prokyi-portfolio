@@ -162,6 +162,8 @@ export default function Gadgets() {
   const [filter, setFilter] = useState(allId);
   const [search, setSearch] = useState('');
   const tilt = useTilt();
+  const hoverSound = useHoverSound(1100, 0.03, 0.05);
+  const { play: playClick } = useEffectSound('click');
 
   const filteredCats = filter === allId
     ? categories
