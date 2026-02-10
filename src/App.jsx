@@ -286,31 +286,55 @@ function BootScreen({ onDone }) {
     '[INIT] Rendering viewport ...',
   ];
 
-  // Subtle boot beep via Web Audio API — reuse single AudioContext
+  // Boot sound FX via Web Audio API — reuse single AudioContext
   const bootAudioCtxRef = useRef(null);
-  const playBeep = (freq = 440, dur = 0.04) => {
+  const getBootCtx = () => {
+    if (!bootAudioCtxRef.current) {
+      bootAudioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return bootAudioCtxRef.current;
+  };
+  const playBeep = (freq = 440, dur = 0.06) => {
     try {
       if (localStorage.getItem('prokyi_muted') === 'true') return;
-      if (!bootAudioCtxRef.current) {
-        bootAudioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      const ctx = bootAudioCtxRef.current;
+      const ctx = getBootCtx();
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
       osc.frequency.value = freq;
-      gain.gain.value = 0.03;
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.04, ctx.currentTime + dur * 0.3);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start();
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
       osc.stop(ctx.currentTime + dur + 0.01);
+      osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+    } catch (_) {}
+  };
+  const playBootSuccess = () => {
+    try {
+      if (localStorage.getItem('prokyi_muted') === 'true') return;
+      const ctx = getBootCtx();
+      const notes = [523, 659, 784, 1047]; // C5 E5 G5 C6
+      notes.forEach((f, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = f;
+        const t = ctx.currentTime + i * 0.06;
+        gain.gain.setValueAtTime(0.06, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(t); osc.stop(t + 0.15);
+        osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+      });
     } catch (_) {}
   };
 
   useEffect(() => {
     let i = 0;
-    const freqs = [520, 600, 600, 600, 700, 880];
+    const freqs = [520, 580, 640, 700, 780, 880];
     // Hide ASCII art after first boot line
     const asciiTimer = setTimeout(() => setShowAscii(false), 600);
     let doneTimer = null;
@@ -323,12 +347,13 @@ function BootScreen({ onDone }) {
         playBeep(freq);
       } else {
         clearInterval(iv);
+        playBootSuccess();
         doneTimer = setTimeout(() => {
           onDone();
           // Close boot AudioContext after transition
           try { bootAudioCtxRef.current?.close(); } catch (_) {}
           bootAudioCtxRef.current = null;
-        }, 400);
+        }, 500);
       }
     }, 180);
     return () => { clearInterval(iv); clearTimeout(asciiTimer); clearTimeout(doneTimer); };

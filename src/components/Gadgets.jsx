@@ -1,5 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
+import useHoverSound from '../hooks/useHoverSound';
+import { useEffectSound } from '../hooks/useEffectSound';
 import './Gadgets.css';
 
 /* 3D tilt on hover — uses CSS custom properties to avoid conflicting with Framer Motion transform */
@@ -200,7 +202,8 @@ export default function Gadgets() {
       >
         <button
           className={`gadgets__tab ${filter === allId ? 'is-active' : ''}`}
-          onClick={() => setFilter(allId)}
+          onClick={() => { playClick(); setFilter(allId); }}
+          onMouseEnter={hoverSound.onMouseEnter}
         >
           すべて
         </button>
@@ -209,7 +212,8 @@ export default function Gadgets() {
             key={cat.id}
             className={`gadgets__tab ${filter === cat.id ? 'is-active' : ''}`}
             style={{ '--tab-color': cat.color }}
-            onClick={() => setFilter(cat.id)}
+            onClick={() => { playClick(); setFilter(cat.id); }}
+            onMouseEnter={hoverSound.onMouseEnter}
           >
             <span className="gadgets__tab-icon">{cat.icon}</span>
             {cat.name}

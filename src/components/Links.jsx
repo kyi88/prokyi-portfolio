@@ -1,6 +1,7 @@
 import { useRef, useCallback } from 'react';
 import { motion, useInView } from 'framer-motion';
 import useMagnetic from '../hooks/useMagnetic';
+import useHoverSound from '../hooks/useHoverSound';
 import GlowCard from './GlowCard';
 import './Links.css';
 
@@ -39,6 +40,7 @@ export default function Links() {
   const onRipple = useRipple();
   const magGH = useMagnetic(0.2);
   const magX = useMagnetic(0.2);
+  const hoverSound = useHoverSound(900, 0.04, 0.05);
 
   return (
     <div ref={ref}>
@@ -85,6 +87,7 @@ export default function Links() {
         whileHover={{ scale: 1.06, boxShadow: '0 12px 30px rgba(255,255,255,0.1)', transition: { duration: 0.2 } }}
         whileTap={{ scale: 0.95 }}
         onClick={onRipple}
+        onMouseEnter={hoverSound.onMouseEnter}
         onMouseMove={magGH.onMouseMove}
         onMouseLeave={magGH.onMouseLeave}
         style={magGH.style}
@@ -112,6 +115,7 @@ export default function Links() {
         whileHover={{ scale: 1.06, boxShadow: '0 12px 30px rgba(79,172,254,0.2)', transition: { duration: 0.2 } }}
         whileTap={{ scale: 0.95 }}
         onClick={onRipple}
+        onMouseEnter={hoverSound.onMouseEnter}
         onMouseMove={magX.onMouseMove}
         onMouseLeave={magX.onMouseLeave}
         style={magX.style}

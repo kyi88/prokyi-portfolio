@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
+import useHoverSound from '../hooks/useHoverSound';
+import { useEffectSound } from '../hooks/useEffectSound';
 import './StatusScreen.css';
 
 /* ════════════════════════ DATA ════════════════════════ */
@@ -135,6 +137,8 @@ const panelAnim = { initial: { opacity: 0, x: -20 }, animate: { opacity: 1, x: 0
 
 export default function StatusScreen() {
   const [tab, setTab] = useState('stats');
+  const hoverSound = useHoverSound(1000, 0.03, 0.05);
+  const { play: playClick } = useEffectSound('click');
   const [shimura, setShimura] = useState(false);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.1 });
@@ -155,7 +159,9 @@ export default function StatusScreen() {
       <nav className="ss__tabs" role="tablist" aria-label="ステータスタブ">
         {tabs.map((t) => (
           <button key={t.id} id={`ss-tab-${t.id}`} role="tab" aria-selected={tab === t.id} aria-controls={`ss-p-${t.id}`}
-            className={`ss__tab${tab === t.id ? ' is-active' : ''}`} onClick={() => setTab(t.id)}>
+            className={`ss__tab${tab === t.id ? ' is-active' : ''}`}
+            onClick={() => { playClick(); setTab(t.id); }}
+            onMouseEnter={hoverSound.onMouseEnter}>
             <span className="ss__tab-icon">{t.icon}</span>{t.label}
           </button>
         ))}
