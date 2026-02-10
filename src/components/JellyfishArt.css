@@ -4,7 +4,7 @@
 .jellyfish-art {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
   pointer-events: none;
   opacity: 0;
   animation: jellyfish-fadein 2.5s ease-out 2s forwards;
@@ -27,6 +27,8 @@
   object-fit: cover;
   /* Smooth upscaling on mobile (low internal res) */
   image-rendering: auto;
+  transform: scale(1.2);
+  transform-origin: center center;
 }
 
 /* Mobile — slightly lower opacity to keep text readable */

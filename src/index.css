@@ -68,16 +68,22 @@ html {
   :root {
     --fab-right: 16px;
     --fab-size: 38px;
-    --fab-gap: 10px;
+    --fab-gap: 8px;
     --fab-bottom-1: 16px;
+    --fab-bottom-2: calc(var(--fab-bottom-1) + var(--fab-size) + var(--fab-gap));
+    --fab-bottom-3: calc(var(--fab-bottom-2) + var(--fab-size) + var(--fab-gap));
+    --fab-bottom-4: calc(var(--fab-bottom-3) + var(--fab-size) + var(--fab-gap));
   }
 }
 @media (max-width: 480px) {
   :root {
     --fab-right: 12px;
     --fab-size: 34px;
-    --fab-gap: 10px;
+    --fab-gap: 6px;
     --fab-bottom-1: 12px;
+    --fab-bottom-2: calc(var(--fab-bottom-1) + var(--fab-size) + var(--fab-gap));
+    --fab-bottom-3: calc(var(--fab-bottom-2) + var(--fab-size) + var(--fab-gap));
+    --fab-bottom-4: calc(var(--fab-bottom-3) + var(--fab-size) + var(--fab-gap));
   }
 }
 

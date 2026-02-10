@@ -378,7 +378,11 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [milestoneMsg, setMilestoneMsg] = useState('');
-  const [muted, setMuted] = useState(() => localStorage.getItem('prokyi_muted') === 'true');
+  // デフォルトをミュートに設定（初回訪問時）
+  const [muted, setMuted] = useState(() => {
+    const stored = localStorage.getItem('prokyi_muted');
+    return stored === null ? true : stored === 'true';
+  });
   const mutedRef = useRef(muted);
   mutedRef.current = muted;
 

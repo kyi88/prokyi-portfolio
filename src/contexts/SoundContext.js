@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
 
-export const SoundContext = createContext({ muted: false });
+// デフォルトでミュート
+export const SoundContext = createContext({ muted: true });
 export function useSoundMuted() { return useContext(SoundContext).muted; }
