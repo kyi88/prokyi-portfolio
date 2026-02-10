@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useEffectSound } from '../hooks/useEffectSound';
 import './ScrollToTop.css';
 
 export default function ScrollToTop() {
   const [show, setShow] = useState(false);
+  const { play: playClick } = useEffectSound('click');
 
   useEffect(() => {
     let rafId = null;
@@ -18,7 +20,10 @@ export default function ScrollToTop() {
     return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(rafId); };
   }, []);
 
-  const scrollUp = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollUp = () => {
+    playClick();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <AnimatePresence>

@@ -15,6 +15,7 @@ import CyberErrorBoundary from './components/CyberErrorBoundary';
 import NetworkStatus from './components/NetworkStatus';
 import PageProgress from './components/PageProgress';
 import { SoundContext } from './contexts/SoundContext';
+import { useEffectSound } from './hooks/useEffectSound';
 import './App.css';
 
 const Breadcrumbs = lazy(() => import('./components/Breadcrumbs'));
@@ -386,7 +387,10 @@ export default function App() {
   const mutedRef = useRef(muted);
   mutedRef.current = muted;
 
+  const { play: playClick } = useEffectSound('click');
+
   const toggleMute = () => {
+    playClick();
     setMuted(prev => {
       localStorage.setItem('prokyi_muted', String(!prev));
       return !prev;
